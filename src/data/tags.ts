@@ -1,0 +1,31 @@
+import { MCPTag } from "@/types/mcp";
+
+export const tags: MCPTag[] = [
+  { id: "message", name: "消息", count: 3 },
+  { id: "document", name: "文档", count: 1 },
+  { id: "calendar", name: "日历", count: 1 },
+  { id: "enterprise", name: "企业协作", count: 3 },
+  { id: "workflow", name: "工作流", count: 1 },
+  { id: "ecommerce", name: "电商", count: 2 },
+  { id: "search", name: "搜索", count: 3 },
+  { id: "order", name: "订单", count: 2 },
+  { id: "logistics", name: "物流", count: 1 },
+  { id: "video", name: "视频", count: 1 },
+  { id: "social", name: "社交媒体", count: 1 },
+  { id: "live", name: "直播", count: 1 },
+  { id: "review", name: "评价", count: 1 },
+  { id: "content", name: "内容", count: 1 },
+  { id: "social-media", name: "社交媒体", count: 1 },
+  { id: "restaurant", name: "餐厅", count: 1 },
+  { id: "review", name: "评论", count: 1 },
+  { id: "reservation", name: "预订", count: 1 },
+  { id: "local-life", name: "本地生活", count: 1 },
+  { id: "payment", name: "支付", count: 2 },
+  { id: "transfer", name: "转账", count: 2 },
+  { id: "bill", name: "账单", count: 2 },
+  { id: "finance", name: "金融", count: 2 },
+  { id: "search", name: "搜索", count: 1 },
+  { id: "map", name: "地图", count: 1 },
+  { id: "translation", name: "翻译", count: 1 },
+  { id: "ai", name: "AI", count: 1 }
+]; 

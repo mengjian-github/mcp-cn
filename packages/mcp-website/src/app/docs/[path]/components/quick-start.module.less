@@ -1,0 +1,51 @@
+@import '../../../../styles/variables.less';
+
+@fontWidth: 28px;
+
+.quickStartCard {
+  background: transparent;
+  padding: 0;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: @margin-sm;
+  
+  svg {
+    width: @fontWidth;
+    height: @fontWidth;
+    color: @primary-color;
+    margin-right: @margin-sm;
+  }
+}
+
+.title {
+  font-size: @fontWidth;
+  font-weight: 600;
+  color: @text-color;
+  line-height: 1.4;
+}
+
+.description {
+  font-size: 15px;
+  color: rgba(29, 33, 41, 0.75);
+  margin: @margin-sm 0;
+  line-height: 1.5;
+}
+
+.lastUpdated {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs;
+  color: @text-secondary-light;
+  font-size: @font-size-sm;
+  margin-top: @margin-md;
+  
+  svg {
+    color: @text-secondary-light;
+    width: 12px;
+    height: 12px;
+  }
+} 

@@ -1,0 +1,149 @@
+> 本篇介如何安装 AI 客户端和使用 MCP Server
+
+众多知名的 AI 客户端支持了 MCP 协议：
+
+- Trae CN 🚀：Trae 旗下的 AI IDE 产品，以智能生产力为核心，无缝融入你的开发流程
+- Cline 🛠️：专注于开发体验的 VS Code 扩展
+- Cursor 💻：功能丰富的 AI 驱动 IDE
+- windsurf 🌊：一款 "更适合AI编程新手" 的AI编程工具
+
+## 🚀 Trae CN 安装与使用
+
+> 以下手动配置为次选项，推荐优先 **<a href="/docs/cli" target="_blank">使用 CLI </a>** 完成配置流程，操作流程更简单
+
+### 安装步骤
+
+1. 前往 <a href="https://www.trae.com.cn/" target="_blank">Trae 官网</a>，将 Trae 安装至电脑。
+2. 启动 Trae。
+3. 点击 开始 按钮，完成 Trae 初始配置流程。
+
+### MCP 手动配置
+
+1. 打开 Trae CN AI 对话窗口，在点击 **设置** 图标 >  **MCP**。
+2. 点击 **+ 添加** 按钮，前往 MCP Server 市场。
+3. 在搜索框下方找到 **手动配置** 按钮，点击打开配置面板
+3. 在配置代码框中粘贴平台 MCP Server 的 JSON 配置
+
+#### 参数设置
+```json
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mcp_hub/cli@latest", 
+        "run", 
+        "sequential-thinking"
+      ],
+      "env": {}
+    }
+  }
+}
+```
+
+## 🔧 Cline 安装与使用
+
+### 安装步骤
+
+1. 打开 VS Code 编辑器
+2. 使用快捷键打开扩展市场：
+   - Windows/Linux: `Ctrl+Shift+X`
+   - macOS: `Cmd+Shift+X`
+3. 搜索 `Cline` 并安装
+4. 安装完成后在侧边栏找到 Cline 面板
+
+### MCP 手动配置
+
+1. 在面板上找到 MCP 手动配置入口，点击后打开配置面板
+2. 点击 `Configure MCP Servers`
+3. 在 `cline_mcp_settings.json` 文件中填入 MCP Server 配置
+
+#### 参数设置
+```json
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mcp_hub/cli@latest", 
+        "run", 
+        "sequential-thinking"
+      ],
+      "env": {}
+    }
+  }
+}
+```
+
+## 💻 Cursor 安装与使用
+
+### 安装步骤
+
+1. 访问 [cursor.com](https://cursor.com) 下载
+2. 运行安装程序
+3. 启动 Cursor
+
+### MCP 手动配置
+
+1. `command + P`唤起 Cursor 快捷指令输入框
+2. 输入 `Cursor Settings` ，回车打开面板
+3. 在目录栏找到 `MCP`，点击打开面板
+4. 点击 `Add new global MCP server`
+5. 在 `mcp.json` 文件中填入 MCP Server 配置
+
+#### 参数设置
+```json
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mcp_hub/cli@latest", 
+        "run", 
+        "sequential-thinking"
+      ],
+      "env": {}
+    }
+  }
+}
+```
+
+## 🌊 windsurf 安装与使用
+
+### 安装步骤
+
+1. 访问 <a href="https://windsurf.com/" target="_blank">windsurf</a>
+2. 下载应用，并安装
+3. 启动 windsurf 后登录
+
+### MCP 手动配置
+
+1. `command + P`唤起 Cursor 快捷指令输入框
+2. 输入 `>MCP` ，点击打开 `MCP Configuration Panel` 面板
+3. 选择 windsurf 推荐的 MCP Server 或点击 `Add custom server` 添加自定义 MCP Server
+5. 在 `mcp_config.json` 文件中填入 MCP Server 配置
+
+#### 参数设置
+```json
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mcp_hub/cli@latest", 
+        "run", 
+        "sequential-thinking"
+      ],
+      "env": {}
+    }
+  }
+}
+```
+
+## 🧰 更多帮助 
+
+*  如有其他客户端需要使用平台提供的 MCP Server，可在平台飞书群中提需

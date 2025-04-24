@@ -1,0 +1,12 @@
+words:
+  - pnpmfile
+  - rsbuild
+  - rspack
+  - jsapi
+flagWords:
+  - blacklist -> blocklist
+  - whitelist -> allowlist
+suggestWords:
+  - colour -> color
+ignorePaths:
+  - cspell.config.yaml

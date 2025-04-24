@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-less"
+  ],
+  "plugins": [
+    "stylelint-less"
+  ],
+  "customSyntax": "postcss-less",
+  "rules": {
+    "selector-class-pattern": null,
+    "no-descending-specificity": null,
+    "less/color-no-invalid-hex": true,
+    "block-no-empty": true,
+    "comment-no-empty": true,
+    "no-duplicate-selectors": true,
+    "no-empty-source": true,
+    "declaration-block-no-duplicate-properties": true,
+    "indentation": 2,
+    "max-empty-lines": 1,
+    "string-quotes": "single",
+    "declaration-colon-space-after": "always",
+    "selector-pseudo-element-colon-notation": "double"
+  }
+} 

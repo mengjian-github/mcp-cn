@@ -1,0 +1,50 @@
+## 🚀 MCP Hub 平台指南
+
+欢迎使用 MCP Hub！这是一个专为 Model Context Protocol (MCP) 用户打造的一站式平台，旨在简化 MCP Server 的使用、托管流程，助力你在各种支持 MCP 的 AI 客户端中轻松接入和使用。 ￼
+
+## 🌐 平台简介
+
+**MCP Hub** 提供以下核心功能：
+- MCP Server 市场：提供丰富的官方和社区 MCP Server，涵盖字节内部研发平台、网页搜索、外部创作平台、工作流等多种工具。
+- 快捷接入工具：提供标准化的接入方案（**CLI 安装** 和 **JSON 配置安装**），确保你能够快速在 AI 客户端中使用平台提供的 MCP Server。 
+- 服务注册与托管：用户可快速注册自己的 MCP Server，并托管在平台上，省去部署和维护的烦恼。
+
+## ⚙️ 使用 MCP Server
+
+###  通过 CLI 安装(推荐)
+
+1. 访问 MCP Hub 的首页， 在MCP 服务市场中筛选你需要的 MCP Server。
+2. 点击卡片，在详情页找到和你的 AI Client 对应的 NPM 安装指令并复制（以下为示例）
+```bash
+npx -y @mcp_hub/cli@latest install 
+sequential-thinking --client cline
+```
+3. 在任意终端中执行上述指令，完成安装后使用即可。
+
+### 通过 JSON 配置安装
+
+1. 访问 MCP Hub 的首页， 在MCP 服务市场中筛选你需要的 MCP Server。
+2. 在详情页找到和你 AI Client 对应的 JSON 配置并复制（以下为示例）
+```bash
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mcp_hub/cli@latest",
+        "run", 
+        "sequential-thinking"
+      ]
+    }
+  }
+}
+```
+3. 手动将上述配置粘贴到你的 AI Client 中，完成安装后使用即可。
+
+## 🧰 帮助与支持
+-	文档中心：访问我们的**平台指南**，平台会陆续发布更多使用介绍、开发指南和最佳实践。
+-	社区论坛：在平台右上角加入 MCP Hub 飞书群，与其他使用者和开发者交流经验、分享技巧。
+-	技术支持：如有任何问题，可在 MCP Hub 飞书群中寻求技术帮助。
+
+> 立即加入 MCP Hub，开启你的 MCP Server 之旅，让你的研发、办公更高效 ！

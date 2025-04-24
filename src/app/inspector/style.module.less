@@ -1,0 +1,33 @@
+@import '@/styles/variables.less';
+
+.container {
+  min-height: 100vh;
+  background-color: var(--color-bg-1);
+}
+
+.content {
+  padding: @padding-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 60px);
+
+  :global(.arco-space) {
+    max-width: 800px;
+    width: 100%;
+    padding: @padding-xl;
+    background-color: var(--color-bg-2);
+    border-radius: @border-radius-lg;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  h1 {
+    color: var(--color-text-1);
+    margin-bottom: @margin-xl;
+  }
+
+  p {
+    color: var(--color-text-2);
+    font-size: @font-size-lg;
+  }
+}

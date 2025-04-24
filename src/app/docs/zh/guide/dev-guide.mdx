@@ -1,0 +1,198 @@
+> 🚀 MCP Server 是一个标准化的服务，它允许 AI 模型与各种数据源和工具进行交互。本文将为你介绍如何开发属于自己的 MCP Server。
+
+## 📋 开发方式概述
+
+MCP Server 支持以下开发方式：
+
+- 📦 NPM 包：通过 npm 包方式开发和分发
+- 🌐 独立服务：作为独立的 SSE / WebSocket 服务运行
+- 🔌 内置集成：直接集成到现有应用中
+
+本文主要介绍最常用的 NPM 包开发方式。
+
+## 1. 🎯 创建项目
+
+### 1.1 创建目录
+
+首先创建一个新的 npm 项目：
+
+```bash
+mkdir my-mcp-server
+cd my-mcp-server
+npm init -y
+```
+
+### 1.2 更新 package.json
+
+更新 `package.json` 文件中的信息，添加必要的依赖，如@modelcontextprotocol/sdk、zod、typescript、ts-node等
+```json
+{
+  "name": "@mcp_hub/my-mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "my-mcp-server": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.28",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  }
+}
+```
+
+### 1.3 配置 TypeScript
+
+创建 `tsconfig.json`，添加配置
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+} 
+```
+
+### 1.4 安装依赖
+在根目录执行 `npm install` 安装依赖
+
+```bash
+npm install
+```
+
+## 2. 💻 编写代码
+
+### 2.1 创建基础服务器
+
+在 `src/index.ts` 中创建基础代码：
+
+```typescript
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+
+// 创建 MCP 服务器实例
+const server = new McpServer({
+  name: "my-mcp-server",
+  version: "1.0.0"
+});
+
+// 启动服务器
+async function main() {
+  try {
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    console.error('MCP 服务器已启动');
+  } catch (error) {
+    console.error('MCP 服务器启动失败:', error);
+    process.exit(1);
+  }
+}
+
+main();
+```
+
+### 2.2 开发 Tools
+
+MCP Server 可以注册各种 Tools（执行某个逻辑的函数工具）供 AI 模型使用：
+
+```typescript
+import { z } from "zod";
+
+// 注册一个简单的加法工具
+server.tool(
+  "add",
+  { a: z.number(), b: z.number() },
+  async ({ a, b }) => ({
+    content: [{ type: "text", text: String(a + b) }]
+  })
+);
+```
+
+## 3. 🚀 发布和使用
+
+### 3.1 发布到 NPM
+
+```bash
+npm publish
+```
+
+### 3.2 在客户端中使用
+
+你可以复制以下配置到 AI Client 中测试 MCP Server。更好的选择是在 MCP Hub 上 <a href="/docs/register" target="_blank">注册你的 MCP Server</a>。
+
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "@your-scope/my-mcp-server"],
+      "env": {
+        "API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+
+## 4. ✅ 调试和测试
+
+### 4.1 使用 Inspector
+
+MCP Inspector 是一个用于测试和调试的工具，运行以下指令调试你的 MCP Server。
+
+```bash
+npx @modelcontextprotocol/inspector npx @your-scope/my-mcp-server
+```
+
+### 4.2 单元测试
+
+可使用 Jest 进行单元测试：
+
+```typescript
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+
+describe("MCP Server", () => {
+  let server: McpServer;
+
+  beforeEach(() => {
+    server = new McpServer({
+      name: "test-server",
+      version: "1.0.0"
+    });
+  });
+
+  test("add tool works correctly", async () => {
+    // 测试代码
+  });
+});
+```
+
+## 📚 更多资源
+
+- 📖 <a href="https://modelcontextprotocol.io/quickstart/server" target="_blank">MCP Server 开发指南</a>
+- 📘 <a href="https://github.com/modelcontextprotocol/typescript-sdk" target="_blank">MCP SDK 文档</a>
+- 🔍 <a href="https://modelcontextprotocol.io/docs/tools/inspector" target="_blank">MCP Server调试工具</a>
+- 🌟 <a href="https://modelcontextprotocol.io/examples" target="_blank">MCP Server 示例项目</a>
+- 💬 <a href="https://github.com/orgs/modelcontextprotocol/discussions" target="_blank">社区讨论</a>

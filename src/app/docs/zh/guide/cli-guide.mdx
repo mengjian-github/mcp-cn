@@ -1,0 +1,67 @@
+> @mcp_hub/cli 是一个用于安装、运行和管理 <a href="/" target="_blank">MCP Hub</a> 平台 MCP Server 的命令行工具。
+
+## 要求
+
+`Node.js 18` 或更高版本
+
+## 安装
+
+```bash
+npm install -g @mcp_hub/cli
+```
+
+或者使用npx直接运行：
+
+```bash
+npx @mcp_hub/cli
+```
+
+## 使用方法
+
+```bash
+npx @mcp_hub/cli <命令>
+```
+
+### 可用命令
+
+- `install <MCP Server>` - 安装一个 MCP Server
+  - `--client <客户端>` - 指定 AI 客户端
+- `uninstall <MCP Server>` - 卸载一个 MCP Server
+  - `--client <客户端>` - 指定 AI 客户端
+- `run <MCP Server>` - 运行一个 MCP Server
+  - `--env <json>` - 提供JSON格式的配置
+- `list clients` - 列出可用的客户端
+- `--help` - 显示帮助信息
+
+
+### 示例
+
+#### 列出可用的客户端
+```
+npx @mcp_hub/cli list clients
+```
+
+#### 安装MCP Server（需要--client标志）
+```bash
+npx -y @mcp_hub/cli@latest install sequential-thinking --client cline
+```
+
+#### 卸载MCP Server（需要--client标志）
+```bash
+npx -y @mcp_hub/cli@latest uninstall sequential-thinking --client cline
+```
+
+#### 运行MCP Server
+```
+npx -y @mcp_hub/cli run sequential-thinking
+```
+
+#### 运行MCP Server并增加环境变量
+```
+npx -y @mcp_hub/cli@latest run Codebase --client cline --env '{"API_TOKEN":"<填入你的API_TOKEN>"}'
+```
+
+#### 显示帮助菜单
+```
+npx @mcp_hub/cli --help
+```

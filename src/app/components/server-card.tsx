@@ -1,0 +1,167 @@
+"use client";
+
+import { ServerInfo } from "@/schema";
+import { trackPageClick } from "@/tracks";
+import { getPackageName } from "@/utils";
+import * as Avatar from "@radix-ui/react-avatar";
+import classNames from "classnames";
+import Link from "next/link";
+import { FC } from "react";
+// 获取标签数量
+const TAG_COUNT = 2;
+
+// 文字头像的背景色
+const AVATAR_COLORS = [
+  "#165DFF", // 蓝色
+  "#3491FA", // 浅蓝色
+  "#4080FF", // 亮蓝色
+  "#F53F3F", // 红色
+  "#F77234", // 橙色
+  "#FF7D00", // 橙黄色
+  "#7B61FF", // 紫色
+  "#722ED1", // 深紫色
+  "#168CFF", // 天蓝色
+  "#3C7EFF", // 皇家蓝
+];
+
+/**
+ * 获取服务器名称的首字母或首个字符
+ * @param name 服务器名称
+ * @returns 首字母或字符
+ */
+const getInitials = (name: string): string => {
+  if (!name) {
+    return "?";
+  }
+  // 对于中文名称，直接返回第一个字符
+  if (/[\u4e00-\u9fa5]/.test(name.charAt(0))) {
+    return name.charAt(0);
+  }
+  // 对于英文名称，返回首字母大写
+  return name.charAt(0).toUpperCase();
+};
+
+/**
+ * 根据服务器ID获取稳定的颜色
+ * @param id 服务器ID（字符串或数字）
+ * @returns 颜色代码
+ */
+const getAvatarColor = (id: string | number): string => {
+  // 将ID转换为字符串
+  const idStr = String(id);
+  const index =
+    Math.abs(
+      idStr.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0),
+    ) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[index];
+};
+
+export interface ServerCardProps {
+  server: ServerInfo;
+  highlight?: boolean;
+}
+/**
+ * 服务器卡片组件
+ * @param props 组件属性
+ * @returns {JSX.Element} 返回JSX元素
+ */
+export const ServerCard: FC<ServerCardProps> = ({
+  server,
+  highlight = false,
+}) => {
+  /**
+   * 处理卡片点击事件
+   */
+  const handleCardClick = () => {
+    if (typeof window === "undefined") return;
+    trackPageClick("jump_server_detail", {
+      server_id: server.server_id,
+      server_name: server.display_name,
+    });
+  };
+
+  /**
+   * 格式化使用次数（如果超过1000则显示为k）
+   *
+   * @param count 使用次数
+   * @returns {string} 格式化后的字符串
+   */
+
+  // const THOUSAND = 1000;
+
+  // const formatCount = (count: number): string =>
+  //   count >= THOUSAND ? `${(count / THOUSAND).toFixed(1)}k` : count.toString();
+
+  // 获取服务器的名称，优先使用 display_name，其次是 displayName
+  const serverName = server.display_name;
+  // 获取使用计数，优先使用 use_count，其次是 usageCount
+  // const useCount = server.use_count;
+  // 获取标签，确保为数组
+  const serverTags = server.tag?.split(",") ?? [];
+  // 获取服务器 ID
+  const serverId = server.server_id;
+  // 获取头像字符和颜色
+  const avatarText = getInitials(serverName);
+  const avatarColor = getAvatarColor(serverId);
+
+  return (
+    <Link
+      href={`/server/${server.qualified_name}`}
+      className={classNames(
+        "w-full h-full rounded-lg shadow-md transition-all duration-300 hover:shadow-lg p-4 bg-white cursor-pointer flex flex-col",
+        {
+          "ring-2 ring-blue-500 ring-opacity-50": highlight,
+        },
+      )}
+      onClick={handleCardClick}
+    >
+      <div className="flex items-center mb-4">
+        <Avatar.Root className="mr-3 flex-shrink-0 inline-flex h-[50px] w-[50px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+          {server.logo ? (
+            <Avatar.Image
+              className="h-[85%] w-[85%] object-contain bg-gray-50 border border-gray-200 rounded-full m-auto"
+              src={server.logo}
+              alt={serverName}
+            />
+          ) : (
+            <Avatar.Fallback
+              className="flex h-full w-full items-center justify-center text-white text-2xl font-bold"
+              style={{ backgroundColor: avatarColor }}
+            >
+              {avatarText}
+            </Avatar.Fallback>
+          )}
+        </Avatar.Root>
+        <span className="text-lg font-medium truncate">{serverName}</span>
+      </div>
+      <div className="flex flex-col flex-grow">
+        <span className="text-sm text-gray-500 truncate mb-2 font-[12px]">
+          {getPackageName(server.package_url)}
+        </span>
+        <div className="mb-4 flex-grow">
+          <p className="text-sm text-gray-700 line-clamp-3">
+            {server.description}
+          </p>
+        </div>
+
+        <div className="flex justify-between items-center mt-auto">
+          {/* <div className="text-xs text-gray-500">
+            <span>{formatCount(useCount)} 次使用</span>
+          </div> */}
+          {serverTags.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {serverTags.slice(0, TAG_COUNT).map((tag) => (
+                <span
+                  key={`${serverId}-${tag}`}
+                  className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+};

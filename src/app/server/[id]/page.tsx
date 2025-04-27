@@ -27,7 +27,7 @@ const ServerDetailPage: FC = () => {
    */
   const fetchServerDetail = async (): Promise<ServerInfo> => {
     const response = await fetch(
-      `/mcp_api/servers/get_details?qualifiedName=${packageName}`,
+      `/api/servers/get_details?qualifiedName=${packageName}`,
     );
 
     if (!response.ok) {
@@ -73,7 +73,7 @@ const ServerDetailPage: FC = () => {
    */
   const fetchTools = async (): Promise<ServerTool[]> => {
     const response = await fetch(
-      `/mcp_api/meta_info/get_tools?qualifiedName=${packageName}`,
+      `/api/meta_info/get_tools?qualifiedName=${packageName}`,
     );
 
     if (!response.ok) {
@@ -81,12 +81,14 @@ const ServerDetailPage: FC = () => {
     }
     const responseData = (await response.json()) as {
       code: number;
-      data: ServerTool[];
+      data: {
+        tools: ServerTool[];
+      };
       message: string;
     };
 
     if (responseData.code === 0) {
-      return responseData.data;
+      return responseData.data.tools;
     }
     throw new Error(responseData.message);
   };

@@ -21,14 +21,14 @@ const nextConfig = {
       },
     },
   },
-  async rewrites() {
-    return [
-      {
-        source: "/mcp_api/:path*",
-        destination: "http://localhost:3000/mcp_api/:path*",
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/mcp_api/:path*",
+  //       destination: "http://localhost:3000/mcp_api/:path*",
+  //     },
+  //   ];
+  // },
 };
 
 export default withMDX(nextConfig);

@@ -23,7 +23,7 @@ export const Tabs: FC<TabsProps> = ({
   onChange,
   className = "flex px-4 pt-2 bg-white border-b border-gray-100",
   itemClassName = "flex items-center px-3 py-2 mr-2 rounded-t-md transition-colors duration-200",
-  activeClassName = "text-blue-600 bg-blue-50 border-b-2 border-blue-500 font-medium",
+  activeClassName = "text-gray-700 bg-gray-50 border-b-2 border-gray-400 font-medium",
   inactiveClassName = "text-gray-500 hover:text-blue-500 hover:bg-gray-50",
 }) => {
   return (

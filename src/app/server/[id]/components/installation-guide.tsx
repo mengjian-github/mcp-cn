@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 import { ClientType, PlatformType } from "../interfaces";
 import { trackInstallation } from "../tracks";
 
-const CLI_PACKAGE_NAME = "@mcp_hub/cli@latest";
+const CLI_PACKAGE_NAME = "@mcp_hub_org/cli@latest";
 
 interface InstallationGuideProps {
   server: ServerInfo;

@@ -6,7 +6,7 @@
 export const getPackageName = (packageUrl: string): string => {
   if (!packageUrl) return '';
 
-  const knownPrefixes = ['https://registry.npmjs.org/'];
+  const knownPrefixes = ['https://www.npmjs.com/package/'];
 
   for (const prefix of knownPrefixes) {
     if (packageUrl.startsWith(prefix)) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { trackEvent } from "@/utils/tea";
+import { trackEvent } from "@/utils/track";
 
 export const trackPageClick = (
   event: string,

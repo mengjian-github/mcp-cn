@@ -1,4 +1,4 @@
-> @mcp_hub/cli 是一个用于安装、运行和管理 <a href="/" target="_blank">MCP Hub</a> 平台 MCP Server 的命令行工具。
+> @mcp_hub_org/cli 是一个用于安装、运行和管理 <a href="/" target="_blank">MCP Hub</a> 平台 MCP Server 的命令行工具。
 
 ## 要求
 
@@ -7,19 +7,19 @@
 ## 安装
 
 ```bash
-npm install -g @mcp_hub/cli
+npm install -g @mcp_hub_org/cli
 ```
 
 或者使用npx直接运行：
 
 ```bash
-npx @mcp_hub/cli
+npx @mcp_hub_org/cli
 ```
 
 ## 使用方法
 
 ```bash
-npx @mcp_hub/cli <命令>
+npx @mcp_hub_org/cli <命令>
 ```
 
 ### 可用命令
@@ -38,30 +38,30 @@ npx @mcp_hub/cli <命令>
 
 #### 列出可用的客户端
 ```
-npx @mcp_hub/cli list clients
+npx @mcp_hub_org/cli list clients
 ```
 
 #### 安装MCP Server（需要--client标志）
 ```bash
-npx -y @mcp_hub/cli@latest install sequential-thinking --client cline
+npx -y @mcp_hub_org/cli@latest install sequential-thinking --client cline
 ```
 
 #### 卸载MCP Server（需要--client标志）
 ```bash
-npx -y @mcp_hub/cli@latest uninstall sequential-thinking --client cline
+npx -y @mcp_hub_org/cli@latest uninstall sequential-thinking --client cline
 ```
 
 #### 运行MCP Server
 ```
-npx -y @mcp_hub/cli run sequential-thinking
+npx -y @mcp_hub_org/cli run sequential-thinking
 ```
 
 #### 运行MCP Server并增加环境变量
 ```
-npx -y @mcp_hub/cli@latest run Codebase --client cline --env '{"API_TOKEN":"<填入你的API_TOKEN>"}'
+npx -y @mcp_hub_org/cli@latest run Codebase --client cline --env '{"API_TOKEN":"<填入你的API_TOKEN>"}'
 ```
 
 #### 显示帮助菜单
 ```
-npx @mcp_hub/cli --help
+npx @mcp_hub_org/cli --help
 ```

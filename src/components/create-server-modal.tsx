@@ -299,7 +299,7 @@ const CreateServerModal: FC<CreateServerModalProps> = ({
       };
 
       const responseData = await axios.post<{ code: number; message?: string }>(
-        "/mcp_api/servers/register",
+        "/api/servers/register",
         requestData,
       );
 
@@ -315,7 +315,7 @@ const CreateServerModal: FC<CreateServerModalProps> = ({
         // 获取服务器工具信息
         try {
           await fetch(
-            `/mcp_api/meta_info/get_tools?qualifiedName=${Object.keys(configObj)[0]}`,
+            `/api/meta_info/get_tools?qualifiedName=${Object.keys(configObj)[0]}`,
           );
         } catch (error) {
           console.error("获取工具信息失败:", error);

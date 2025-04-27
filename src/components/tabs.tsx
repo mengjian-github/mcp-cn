@@ -24,7 +24,7 @@ export const Tabs: FC<TabsProps> = ({
   className = "flex px-4 pt-2 bg-white border-b border-gray-100",
   itemClassName = "flex items-center px-3 py-2 mr-2 rounded-t-md transition-colors duration-200",
   activeClassName = "text-gray-700 bg-gray-50 border-b-2 border-gray-400 font-medium",
-  inactiveClassName = "text-gray-500 hover:text-blue-500 hover:bg-gray-50",
+  inactiveClassName = "text-gray-500 hover:text-gray-700 hover:bg-gray-50",
 }) => {
   return (
     <RadixTabs.Root

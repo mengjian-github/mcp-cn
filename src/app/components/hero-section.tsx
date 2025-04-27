@@ -50,7 +50,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 40 }}
             animate={{
               opacity: isVisible ? 1 : 0,
-              y: isVisible ? 0 : 40,
+              y: isVisible ? 20 : 40,
             }}
             transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
           >
@@ -84,7 +84,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
               />
               <div className="absolute h-full flex items-center justify-center right-2 top-0">
                 <motion.button
-                  className="w-10 h-10 text-blue-800 flex items-center justify-center rounded-full transition-colors duration-200 hover:bg-blue-700"
+                  className="w-10 h-10 text-blue-800 flex items-center justify-center rounded-full transition-colors duration-200 hover:bg-gray-100"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >

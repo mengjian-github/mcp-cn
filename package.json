@@ -2,6 +2,7 @@
   "name": "@mcp/website",
   "type": "module",
   "version": "0.1.0",
+  "author": "Zwe1",
   "scripts": {
     "dev": "next dev -p 7777",
     "build": "next build",

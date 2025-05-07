@@ -1,5 +1,6 @@
 // @ts-check
 import createMDX from "@next/mdx";
+import withLess from 'next-with-less';
 
 const withMDX = createMDX({
   extension: /\.mdx?$/,
@@ -31,4 +32,4 @@ const nextConfig = {
   // },
 };
 
-export default withMDX(nextConfig);
+export default withMDX(withLess(nextConfig));

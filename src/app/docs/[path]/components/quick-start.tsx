@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import { ClockIcon } from '@radix-ui/react-icons';
+import { FC } from 'react';
 import styles from './quick-start.module.less';
 
 interface QuickStartProps {

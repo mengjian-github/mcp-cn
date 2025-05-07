@@ -54,38 +54,3 @@ export async function GET(
     );
   }
 }
-
-/**
- * 删除服务器
- */
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { qualifiedName: string } }
-) {
-  try {
-    const qualifiedName = params.qualifiedName;
-    console.info('removeMcpServer params:', { qualifiedName });
-
-    // 此处需要替换为实际的数据库删除操作
-    // 模拟删除成功
-    const success = true;
-
-    return NextResponse.json({
-      code: 0,
-      message: 'success',
-      data: {
-        qualifiedName,
-        success
-      }
-    });
-  } catch (error: any) {
-    console.error('removeMcpServer error:', error);
-    return NextResponse.json(
-      {
-        code: 500,
-        message: error.message || '服务器内部错误'
-      },
-      { status: 500 }
-    );
-  }
-} 

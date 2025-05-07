@@ -27,7 +27,7 @@ interface RouteConfig {
 export const routes: RouteConfig[] = [
   {
     path: "/docs/getting-started",
-    component: () => import("@/docs/zh/guide/getting-started.mdx"),
+    component: () => import("../zh/guide/getting-started.mdx"),
     title: "快速上手",
     description: "快速了解和上手 MCP Hub，让你的 AI 应用更强大 ！",
     icon: <RocketIcon width={18} height={18} />,
@@ -44,7 +44,7 @@ export const routes: RouteConfig[] = [
   },
   {
     path: "/docs/clients",
-    component: () => import("@/docs/zh/guide/clients.mdx"),
+    component: () => import("../zh/guide/clients.mdx"),
     title: "客户端指南",
     description: "MCP 客户端安装及使用指南",
     icon: <IdCardIcon width={18} height={18} />,
@@ -52,7 +52,7 @@ export const routes: RouteConfig[] = [
   },
   {
     path: "/docs/development",
-    component: () => import("@/docs/zh/guide/dev-guide.mdx"),
+    component: () => import("../zh/guide/dev-guide.mdx"),
     title: "开发指南",
     description: "来开发一个属于你的 MCP Server 吧 ！",
     icon: <CodeIcon width={18} height={18} />,
@@ -60,7 +60,7 @@ export const routes: RouteConfig[] = [
   },
   {
     path: "/docs/register",
-    component: () => import("@/docs/zh/guide/register-guide.mdx"),
+    component: () => import("../zh/guide/register-guide.mdx"),
     title: "注册 Server",
     description: "快来注册你的 MCP Server 吧 ！",
     icon: <GearIcon width={18} height={18} />,
@@ -68,7 +68,7 @@ export const routes: RouteConfig[] = [
   },
   {
     path: "/docs/cli",
-    component: () => import("@/docs/zh/guide/cli-guide.mdx"),
+    component: () => import("../zh/guide/cli-guide.mdx"),
     title: "CLI 工具",
     description: "MCP Hub CLI 工具使用指南",
     icon: <LightningBoltIcon width={18} height={18} />,
@@ -76,7 +76,7 @@ export const routes: RouteConfig[] = [
   },
   {
     path: "/docs/blogs",
-    component: () => import("@/docs/zh/guide/blogs.mdx"),
+    component: () => import("../zh/guide/blogs.mdx"),
     title: "推荐文章",
     description: "MCP Hub 推荐的技术文章",
     icon: <StackIcon width={18} height={18} />,

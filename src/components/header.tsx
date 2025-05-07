@@ -5,7 +5,7 @@ import { checkLogin, login } from "@/utils";
 import { cn } from "@/utils/cn";
 import * as Avatar from "@radix-ui/react-avatar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Code, FileText, LogOut, User } from "lucide-react";
+import { Code, LogOut, User } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -184,7 +184,7 @@ export const Header = () => {
         </Link>
 
         <div className="flex flex-1 items-center justify-end gap-2 md:gap-3 overflow-x-auto">
-          <NavLink icon={<FileText />} label="平台指南" path="/docs" />
+          {/* <NavLink icon={<FileText />} label="平台指南" path="/docs" /> */}
           <NavLink icon={<Code />} label="Playground" path="/playground" />
           {/* <NavButton
             icon={<Plus />}

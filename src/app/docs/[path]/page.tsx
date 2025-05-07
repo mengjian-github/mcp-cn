@@ -80,7 +80,7 @@ const DocsPage: FC = () => {
             <DocSidebar
               routes={routes}
               currentPath={currentPath}
-              onRouteChange={handleDocChange}
+              onDocChange={handleDocChange}
             />
             <Box className="flex-1 min-w-0">
               {loading ? (

@@ -14,7 +14,7 @@ interface ModuleType {
   meta?: Record<string, unknown>;
 }
 
-interface RouteConfig {
+export interface RouteConfig {
   path: string;
   component: () => Promise<ModuleType>;
   title: string;

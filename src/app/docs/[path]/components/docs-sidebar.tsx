@@ -1,11 +1,12 @@
-import { FC, useState, useEffect } from 'react';
 import { Box, Flex } from '@radix-ui/themes';
-import { routes } from '../route.config';
+import { FC, useEffect, useState } from 'react';
+import { RouteConfig } from '../route.config';
 
 interface DocSidebarProps {
   className?: string;
   onDocChange?: (key: string) => void;
   currentPath?: string;
+  routes: RouteConfig[];
 }
 
 // 提取共同的按钮样式
@@ -21,7 +22,7 @@ const commonButtonStyle = {
   cursor: 'pointer',
 };
 
-export const DocSidebar: FC<DocSidebarProps> = ({ className, onDocChange, currentPath }) => {
+export const DocSidebar: FC<DocSidebarProps> = ({ className, onDocChange, currentPath, routes }) => {
   const [selectedKey, setSelectedKey] = useState<string>(currentPath ?? routes[0]?.path);
 
   useEffect(() => {

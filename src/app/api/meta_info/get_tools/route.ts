@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
       code: 0,
       message: "success",
       data: {
+        ...data,
         tools: data.tools ? JSON.parse(JSON.parse(data.tools)) : []
       },
     };

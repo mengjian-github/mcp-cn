@@ -86,7 +86,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-gray-100 to-blue-50 relative">
       <HeroSection
         title="MCP Hub"
-        description="一站式 MCP 解决方案，释放 AI 应用无限潜能，让你的研发、办公更高效！"
+        description="一站式 MCP 解决方案，释放 AI 应用无限潜能 ！"
         stats={stats}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}

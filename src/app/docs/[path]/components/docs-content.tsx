@@ -1,7 +1,6 @@
+import { Box, Card, Separator } from '@radix-ui/themes';
 import { FC } from 'react';
-import { Box, Separator, Card } from '@radix-ui/themes';
 import { QuickStart } from './quick-start';
-import styles from './theme.module.less';
 
 interface DocContentProps {
   content: React.ReactNode;
@@ -28,7 +27,7 @@ export const DocContent: FC<DocContentProps> = ({ content, meta }) => {
         </Box>
       )}
       <Card variant="ghost" className="min-h-[300px] prose">
-        <Box className={styles['docs-content']}>{content}</Box>
+        <Box>{content}</Box> 
       </Card>
     </Box>
   );

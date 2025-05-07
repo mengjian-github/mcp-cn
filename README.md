@@ -1,4 +1,4 @@
-# mcp-website
+# MCP Hub Website
 
 ## Get Started
 

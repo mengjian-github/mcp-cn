@@ -1,8 +1,7 @@
+import { supabase } from '@/lib/supabase';
 import {
-    ListMcpServersRequest,
-    ListMcpServersResponse
+  ListMcpServersResponse
 } from '@/types/server';
-import { serverData } from '@/utils/server-data';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
@@ -14,63 +13,34 @@ export async function GET(request: NextRequest) {
     // 获取查询参数
     const searchParams = request.nextUrl.searchParams;
     const keywords = searchParams.get('keywords') || undefined;
-    const page = searchParams.get('page') ? parseInt(searchParams.get('page')!) : undefined;
-    const pageSize = searchParams.get('pageSize') ? parseInt(searchParams.get('pageSize')!) : undefined;
+    const page = searchParams.get('page') ? parseInt(searchParams.get('page')!) : 1;
+    const pageSize = searchParams.get('pageSize') ? parseInt(searchParams.get('pageSize')!) : 10;
 
-    // 构造请求参数
-    const params: ListMcpServersRequest = {
-      keywords,
-      page,
-      pageSize
-    };
+    // 构造 supabase 查询
+    let query = supabase
+      .from('mcp_servers')
+      .select('*', { count: 'exact' })
+      .order('use_count', { ascending: false });
 
-    console.info('listMcpServers params:', params);
-
-    // 构造查询条件
-    const where: any = {};
-    if (params.keywords) {
-      // 使用模糊匹配搜索 qualified_name 或 display_name
-      where.or = [
-        { qualified_name: { contains: params.keywords } },
-        { display_name: { contains: params.keywords } }
-      ];
+    if (keywords) {
+      query = query.or(`qualified_name.ilike.%${keywords}%,display_name.ilike.%${keywords}%`);
     }
 
-    let offset: number | undefined;
-    let limit: number | undefined;
+    // 分页
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+    query = query.range(from, to);
 
-    if (page && pageSize) {
-      offset = (page - 1) * pageSize;
-      limit = pageSize;
-    }
+    const { data, error, count } = await query;
+    
+    if (error) throw error;
 
-    // 模拟过滤
-    let filteredServers = [...serverData];
-    if (params.keywords) {
-      const keyword = params.keywords.toLowerCase();
-      filteredServers = filteredServers.filter(
-        server => 
-          server.qualified_name.toLowerCase().includes(keyword) || 
-          server.display_name.toLowerCase().includes(keyword)
-      );
-    }
-
-    // 模拟分页
-    const total = filteredServers.length;
-    if (offset !== undefined && limit !== undefined) {
-      filteredServers = filteredServers.slice(offset, offset + limit);
-    }
-
-    // 按使用次数排序
-    filteredServers.sort((a, b) => b.use_count - a.use_count);
-
-    // 返回结果
     const response: ListMcpServersResponse = {
       code: 0,
       message: 'success',
-      data: filteredServers,
+      data: data || [],
       pagination: {
-        total,
+        total: count || 0,
         page,
         pageSize
       }

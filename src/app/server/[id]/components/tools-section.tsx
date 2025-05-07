@@ -158,7 +158,7 @@ export const ToolsSection: FC<ToolsSectionProps> = ({ tools }) => {
                         toggleLanguage(tool.name);
                       }}
                     >
-                      {showOriginal[tool.description] ? "查看翻译" : "查看原文"}
+                      {showOriginal[tool.name] ? "查看翻译" : "查看原文"}
                     </button>
                   )}
                 </div>

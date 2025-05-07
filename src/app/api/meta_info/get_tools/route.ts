@@ -1,5 +1,5 @@
+import { supabase } from '@/lib/supabase';
 import { GetMcpToolResponse } from "@/types/server";
-import { toolsData } from "@/utils/tools-data";
 import { NextRequest, NextResponse } from "next/server";
 /**
  * 获取服务器详情
@@ -11,9 +11,16 @@ export async function GET(request: NextRequest) {
     const qualifiedName = searchParams.get("qualifiedName") || "";
     console.info("getMcpServerDetails params:", { qualifiedName });
 
-    const tool = toolsData.find((s) => s.qualified_name === qualifiedName);
+    // 查询supabase
+    const { data, error } = await supabase
+      .from('mcp_server_metainfo')
+      .select('*')
+      .eq('qualified_name', qualifiedName)
+      .single();
 
-    if (!tool) {
+    console.log('data', JSON.parse(data.tools));
+
+    if (error || !data) {
       return NextResponse.json(
         {
           code: 0,
@@ -26,7 +33,9 @@ export async function GET(request: NextRequest) {
     const response: GetMcpToolResponse = {
       code: 0,
       message: "success",
-      data: { ...tool, tools: JSON.parse(tool.tools) },
+      data: {
+        tools: data.tools ? JSON.parse(JSON.parse(data.tools)) : []
+      },
     };
 
     return NextResponse.json(response);

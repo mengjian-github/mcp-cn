@@ -97,7 +97,7 @@ export const ServerCard: FC<ServerCardProps> = ({
   // 获取使用计数，优先使用 use_count，其次是 usageCount
   // const useCount = server.use_count;
   // 获取标签，确保为数组
-  const serverTags = server.tag?.split(",") ?? [];
+  const serverTags = server.tag ? server.tag?.split(",") : [];
   // 获取服务器 ID
   const serverId = server.server_id;
   // 获取头像字符和颜色

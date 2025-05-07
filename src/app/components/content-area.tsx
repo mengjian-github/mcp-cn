@@ -139,13 +139,10 @@ export const ContentArea: FC<ContentAreaProps> = ({
     );
   }
 
-  // 按类型分类服务器
-  const externalServers = servers.filter((server) => server.type !== 1);
-
   return (
     <div className="py-5 w-full bg-transparent flex-1">
       {/* 外部工具 */}
-      <ServerGrid servers={externalServers} title="热门工具" />
+      <ServerGrid servers={servers} title="热门工具" />
     </div>
   );
 };

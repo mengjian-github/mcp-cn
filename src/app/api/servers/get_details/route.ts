@@ -1,5 +1,5 @@
+import { supabase } from '@/lib/supabase';
 import { GetMcpServerResponse } from '@/types/server';
-import { serverData } from '@/utils/server-data';
 import { NextRequest, NextResponse } from 'next/server';
 /**
  * 获取服务器详情
@@ -13,22 +13,33 @@ export async function GET(
     const qualifiedName = searchParams.get('qualifiedName') || '';
     console.info('getMcpServerDetails params:', { qualifiedName });
 
-    const server = serverData.find(s => s.qualified_name === qualifiedName);
+    // 查询supabase
+    const { data, error } = await supabase
+      .from('mcp_servers')
+      .select('*')
+      .eq('qualified_name', qualifiedName)
+      .single();
 
-    if (!server) {
-      return NextResponse.json(
-        {
-          code: 404,
-          message: '服务器不存在'
-        },
-        { status: 404 }
-      );
+    if (error) {
+      if (error.code === 'PGRST116') { // not found
+        return NextResponse.json(
+          {
+            code: 404,
+            message: '服务器不存在'
+          },
+          { status: 404 }
+        );
+      }
+      throw error;
     }
 
     const response: GetMcpServerResponse = {
       code: 0,
       message: 'success',
-      data: server
+      data: {
+        ...data,
+        connections: data.connections ? JSON.parse(data.connections) : '[]',
+      }
     };
 
     return NextResponse.json(response);

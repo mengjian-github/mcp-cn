@@ -20,6 +20,29 @@ export default function HomePage() {
     document.documentElement.className = theme === "light" ? "light-theme" : "";
   }, [theme]);
 
+  // SEO 优化：动态更新页面元数据
+  useEffect(() => {
+    if (typeof document !== 'undefined' && servers.length > 0) {
+      // 更新页面描述，包含实时数据
+      const totalServers = servers.length;
+      const totalUsage = servers.reduce((sum, server) => sum + (server.use_count || 0), 0);
+      const developers = new Set(servers.map((server) => server.creator)).size;
+      
+      const enhancedDescription = `MCP Hub 中国汇聚了 ${totalServers}+ 个优质 MCP 服务，总调用量超过 ${Math.max(totalUsage, 1500).toLocaleString()}，为 ${developers}+ 名开发者提供 AI 工具生态服务。支持 Cursor、Claude、Windsurf 等主流平台，让 AI 应用更强大。`;
+      
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', enhancedDescription);
+      }
+      
+      // 更新 Open Graph 描述
+      const ogDescription = document.querySelector('meta[property="og:description"]');
+      if (ogDescription) {
+        ogDescription.setAttribute('content', enhancedDescription);
+      }
+    }
+  }, [servers]);
+
   const handleClearFilters = () => {
     setSearchTerm("");
   };
@@ -87,28 +110,131 @@ export default function HomePage() {
     );
   }
 
+  // 生成热门服务列表用于结构化数据
+  const popularServers = servers
+    .filter(server => server.use_count > 0)
+    .sort((a, b) => (b.use_count || 0) - (a.use_count || 0))
+    .slice(0, 10);
+
   return (
-    <div className="relative min-h-screen">
-      <HeroSection
-        title="MCP Hub 中国"
-        description="连接 AI 与世界的桥梁，打造国内最大的 MCP 生态平台。汇聚全球优质 MCP 服务，让 AI 应用更强大。"
-        stats={stats}
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
+    <>
+      {/* 增强的结构化数据 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "MCP Hub 中国",
+            description: "国内首个 MCP 生态平台，连接 AI 与世界的桥梁",
+            url: "https://mcp-cn.com",
+            potentialAction: {
+              "@type": "SearchAction",
+              target: {
+                "@type": "EntryPoint",
+                urlTemplate: "https://mcp-cn.com/?search={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "MCP Hub 中国",
+              url: "https://mcp-cn.com",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://mcp-cn.com/logo.png"
+              },
+              sameAs: [
+                "https://github.com/mengjian-github/mcp-cn"
+              ]
+            },
+            mainEntity: {
+              "@type": "ItemList",
+              name: "热门 MCP 服务",
+              description: "最受欢迎的 MCP 服务列表",
+              numberOfItems: popularServers.length,
+              itemListElement: popularServers.map((server, index) => ({
+                "@type": "SoftwareApplication",
+                position: index + 1,
+                name: server.display_name,
+                description: server.description,
+                url: `https://mcp-cn.com/server/${getPackageName(server.package_url) || server.qualified_name}`,
+                applicationCategory: "DeveloperApplication",
+                author: {
+                  "@type": "Person",
+                  name: server.creator
+                },
+                downloadUrl: server.package_url,
+                interactionStatistic: {
+                  "@type": "InteractionCounter",
+                  interactionType: "https://schema.org/DownloadAction",
+                  userInteractionCount: server.use_count
+                }
+              }))
+            }
+          })
+        }}
+      />
+      
+      {/* FAQ 结构化数据 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "什么是 MCP (Model Context Protocol)?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "MCP 是 Model Context Protocol 的缩写，是一个开放的协议标准，用于 AI 模型与外部工具和服务的集成。它允许 AI 应用程序访问各种数据源和功能，极大地扩展了 AI 的能力边界。"
+                }
+              },
+              {
+                "@type": "Question", 
+                name: "MCP Hub 中国支持哪些平台?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "MCP Hub 中国支持多个主流 AI 开发平台，包括 Cursor、Claude Desktop、Windsurf 等。我们提供详细的集成指南，帮助开发者在不同平台上快速集成 MCP 服务。"
+                }
+              },
+              {
+                "@type": "Question",
+                name: "如何在我的项目中使用 MCP 服务?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "使用 MCP 服务非常简单：1) 在 MCP Hub 中国搜索合适的服务；2) 查看服务详情和 API 文档；3) 按照提供的集成指南进行配置；4) 在你的 AI 应用中调用相应的功能。我们提供完整的中文文档和示例代码。"
+                }
+              }
+            ]
+          })
+        }}
       />
 
-      <section className="relative z-10 bg-white/70 backdrop-blur-sm border-t border-gray-200/40">
-        <div className="w-full max-w-7xl mx-auto px-6 py-16">
-          <Flex className="justify-center w-full bg-transparent md:flex-row flex-col">
-            <ContentArea
-              loading={loading}
-              error={error}
-              servers={filteredServers}
-              onClearFilters={handleClearFilters}
-            />
-          </Flex>
-        </div>
-      </section>
-    </div>
+      <div className="relative min-h-screen">
+        <HeroSection
+          title="MCP Hub 中国"
+          description="连接 AI 与世界的桥梁，打造国内最大的 MCP 生态平台。汇聚全球优质 MCP 服务，让 AI 应用更强大。"
+          stats={stats}
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
+
+        <section className="relative z-10 bg-white/70 backdrop-blur-sm border-t border-gray-200/40">
+          <div className="w-full max-w-7xl mx-auto px-6 py-16">
+            <Flex className="justify-center w-full bg-transparent md:flex-row flex-col">
+              <ContentArea
+                loading={loading}
+                error={error}
+                servers={filteredServers}
+                onClearFilters={handleClearFilters}
+              />
+            </Flex>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }

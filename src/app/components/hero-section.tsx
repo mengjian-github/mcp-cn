@@ -43,9 +43,9 @@ export const HeroSection: FC<HeroSectionProps> = ({
   ];
 
   return (
-    <div className="relative overflow-hidden flex items-center min-h-[85vh] pt-8 pb-16">
+    <header className="relative overflow-hidden flex items-center min-h-[85vh] pt-8 pb-16" role="banner">
       {/* 增强背景效果 */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
         {/* 动态渐变背景 */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-white/50 to-indigo-50/30"></div>
         
@@ -107,7 +107,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
             </motion.div>
 
             {/* 主标题 */}
-            <Heading className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 tracking-tight [text-wrap:balance] leading-[1.1]">
+            <Heading as="h1" className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 tracking-tight [text-wrap:balance] leading-[1.1]">
               <motion.span
                 className="inline-block relative"
                 initial={{ opacity: 0, y: 20 }}
@@ -163,9 +163,14 @@ export const HeroSection: FC<HeroSectionProps> = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.6 }}
+              role="search"
             >
               <div className="relative">
                 <input
+                  type="search"
+                  name="search"
+                  autoComplete="off"
+                  aria-label="搜索 MCP 服务"
                   className="w-full h-16 pl-6 pr-16 bg-white/90 backdrop-blur-sm rounded-2xl border border-blue-200/50 shadow-xl shadow-blue-900/5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 focus:shadow-2xl focus:shadow-blue-900/10 text-gray-700 text-lg placeholder:text-gray-400"
                   placeholder="🔍 搜索 MCP 服务，发现 AI 的无限可能..."
                   value={searchTerm}
@@ -174,6 +179,8 @@ export const HeroSection: FC<HeroSectionProps> = ({
                   }}
                 />
                 <motion.button
+                  type="button"
+                  aria-label="执行搜索"
                   className="absolute h-12 w-12 bg-gradient-to-r from-blue-500 to-indigo-600 text-white flex items-center justify-center rounded-xl right-2 top-2 transition-all duration-200 hover:from-blue-600 hover:to-indigo-700 shadow-lg"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -284,6 +291,6 @@ export const HeroSection: FC<HeroSectionProps> = ({
           </motion.div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };

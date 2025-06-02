@@ -77,7 +77,7 @@ export const ContentArea: FC<ContentAreaProps> = ({
       <div className="p-8 text-center w-full">
         <div>loading</div>
         <motion.div
-          className="mx-auto p-8 bg-gray-50 border border-gray-100 rounded-xl"
+          className="mx-auto p-8 bg-white/80 backdrop-blur-sm border border-gray-200/60 rounded-xl shadow-sm"
           initial={{ y: 20 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.5, type: "spring" }}
@@ -115,7 +115,7 @@ export const ContentArea: FC<ContentAreaProps> = ({
         exit={{ opacity: 0 }}
       >
         <motion.div
-          className="mx-auto p-8 bg-gray-50 border border-gray-100 rounded-xl"
+          className="mx-auto p-8 bg-white/80 backdrop-blur-sm border border-gray-200/60 rounded-xl shadow-sm"
           initial={{ y: 20 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.5, type: "spring" }}
@@ -140,7 +140,7 @@ export const ContentArea: FC<ContentAreaProps> = ({
   }
 
   return (
-    <div className="py-5 w-full bg-transparent flex-1">
+    <div className="py-8 w-full bg-transparent flex-1">
       {/* 外部工具 */}
       <ServerGrid servers={servers} title="热门工具" />
     </div>

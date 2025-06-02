@@ -1,16 +1,19 @@
 "use client";
 
+import {
+  checkLogin,
+  login,
+} from "@/utils/login";
 import { trackPageClick } from "@/tracks";
-import { checkLogin, login } from "@/utils";
 import { cn } from "@/utils/cn";
 import * as Avatar from "@radix-ui/react-avatar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Code, LogOut, User } from "lucide-react";
+import { User, LogOut, Code, FileText, Github, ExternalLink } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 // LocalStorage keys
 const LS_KEYS = {
@@ -18,55 +21,84 @@ const LS_KEYS = {
   USER_INFO: "mcp_user_info",
 };
 
-// 创建一个基础的 NavLink 组件
 const BaseNavLink = ({
   icon,
   label,
   path,
   isActive,
+  external = false,
 }: {
   icon: React.ReactNode;
   label: string;
   path: string;
   isActive: boolean;
-}) => (
-  <Link
-    href={path}
-    className={cn(
-      "flex items-center h-9 font-medium rounded-full px-4 transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 whitespace-nowrap text-sm",
-      isActive ? "text-blue-600" : "",
-    )}
-  >
-    <span className="flex items-center justify-center w-5 h-5 mr-2 opacity-80">
-      {icon}
-    </span>
-    <span>{label}</span>
-  </Link>
-);
+  external?: boolean;
+}) => {
+  const linkClass = cn(
+    "flex items-center h-9 font-medium rounded-full px-4 transition-all duration-200 hover:text-blue-600 hover:bg-blue-50 whitespace-nowrap text-sm",
+    isActive ? "text-blue-600 bg-blue-50" : "text-gray-600",
+  );
 
-// 创建客户端 NavLink 包装器
+  const content = (
+    <>
+      <span className="flex items-center justify-center w-5 h-5 mr-2 opacity-80">
+        {icon}
+      </span>
+      <span>{label}</span>
+      {external && <ExternalLink className="w-3 h-3 ml-1 opacity-50" />}
+    </>
+  );
+
+  if (external) {
+    return (
+      <a
+        href={path}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClass}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={path} className={linkClass}>
+      {content}
+    </Link>
+  );
+};
+
 const ClientSideNavLink = ({
   icon,
   label,
   path,
+  external = false,
 }: {
   icon: React.ReactNode;
   label: string;
   path: string;
+  external?: boolean;
 }) => {
-  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  if (!mounted) {
+    return (
+      <BaseNavLink icon={icon} label={label} path={path} isActive={false} external={external} />
+    );
+  }
 
   const isActive =
     (mounted && pathname === path) ||
     (path !== "/" && pathname.startsWith(path + "/"));
 
   return (
-    <BaseNavLink icon={icon} label={label} path={path} isActive={isActive} />
+    <BaseNavLink icon={icon} label={label} path={path} isActive={isActive} external={external} />
   );
 };
 
@@ -172,20 +204,40 @@ export const Header = () => {
   console.log("handleCreateServerClick", handleCreateServerClick);
 
   const headerContent = (
-    <header className="h-12 flex justify-center items-center bg-white border-b border-gray-100 transition-all duration-300 px-4 bg-opacity-50 backdrop-blur-md">
+    <header className="h-16 flex justify-center items-center bg-white/95 border-b border-gray-200/50 transition-all duration-300 px-4 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
       <div className="w-full max-w-[1800px] flex justify-between items-center">
-        <Link href="/" className="flex items-center">
-          <div className="h-8 w-auto cursor-pointer relative">
-            <Image src="/logo.svg" alt="MCP Logo" width={32} height={32} />
+        <Link href="/" className="flex items-center group">
+          <div className="h-10 w-10 cursor-pointer relative group-hover:scale-105 transition-transform duration-200">
+            <Image
+              src="/logo.svg"
+              alt="MCP Hub Logo"
+              width={40}
+              height={40}
+              className="w-10 h-10"
+            />
           </div>
-          <h1 className="text-gray-800 text-lg font-semibold m-0 ml-3 whitespace-nowrap">
-            MCP Hub
-          </h1>
+          <div className="ml-3">
+            <h1 className="text-gray-800 text-xl font-bold m-0 whitespace-nowrap">
+              MCP Hub
+            </h1>
+            <p className="text-xs text-gray-500 m-0 leading-3">中国版</p>
+          </div>
         </Link>
 
         <div className="flex flex-1 items-center justify-end gap-2 md:gap-3 overflow-x-auto">
-          {/* <NavLink icon={<FileText />} label="平台指南" path="/docs" /> */}
-          <NavLink icon={<Code />} label="Playground" path="/playground" />
+          <NavLink 
+            icon={<FileText />} 
+            label="官方文档" 
+            path="https://wvehg9sdj2q.feishu.cn/wiki/Hx7Ow0tF8iJEW4kS3LmcdkXCn3i?fromScene=spaceOverview&open_tab_from=wiki_home" 
+            external={true}
+          />
+          <NavLink icon={<Code />} label="在线体验" path="/playground" />
+          <NavLink 
+            icon={<Github />} 
+            label="GitHub" 
+            path="https://github.com/mengjian-github/mcp-cn" 
+            external={true}
+          />
           {/* <NavButton
             icon={<Plus />}
             label="新增 Server"
@@ -208,15 +260,24 @@ export const Header = () => {
 
   if (!mounted) {
     return (
-      <header className="h-12 flex justify-center items-center bg-white border-b border-gray-100 transition-all duration-300 px-4 bg-opacity-50 backdrop-blur-md">
+      <header className="h-16 flex justify-center items-center bg-white/95 border-b border-gray-200/50 transition-all duration-300 px-4 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <div className="w-full max-w-[1800px] flex justify-between items-center">
           <div className="flex items-center">
-            <div className="h-8 w-auto cursor-pointer relative">
-              <Image src="/logo.svg" alt="MCP Logo" width={32} height={32} />
+            <div className="h-10 w-10 cursor-pointer relative">
+              <Image
+                src="/logo.svg"
+                alt="MCP Hub Logo"
+                width={40}
+                height={40}
+                className="w-10 h-10"
+              />
             </div>
-            <h1 className="text-gray-800 text-lg font-semibold m-0 ml-3 whitespace-nowrap">
-              MCP Hub
-            </h1>
+            <div className="ml-3">
+              <h1 className="text-gray-800 text-xl font-bold m-0 whitespace-nowrap">
+                MCP Hub
+              </h1>
+              <p className="text-xs text-gray-500 m-0 leading-3">中国版</p>
+            </div>
           </div>
           <div className="flex flex-1 items-center justify-end gap-2 md:gap-3 overflow-x-auto" />
         </div>

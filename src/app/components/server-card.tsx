@@ -108,7 +108,7 @@ export const ServerCard: FC<ServerCardProps> = ({
     <Link
       href={`/server/${server.qualified_name}`}
       className={classNames(
-        "w-full h-full rounded-lg shadow-md transition-all duration-300 hover:shadow-lg p-4 bg-white cursor-pointer flex flex-col",
+        "w-full h-full rounded-xl shadow-sm border border-gray-200/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-100/50 hover:border-blue-200 hover:-translate-y-1 p-5 bg-white/90 backdrop-blur-sm cursor-pointer flex flex-col group",
         {
           "ring-2 ring-blue-500 ring-opacity-50": highlight,
         },
@@ -132,7 +132,7 @@ export const ServerCard: FC<ServerCardProps> = ({
             </Avatar.Fallback>
           )}
         </Avatar.Root>
-        <span className="text-lg font-medium truncate">{serverName}</span>
+        <span className="text-lg font-semibold truncate text-gray-800 group-hover:text-blue-600 transition-colors duration-200">{serverName}</span>
       </div>
       <div className="flex flex-col flex-grow">
         <span className="text-sm text-gray-500 truncate mb-2 font-[12px]">

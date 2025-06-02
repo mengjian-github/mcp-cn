@@ -1,41 +1,56 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000">
-
-    <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
-    <g id="SVGRepo_iconCarrier">
-        <defs>
-            <style>
-                .cls-1 {
-                    fill: #85b4ff;
-                }
-
-                .cls-2 {
-                    fill: #0062ff;
-                }
-
-                .cls-3 {
-                    fill: #3884ff;
-                }
-            </style>
-        </defs>
-        <title>Icon_24px_CloudCode_Color</title>
-        <g data-name="Product Icons">
-            <g>
-                <g data-name="Layer 1-2">
-                    <polygon class="cls-1" points="5.45 8.53 8.55 5.42 11.65 8.53 8.55 11.65 5.45 8.53" />
-                    <polygon class="cls-2" points="2 12 5.1 8.88 8.2 12 5.1 15.12 2 12" />
-                    <polygon class="cls-3" points="5.45 15.47 8.55 12.35 11.65 15.47 8.55 18.59 5.45 15.47" />
-                    <polygon class="cls-1" points="12.35 8.53 15.45 5.42 18.55 8.53 15.45 11.65 12.35 8.53" />
-                    <polygon class="cls-2" points="15.8 12 18.9 8.88 22 12 18.9 15.12 15.8 12" />
-                    <polygon class="cls-3" points="12.35 15.47 15.45 12.35 18.55 15.47 15.45 18.59 12.35 15.47" />
-                </g>
-            </g>
-        </g>
-    </g>
-
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 渐变定义 -->
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#6366F1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="secondaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06B6D4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 阴影滤镜 -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.1)"/>
+    </filter>
+  </defs>
+  
+  <!-- 背景圆形 -->
+  <circle cx="50" cy="50" r="45" fill="url(#primaryGradient)" filter="url(#shadow)"/>
+  
+  <!-- 内部装饰圆环 -->
+  <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  
+  <!-- 中心M字母 -->
+  <g transform="translate(50, 50)">
+    <!-- M字母主体 -->
+    <path d="M -12 -8 L -12 8 L -8 8 L -8 -2 L -4 2 L 0 -2 L 4 2 L 8 -2 L 8 8 L 12 8 L 12 -8 L 6 -8 L 0 2 L -6 -8 Z" 
+          fill="white" 
+          opacity="0.95"/>
+  </g>
+  
+  <!-- 装饰元素：连接点 -->
+  <circle cx="25" cy="35" r="2" fill="url(#secondaryGradient)" opacity="0.8"/>
+  <circle cx="75" cy="35" r="2" fill="url(#secondaryGradient)" opacity="0.8"/>
+  <circle cx="25" cy="65" r="2" fill="url(#secondaryGradient)" opacity="0.8"/>
+  <circle cx="75" cy="65" r="2" fill="url(#secondaryGradient)" opacity="0.8"/>
+  
+  <!-- 连接线 -->
+  <path d="M 25 35 Q 50 20 75 35" 
+        stroke="rgba(255,255,255,0.3)" 
+        stroke-width="1" 
+        fill="none"/>
+  <path d="M 25 65 Q 50 80 75 65" 
+        stroke="rgba(255,255,255,0.3)" 
+        stroke-width="1" 
+        fill="none"/>
+  
+  <!-- 发光效果 -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="url(#primaryGradient)" stroke-width="0.5" opacity="0.5"/>
 </svg>

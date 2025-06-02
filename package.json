@@ -1,8 +1,53 @@
 {
-  "name": "@mcp/website",
+  "name": "mcp-hub-china",
   "type": "module",
-  "version": "0.1.0",
-  "author": "Zwe1",
+  "version": "1.0.0",
+  "description": "国内首个 Model Context Protocol (MCP) 生态平台 - 连接 AI 与世界的桥梁",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "artificial-intelligence",
+    "china",
+    "ecosystem",
+    "tools",
+    "claude",
+    "cursor",
+    "windsurf",
+    "nextjs",
+    "typescript",
+    "react"
+  ],
+  "author": {
+    "name": "MCP Hub China Team",
+    "email": "contact@mcp-cn.com",
+    "url": "https://mcp-cn.com"
+  },
+  "maintainers": [
+    {
+      "name": "孟健",
+      "email": "mengjian@example.com",
+      "url": "https://github.com/mengjian-github"
+    },
+    {
+      "name": "Zwe1",
+      "url": "https://github.com/Zwe1"
+    }
+  ],
+  "homepage": "https://mcp-cn.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mengjian-github/mcp-cn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mengjian-github/mcp-cn/issues",
+    "email": "bugs@mcp-cn.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
   "scripts": {
     "dev": "next dev -p 7777",
     "build": "next build",
@@ -12,7 +57,11 @@
     "setup": "pnpm run reset && pnpm install",
     "lint:tsc": "tsc --noEmit -p tsconfig.json",
     "lint:eslint": "eslint \"src/**/*.{ts,tsx}\" --max-warnings=0",
-    "lint:stylelint": "stylelint \"src/**/*.{css,less}\""
+    "lint:stylelint": "stylelint \"src/**/*.{css,less}\"",
+    "lint:all": "pnpm run lint:tsc && pnpm run lint:eslint && pnpm run lint:stylelint",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,less,json,md}\"",
+    "clean": "rimraf .next out dist",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@docsearch/react": "^3.9.0",
@@ -33,6 +82,7 @@
     "@radix-ui/themes": "^3.2.1",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.49.4",
+    "antd": "^5.25.4",
     "axios": "^1.8.4",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
@@ -68,6 +118,7 @@
     "eslint-plugin-prettier": "~5.2.6",
     "less-loader": "^12.2.0",
     "postcss": "^8.5.3",
+    "prettier": "^3.0.0",
     "raw-loader": "4.0.2",
     "rimraf": "~6.0.1",
     "style-loader": "^4.0.0",

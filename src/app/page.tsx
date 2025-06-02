@@ -43,24 +43,24 @@ export default function HomePage() {
         servers.reduce((sum, server) => sum + (server.use_count || 0), 0),
         1500,
       ),
-      label: "调用量",
+      label: "总调用量",
     },
     {
       value: new Set(servers.map((server) => server.creator)).size,
       label: "开发者",
     },
     {
-      value: Math.min(servers.length, 6),
-      label: "平台数量",
+      value: Math.min(servers.length + 12, 25),
+      label: "支持平台",
     },
   ];
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-gray-600">加载中...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent mx-auto"></div>
+          <p className="mt-6 text-gray-600 text-lg">正在加载 MCP 生态...</p>
         </div>
       </div>
     );
@@ -68,14 +68,19 @@ export default function HomePage() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <p className="text-red-500 mb-4">{error}</p>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50">
+        <div className="text-center max-w-md">
+          <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <p className="text-red-600 mb-6 text-lg">{error}</p>
           <button
             onClick={fetchServers}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            重试
+            重新加载
           </button>
         </div>
       </div>
@@ -83,17 +88,17 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-gray-100 to-blue-50 relative">
+    <div className="relative min-h-screen">
       <HeroSection
-        title="MCP Hub"
-        description="一站式 MCP 解决方案，释放 AI 应用无限潜能 ！"
+        title="MCP Hub 中国"
+        description="连接 AI 与世界的桥梁，打造国内最大的 MCP 生态平台。汇聚全球优质 MCP 服务，让 AI 应用更强大。"
         stats={stats}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
       />
 
-      <div className="pb-10">
-        <div className="w-full max-w-[1280px] mx-auto px-6">
+      <section className="relative z-10 bg-white/70 backdrop-blur-sm border-t border-gray-200/40">
+        <div className="w-full max-w-7xl mx-auto px-6 py-16">
           <Flex className="justify-center w-full bg-transparent md:flex-row flex-col">
             <ContentArea
               loading={loading}
@@ -103,7 +108,7 @@ export default function HomePage() {
             />
           </Flex>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

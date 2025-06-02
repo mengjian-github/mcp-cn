@@ -30,9 +30,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <Theme appearance="light" accentColor="blue">
-            <div className="min-h-screen">
+            <div className="min-h-screen flex flex-col">
               <Header />
-              {children}
+              <main className="flex-1">
+                {children}
+              </main>
               <Footer />
             </div>
           </Theme>

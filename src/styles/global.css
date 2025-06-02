@@ -4,9 +4,73 @@
 
 :root {
   color-scheme: light;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --border: #e2e8f0;
+  --muted: #f8fafc;
+  --accent: #3b82f6;
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-hover: rgba(255, 255, 255, 0.95);
+  --border-light: rgba(226, 232, 240, 0.6);
+  --shadow-color: rgba(59, 130, 246, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: #f5f5f5;
-  font-family: 'Inter Variable', sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+  font-family: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* 选择文本样式 */
+::selection {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1e40af;
+}
+
+/* 焦点样式 */
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* 按钮和输入框的基础样式重置 */
+button, input, textarea, select {
+  font-family: inherit;
+}
+
+/* 确保图片响应式 */
+img {
+  max-width: 100%;
+  height: auto;
 }

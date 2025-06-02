@@ -15,7 +15,7 @@ export const useServerStore = create<ServerState>()((set) => ({
   fetchServers: async () => {
     try {
       set({ loading: true, error: null });
-      const response = await fetch("/api/servers");
+      const response = await fetch("/api/servers?pageSize=100");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

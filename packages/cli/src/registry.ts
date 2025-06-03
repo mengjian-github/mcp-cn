@@ -8,7 +8,7 @@ import {
 } from './types/registry';
 import type { WSConnection } from './types/registry';
 import { verbose } from './logger';
-import { API_BASE_URL, PPE_HEADERS } from './constants';
+import { API_BASE_URL } from './constants';
 
 dotenvConfig();
 
@@ -27,18 +27,16 @@ const getEndpoint = (): string => {
  */
 export const resolvePackage = async (
   packageName: string,
-  usePpe: boolean = false,
 ): Promise<RegistryServer> => {
   const endpoint = getEndpoint();
-  verbose(`Resolving package ${packageName} from registry at ${endpoint}, usePpe: ${usePpe}`);
+  verbose(`Resolving package ${packageName} from registry at ${endpoint}`);
 
   try {
-    verbose(`Making GET request to ${endpoint}/servers/${packageName}`);
+    verbose(`Making GET request to ${endpoint}/servers/get_details?qualifiedName=${packageName}`);
     const response = await fetch(`${endpoint}/servers/get_details?qualifiedName=${packageName}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        ...(usePpe ? PPE_HEADERS : {}),
       },
     });
     verbose(`Response status: ${response.status}`);
@@ -47,7 +45,7 @@ export const resolvePackage = async (
       const errorData = (await response.json().catch(() => null)) as {
         error?: string;
       };
-      const errorMessage = errorData?.error || (await response.text());
+      const errorMessage = errorData?.error;
       verbose(`Error response: ${errorMessage}`);
 
       if (response.status === 404) {
@@ -61,7 +59,7 @@ export const resolvePackage = async (
     const data = (await response.json()) as RegistryServer & { data: { connections: string } };
     verbose(`Server data: ${JSON.stringify(data, null, 2)}`);
     verbose(`Server ${packageName} resolved with ${data.data.connections.length} connection options`);
-    data.data.connections = JSON.parse(data.data.connections || '[]');
+    // data.data.connections = JSON.parse(data.data.connections || '[]');
     return data;
   } catch (error) {
     verbose(`Package resolution error: ${error instanceof Error ? error.message : String(error)}`);

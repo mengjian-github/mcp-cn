@@ -26,7 +26,6 @@ export async function run(
   qualifiedName: string,
   config: Record<string, string>,
   apiKey?: string,
-  usePpe: boolean = false,
 ) {
   try {
     const settingsResult = await initializeSettings();
@@ -54,7 +53,7 @@ export async function run(
 
     // If we still don't have a server (either no API key or API key fetch failed)
     if (!resolvedServer) {
-      resolvedServer = await resolvePackage(qualifiedName, usePpe);
+      resolvedServer = await resolvePackage(qualifiedName);
     }
 
     if (!resolvedServer) {

@@ -17,7 +17,6 @@ const configFlag = process.argv.indexOf('--env');
 const keyFlag = process.argv.indexOf('--key');
 const verboseFlag = process.argv.includes('--verbose');
 const helpFlag = process.argv.includes('--help');
-const ppeFlag = process.argv.includes('--ppe');
 
 // Set verbose mode based on flag
 setVerbose(verboseFlag);
@@ -73,8 +72,6 @@ const config: Record<string, string> =
 /* sets to undefined if no key given */
 const apiKey: string | undefined = keyFlag !== -1 ? process.argv[keyFlag + 1] : undefined;
 
-verbose(`[Runner] PPE flag: ${ppeFlag}`);
-
 async function main() {
   switch (command) {
     case 'help':
@@ -86,7 +83,7 @@ async function main() {
         process.exit(1);
       }
       incrementUseCount(argument);
-      await installServer(argument, client, configFlag !== -1 ? config : undefined, apiKey, ppeFlag);
+      await installServer(argument, client, configFlag !== -1 ? config : undefined, apiKey);
       break;
     case 'uninstall':
       if (!argument) {
@@ -102,7 +99,7 @@ async function main() {
         process.exit(1);
       }
       incrementUseCount(argument);
-      await run(argument, config, apiKey, ppeFlag);
+      await run(argument, config, apiKey);
       break;
     case 'list':
       await list(argument);

@@ -48,7 +48,6 @@ export async function installServer(
   client?: ValidClient,
   configValues: Record<string, string> = {},
   apiKey?: string,
-  usePpe = false,
 ): Promise<void> {
   if (!client) {
     throw new Error('Client is required');
@@ -77,10 +76,10 @@ export async function installServer(
         );
         // Fall back to standard resolution
         verbose('Falling back to standard package resolution');
-        return resolvePackage(qualifiedName, usePpe);
+        return resolvePackage(qualifiedName);
       });
   } else {
-    serverPromise = resolvePackage(qualifiedName, usePpe);
+    serverPromise = resolvePackage(qualifiedName);
   }
 
   try {

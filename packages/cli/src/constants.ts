@@ -18,8 +18,3 @@ export const REGISTRY_ENDPOINT = process.env.REGISTRY_ENDPOINT;
 export const ANALYTICS_ENDPOINT = process.env.ANALYTICS_ENDPOINT;
 
 export const BRAND_NAME = '@mcp_hub_org';
-
-export const PPE_HEADERS = {
-  'x-tt-env': 'ppe_mcp',
-  'x-use-ppe': '1',
-};

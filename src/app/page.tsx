@@ -28,7 +28,7 @@ export default function HomePage() {
       const totalUsage = servers.reduce((sum, server) => sum + (server.use_count || 0), 0);
       const developers = new Set(servers.map((server) => server.creator)).size;
       
-      const enhancedDescription = `MCP Hub 中国汇聚了 ${totalServers}+ 个优质 MCP 服务，总调用量超过 ${Math.max(totalUsage, 1500).toLocaleString()}，为 ${developers}+ 名开发者提供 AI 工具生态服务。支持 Cursor、Claude、Windsurf 等主流平台，让 AI 应用更强大。`;
+      const enhancedDescription = `MCP Hub 中国精选了 ${totalServers}+ 个高质量 MCP 服务，总调用量超过 ${Math.max(totalUsage, 1500).toLocaleString()}，为 ${developers}+ 名开发者提供精品 AI 工具。每个服务都经过严格筛选，支持 Cursor、Claude、Windsurf 等主流平台。`;
       
       const metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
@@ -60,7 +60,7 @@ export default function HomePage() {
   );
 
   const stats = [
-    { value: servers.length, label: "MCP 服务" },
+    { value: servers.length, label: "精选服务" },
     {
       value: Math.max(
         servers.reduce((sum, server) => sum + (server.use_count || 0), 0),
@@ -70,7 +70,7 @@ export default function HomePage() {
     },
     {
       value: new Set(servers.map((server) => server.creator)).size,
-      label: "开发者",
+      label: "优质开发者",
     },
     {
       value: Math.min(servers.length + 12, 25),
@@ -126,7 +126,7 @@ export default function HomePage() {
             "@context": "https://schema.org",
             "@type": "WebSite",
             name: "MCP Hub 中国",
-            description: "国内首个 MCP 生态平台，连接 AI 与世界的桥梁",
+            description: "精选优质 MCP 服务平台，不追求大而全，只推荐最好用的",
             url: "https://mcp-cn.com",
             potentialAction: {
               "@type": "SearchAction",
@@ -150,8 +150,8 @@ export default function HomePage() {
             },
             mainEntity: {
               "@type": "ItemList",
-              name: "热门 MCP 服务",
-              description: "最受欢迎的 MCP 服务列表",
+              name: "精选 MCP 服务",
+              description: "经过严格筛选的高质量 MCP 服务列表",
               numberOfItems: popularServers.length,
               itemListElement: popularServers.map((server, index) => ({
                 "@type": "SoftwareApplication",
@@ -216,7 +216,7 @@ export default function HomePage() {
       <div className="relative min-h-screen">
         <HeroSection
           title="MCP Hub 中国"
-          description="连接 AI 与世界的桥梁，打造国内最大的 MCP 生态平台。汇聚全球优质 MCP 服务，让 AI 应用更强大。"
+          description="不追求大而全，只推荐最优质的 MCP 服务。每一个工具都经过精心筛选，让 AI 应用真正强大。"
           stats={stats}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}

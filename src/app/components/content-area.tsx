@@ -141,8 +141,8 @@ export const ContentArea: FC<ContentAreaProps> = ({
 
   return (
     <div className="py-8 w-full bg-transparent flex-1">
-      {/* 外部工具 */}
-      <ServerGrid servers={servers} title="热门工具" />
+      {/* 精选工具 */}
+      <ServerGrid servers={servers} title="精选工具" />
     </div>
   );
 };

@@ -21,10 +21,10 @@ const inter = Inter({
 // SEO 元数据配置
 export const metadata: Metadata = {
   title: {
-    default: "MCP Hub 中国 - 国内首个 MCP 生态平台",
+    default: "MCP Hub 中国 - 精选优质 MCP 服务平台",
     template: "%s | MCP Hub 中国"
   },
-  description: "MCP Hub 中国是国内首个专注于 Model Context Protocol (MCP) 生态的开源平台。汇聚全球优质 MCP 服务，提供一站式解决方案，从服务发现、接入指南到使用示例，全流程支持中文生态。",
+  description: "MCP Hub 中国专注于精选优质 MCP 服务，不追求大而全，只推荐经过严格筛选的高质量工具。每个服务都经过人工测试验证，为开发者提供最佳的 AI 工具集成体验。",
   keywords: [
     "MCP",
     "Model Context Protocol", 
@@ -59,8 +59,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "zh_CN",
     url: "https://mcp-cn.com",
-    title: "MCP Hub 中国 - 国内首个 MCP 生态平台",
-    description: "连接 AI 与世界的桥梁，打造国内最大的 MCP 生态平台。汇聚全球优质 MCP 服务，让 AI 应用更强大。",
+    title: "MCP Hub 中国 - 精选优质 MCP 服务平台",
+    description: "精选优质 MCP 服务平台，不追求大而全，只推荐经过严格筛选的高质量工具。让 AI 应用真正强大。",
     siteName: "MCP Hub 中国",
     images: [
       {
@@ -73,8 +73,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MCP Hub 中国 - 国内首个 MCP 生态平台",
-    description: "连接 AI 与世界的桥梁，打造国内最大的 MCP 生态平台。汇聚全球优质 MCP 服务，让 AI 应用更强大。",
+    title: "MCP Hub 中国 - 精选优质 MCP 服务平台",
+    description: "精选优质 MCP 服务平台，不追求大而全，只推荐经过严格筛选的高质量工具。让 AI 应用真正强大。",
     images: ["/images/twitter-image.png"],
   },
   robots: {
@@ -132,7 +132,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: "MCP Hub 中国",
-              description: "国内首个 MCP 生态平台，连接 AI 与世界的桥梁",
+              description: "精选优质 MCP 服务平台，不追求大而全，只推荐最好用的",
               url: "https://mcp-cn.com",
               potentialAction: {
                 "@type": "SearchAction",

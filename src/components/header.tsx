@@ -8,7 +8,7 @@ import { trackPageClick } from "@/tracks";
 import { cn } from "@/utils/cn";
 import * as Avatar from "@radix-ui/react-avatar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { User, LogOut, Code, FileText, Github, ExternalLink } from "lucide-react";
+import { User, LogOut, Code, FileText, Github, ExternalLink, Plus } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -236,6 +236,12 @@ export const Header = () => {
             icon={<Github />} 
             label="GitHub" 
             path="https://github.com/mengjian-github/mcp-cn" 
+            external={true}
+          />
+          <NavLink 
+            icon={<Plus />} 
+            label="推荐服务" 
+            path="https://github.com/mengjian-github/mcp-cn/issues/new?assignees=&labels=service-recommendation&projects=&template=service-recommendation.md&title=%5B推荐服务%5D+服务名称" 
             external={true}
           />
           {/* <NavButton

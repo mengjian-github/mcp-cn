@@ -102,7 +102,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
             >
               <Sparkles className="w-4 h-4 text-blue-600 mr-2" />
               <Text className="text-blue-800 font-semibold text-sm">
-                🇨🇳 国内首个 MCP 生态平台
+                🇨🇳 精选优质 MCP 服务平台
               </Text>
             </motion.div>
 
@@ -139,10 +139,10 @@ export const HeroSection: FC<HeroSectionProps> = ({
               {/* 特色标签 */}
               <div className="flex flex-wrap gap-3 mb-10">
                 {[
-                  "🚀 一键接入",
-                  "🔧 丰富工具",
+                  "✨ 精选推荐",
+                  "🔧 高质量工具",
                   "📚 中文文档",
-                  "🤝 开源协作"
+                  "🤝 社区驱动"
                 ].map((tag, index) => (
                   <motion.span
                     key={tag}
@@ -172,7 +172,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
                   autoComplete="off"
                   aria-label="搜索 MCP 服务"
                   className="w-full h-16 pl-6 pr-16 bg-white/90 backdrop-blur-sm rounded-2xl border border-blue-200/50 shadow-xl shadow-blue-900/5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 focus:shadow-2xl focus:shadow-blue-900/10 text-gray-700 text-lg placeholder:text-gray-400"
-                  placeholder="🔍 搜索 MCP 服务，发现 AI 的无限可能..."
+                  placeholder="🔍 搜索精选 MCP 服务，发现 AI 的无限可能..."
                   value={searchTerm}
                   onChange={(e) => {
                     onSearchChange(e.target.value);

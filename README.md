@@ -4,7 +4,7 @@
 
 ![MCP Hub Logo](./public/logo.svg)
 
-**连接 AI 与世界的桥梁，打造国内最大的 MCP 生态平台**
+**精选优质 MCP 服务，不追求大而全，只推荐最好用的**
 
 [![GitHub stars](https://img.shields.io/github/stars/mengjian-github/mcp-cn?style=social)](https://github.com/mengjian-github/mcp-cn)
 [![GitHub forks](https://img.shields.io/github/forks/mengjian-github/mcp-cn?style=social)](https://github.com/mengjian-github/mcp-cn)
@@ -19,21 +19,21 @@
 
 ## 🎯 项目简介
 
-MCP Hub 中国是国内首个专注于 Model Context Protocol (MCP) 生态的开源平台。我们致力于：
+MCP Hub 中国是一个专注于精选优质 MCP 服务的开源平台。我们致力于：
 
-- 🚀 **汇聚全球优质 MCP 服务** - 从 Smithery 等国外优秀项目中精选访问量超过 1000+ 的 MCP 服务
+- ✨ **精选高质量服务** - 每个 MCP 服务都经过严格筛选，确保实用性和稳定性
 - 🔧 **提供一站式解决方案** - 从服务发现、接入指南到使用示例，全流程支持
 - 📚 **完善的中文生态** - 提供中文文档、教程和社区支持
-- 🤝 **开源协作** - 欢迎开发者贡献和完善平台功能
+- 🤝 **社区驱动** - 欢迎开发者推荐优质服务和完善平台功能
 
 ## ✨ 功能特色
 
 ### 🌟 核心功能
 
-- **智能搜索** - 快速发现所需的 MCP 服务
-- **详细介绍** - 每个服务都有完整的功能说明和使用示例  
+- **精选推荐** - 每个 MCP 服务都经过人工筛选和测试
+- **详细介绍** - 完整的功能说明、使用示例和最佳实践  
 - **一键接入** - 提供多平台（Cursor、Claude、Windsurf 等）的配置指南
-- **实时数据** - 展示服务使用量、开发者数量等实时统计
+- **质量保证** - 展示服务使用量、稳定性等实时统计
 
 ### 🎨 用户体验
 
@@ -150,10 +150,10 @@ mcp-cn/
 ### 贡献方式
 
 - 🐛 **报告 Bug** - 通过 [Issues](https://github.com/mengjian-github/mcp-cn/issues) 报告问题
-- 💡 **功能建议** - 提出新功能想法
+- ✨ **推荐优质 MCP 服务** - 提交你发现的高质量 MCP 工具
 - 📖 **完善文档** - 改进文档和教程
 - 🔧 **代码贡献** - 提交代码修复或新功能
-- 🌐 **翻译** - 帮助翻译界面和文档
+- 💬 **分享使用经验** - 帮助其他开发者更好地使用 MCP 服务
 
 ## 📋 开发计划
 

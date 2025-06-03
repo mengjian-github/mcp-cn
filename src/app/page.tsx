@@ -74,7 +74,7 @@ export default function HomePage() {
     },
     {
       value: Math.min(servers.length + 12, 25),
-      label: "支持平台",
+      label: "国内服务",
     },
   ];
 

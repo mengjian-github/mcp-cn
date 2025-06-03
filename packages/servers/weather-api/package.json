@@ -1,0 +1,48 @@
+{
+  "name": "@mcp-hub/server-weather-api",
+  "version": "1.0.0",
+  "description": "MCP 服务器 - 天气查询 API",
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "lint": "eslint \"src/**/*.{ts,js}\" --max-warnings=0",
+    "lint:tsc": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,js,json,md}\"",
+    "clean": "rimraf dist",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests specified\" && exit 0",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.1.1",
+    "axios": "^1.8.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "eslint": "^8.57.0",
+    "prettier": "^3.0.0",
+    "rimraf": "~6.0.1",
+    "tsx": "^4.9.0",
+    "typescript": "^5.8.3"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "weather",
+    "api",
+    "tool"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+} 

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![MCP Hub Logo](./public/logo.svg)
+![MCP Hub Logo](./packages/web/public/logo.svg)
 
 **精选优质 MCP 服务，不追求大而全，只推荐最好用的**
 
@@ -19,41 +19,47 @@
 
 ## 🎯 项目简介
 
-MCP Hub 中国是一个专注于精选优质 MCP 服务的开源平台。我们致力于：
+MCP Hub 中国是一个专注于精选优质 MCP 服务的 **Monorepo** 项目。包含：
+
+- 🌐 **Web 应用** - 精选 MCP 服务展示平台
+- 🛠️ **CLI 工具** - 命令行管理和开发工具
+- 📦 **MCP 服务器** - 高质量的 MCP 服务实现
+
+我们致力于：
 
 - ✨ **精选高质量服务** - 每个 MCP 服务都经过严格筛选，确保实用性和稳定性
 - 🔧 **提供一站式解决方案** - 从服务发现、接入指南到使用示例，全流程支持
 - 📚 **完善的中文生态** - 提供中文文档、教程和社区支持
 - 🤝 **社区驱动** - 欢迎开发者推荐优质服务和完善平台功能
 
-## ✨ 功能特色
+## 📁 项目结构
 
-### 🌟 核心功能
-
-- **精选推荐** - 每个 MCP 服务都经过人工筛选和测试
-- **详细介绍** - 完整的功能说明、使用示例和最佳实践  
-- **一键接入** - 提供多平台（Cursor、Claude、Windsurf 等）的配置指南
-- **质量保证** - 展示服务使用量、稳定性等实时统计
-
-### 🎨 用户体验
-
-- **现代化 UI** - 基于 Next.js + Tailwind CSS 的精美界面
-- **响应式设计** - 完美适配桌面端和移动端
-- **流畅动画** - 使用 Framer Motion 提供丝滑的交互体验
-- **暗色模式** - 支持明暗主题切换（开发中）
-
-### 🔍 开发者友好
-
-- **TypeScript** - 完整的类型安全支持
-- **组件化架构** - 基于 Radix UI 的可复用组件
-- **现代化工具链** - ESLint、Prettier、Stylelint 等
+```
+mcp-cn/
+├── packages/
+│   ├── web/                    # Web 应用 (@mcp-hub/web)
+│   │   ├── src/               # Next.js 应用源码
+│   │   ├── public/            # 静态资源
+│   │   └── package.json       # Web 应用依赖
+│   ├── cli/                   # CLI 工具 (@mcp-hub/cli)
+│   │   ├── src/               # CLI 源码
+│   │   ├── templates/         # 项目模板
+│   │   └── package.json       # CLI 依赖
+│   └── servers/               # MCP 服务器集合
+│       ├── file-operations/   # 文件操作服务器
+│       ├── weather-api/       # 天气 API 服务器
+│       └── database-connector/ # 数据库连接器（待开发）
+├── .changeset/                # 版本管理配置
+├── pnpm-workspace.yaml        # PNPM 工作空间配置
+└── package.json               # 根目录依赖
+```
 
 ## 🚀 快速开始
 
 ### 环境要求
 
 - Node.js 18.x 或更高版本
-- pnpm 包管理器（推荐）
+- pnpm 8.x 或更高版本
 
 ### 安装步骤
 
@@ -68,56 +74,87 @@ MCP Hub 中国是一个专注于精选优质 MCP 服务的开源平台。我们�
    pnpm install
    ```
 
-3. **启动开发服务器**
+3. **启动 Web 应用**
    ```bash
    pnpm dev
+   # 或者
+   pnpm dev:web
    ```
 
 4. **访问应用**
    
    打开浏览器访问 [http://localhost:7777](http://localhost:7777)
 
-### 其他命令
+### 开发命令
 
 ```bash
-# 构建生产版本
+# Web 应用开发
+pnpm dev:web              # 启动 Web 开发服务器
+pnpm --filter @mcp-hub/web build  # 构建 Web 应用
+
+# CLI 工具开发
+pnpm dev:cli              # 开发 CLI 工具
+pnpm --filter @mcp-hub/cli build  # 构建 CLI 工具
+
+# MCP 服务器开发
+pnpm --filter @mcp-hub/server-file-operations dev    # 开发文件操作服务器
+pnpm --filter @mcp-hub/server-weather-api dev        # 开发天气 API 服务器
+
+# 全局命令
+pnpm build                # 构建所有包
+pnpm lint                 # 检查所有包
+pnpm typecheck            # 类型检查
+pnpm clean                # 清理构建产物
+```
+
+## 📦 包说明
+
+### Web 应用 (@mcp-hub/web)
+
+基于 Next.js 15 的现代 Web 应用，提供：
+- MCP 服务发现和展示
+- 服务详情和使用指南
+- 搜索和分类功能
+- 响应式设计
+
+### CLI 工具 (@mcp-hub/cli)
+
+命令行工具，提供：
+- `mcp-hub create` - 创建新的 MCP 服务器项目
+- `mcp-hub list` - 列出可用的 MCP 服务器
+- `mcp-hub search` - 搜索 MCP 服务器
+- `mcp-hub publish` - 发布 MCP 服务器到 Hub
+
+**安装使用：**
+```bash
+# 从本地构建安装
+cd packages/cli
 pnpm build
+npm link
 
-# 启动生产服务器
-pnpm start
-
-# 代码检查
-pnpm lint
-
-# 类型检查
-pnpm lint:tsc
-
-# 样式检查
-pnpm lint:stylelint
+# 使用
+mcp-hub --help
+mcp-hub create my-server
 ```
 
-## 📁 项目结构
+### MCP 服务器
 
-```
-mcp-cn/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── components/         # 页面组件
-│   │   ├── server/            # 服务详情页面
-│   │   └── docs/              # 文档页面
-│   ├── components/            # 通用组件
-│   ├── interfaces/            # TypeScript 接口
-│   ├── store/                 # 状态管理
-│   ├── styles/               # 样式文件
-│   └── utils/                # 工具函数
-├── public/                   # 静态资源
-├── config/                   # 配置文件
-└── docs/                     # 文档源文件
-```
+#### 文件操作服务器 (@mcp-hub/server-file-operations)
+
+提供文件系统操作功能：
+- `read_file` - 读取文件内容
+- `write_file` - 写入文件内容  
+- `list_directory` - 列出目录内容
+
+#### 天气 API 服务器 (@mcp-hub/server-weather-api)
+
+提供天气查询功能（开发中）：
+- `get_current_weather` - 获取当前天气
+- `get_weather_forecast` - 获取天气预报
 
 ## 🛠️ 技术栈
 
-### 前端技术
+### 前端技术 (Web)
 
 - **框架**: Next.js 15.x (App Router)
 - **语言**: TypeScript 5.x
@@ -125,15 +162,21 @@ mcp-cn/
 - **组件库**: Radix UI
 - **动画**: Framer Motion
 - **状态管理**: Zustand
-- **图标**: Lucide React
+
+### 后端技术 (MCP Servers)
+
+- **运行时**: Node.js 18+
+- **语言**: TypeScript 5.x
+- **协议**: MCP (Model Context Protocol)
+- **SDK**: @modelcontextprotocol/sdk
 
 ### 开发工具
 
-- **包管理器**: pnpm
+- **包管理器**: pnpm (Workspaces)
+- **版本管理**: Changesets
 - **代码检查**: ESLint + Prettier
-- **样式检查**: Stylelint
-- **类型检查**: TypeScript
-- **构建工具**: Next.js 内置
+- **构建工具**: TypeScript Compiler
+- **开发服务器**: tsx
 
 ## 🤝 参与贡献
 
@@ -155,28 +198,71 @@ mcp-cn/
 - 🔧 **代码贡献** - 提交代码修复或新功能
 - 💬 **分享使用经验** - 帮助其他开发者更好地使用 MCP 服务
 
+### 添加新的 MCP 服务器
+
+在 `packages/servers/` 目录下创建新的服务器包：
+
+```bash
+# 创建新的服务器目录
+mkdir packages/servers/my-new-server
+cd packages/servers/my-new-server
+
+# 创建 package.json
+cat > package.json << EOF
+{
+  "name": "@mcp-hub/server-my-new-server",
+  "version": "1.0.0",
+  "description": "我的新 MCP 服务器",
+  "type": "module",
+  "main": "dist/index.js",
+  ...
+}
+EOF
+
+# 创建源码目录和入口文件
+mkdir src
+# 实现你的 MCP 服务器...
+```
+
 ## 📋 开发计划
 
 ### 🎯 近期目标
 
-- [ ] 服务评价和评论系统
-- [ ] 用户账户和个人收藏
-- [ ] 服务使用统计分析
-- [ ] 移动端 App 开发
+- [x] ✅ Monorepo 架构重构
+- [ ] 🔄 完善 CLI 工具功能
+- [ ] 🔄 添加更多 MCP 服务器示例
+- [ ] 📱 服务评价和评论系统
+- [ ] 👤 用户账户和个人收藏
 
 ### 🚀 长期愿景
 
-- [ ] MCP 服务开发工具链
-- [ ] 自动化服务测试平台
-- [ ] 企业级服务管理
-- [ ] 国际化多语言支持
+- [ ] 📊 MCP 服务使用统计分析
+- [ ] 🧪 自动化服务测试平台
+- [ ] 🏢 企业级服务管理
+- [ ] 🌍 国际化多语言支持
+- [ ] 📱 移动端 App 开发
+
+## 🔄 版本发布
+
+我们使用 [Changesets](https://github.com/changesets/changesets) 进行版本管理：
+
+```bash
+# 添加变更记录
+pnpm changeset
+
+# 应用版本变更
+pnpm version
+
+# 发布到 npm
+pnpm release
+```
 
 ## 📞 联系我们
 
 ### 💬 技术交流
 
 <div align="center">
-  <img src="./public/images/wx.jpg" alt="微信二维码" width="200">
+  <img src="./packages/web/public/images/wx.jpg" alt="微信二维码" width="200">
   <p><strong>扫码添加微信</strong></p>
   <p>商务合作 | 技术交流 | 开源协作</p>
 </div>

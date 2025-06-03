@@ -11,14 +11,11 @@ export async function GET(
   try {
     const searchParams = request.nextUrl.searchParams;
     const serverId = searchParams.get('serverId') || '';
-    console.info('getMcpServerDetails params:', { serverId });
+    const qualifiedName = searchParams.get('qualifiedName') || '';
+    console.info('getMcpServerDetails params:', { serverId, qualifiedName });
 
     // 查询supabase
-    const { data, error } = await supabase
-      .from('mcp_servers')
-      .select('*')
-      .eq('server_id', serverId)
-      .single();
+    const { data, error } = await getDetailsConditional({ serverId, qualifiedName });
 
     if (error) {
       if (error.code === 'PGRST116') { // not found
@@ -74,4 +71,27 @@ export async function GET(
     
     return errorResponse;
   }
+}
+
+/**
+ * 根据条件查询服务器详情
+ * @param params 查询参数
+ * @param params.serverId 服务器ID
+ * @param params.qualifiedName 服务器Qualified Name
+ * @returns 服务器详情
+ */
+const getDetailsConditional = async (params: { serverId: string, qualifiedName: string }) => {
+  const { serverId, qualifiedName } = params;
+  if (qualifiedName) {
+    return await supabase
+      .from('mcp_servers')
+      .select('*')
+      .eq('qualified_name', qualifiedName)
+      .single();
+  } 
+  return await supabase
+    .from('mcp_servers')
+    .select('*')
+    .eq('server_id', serverId)
+    .single();
 }

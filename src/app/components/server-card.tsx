@@ -10,6 +10,9 @@ import { FC } from "react";
 // 获取标签数量
 const TAG_COUNT = 2;
 
+// 常量定义
+const THOUSAND = 1000;
+
 // 文字头像的背景色
 const AVATAR_COLORS = [
   "#165DFF", // 蓝色
@@ -23,6 +26,21 @@ const AVATAR_COLORS = [
   "#168CFF", // 天蓝色
   "#3C7EFF", // 皇家蓝
 ];
+
+/**
+ * 格式化使用次数（如果超过1000则显示为k）
+ * @param count 使用次数
+ * @returns {string} 格式化后的字符串
+ */
+const formatCount = (count: number): string => {
+  if (count >= 1000000) {
+    return `${(count / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
+  } else if (count >= THOUSAND) {
+    return `${(count / THOUSAND).toFixed(1).replace(/\.0$/, '')}K`;
+  } else {
+    return count.toString();
+  }
+};
 
 /**
  * 获取服务器名称的首字母或首个字符
@@ -81,21 +99,11 @@ export const ServerCard: FC<ServerCardProps> = ({
   };
 
   /**
-   * 格式化使用次数（如果超过1000则显示为k）
-   *
-   * @param count 使用次数
-   * @returns {string} 格式化后的字符串
+   * 获取服务器的名称，优先使用 display_name，其次是 displayName
    */
-
-  // const THOUSAND = 1000;
-
-  // const formatCount = (count: number): string =>
-  //   count >= THOUSAND ? `${(count / THOUSAND).toFixed(1)}k` : count.toString();
-
-  // 获取服务器的名称，优先使用 display_name，其次是 displayName
   const serverName = server.display_name;
   // 获取使用计数，优先使用 use_count，其次是 usageCount
-  // const useCount = server.use_count;
+  const useCount = server.use_count;
   // 获取标签，确保为数组
   const serverTags = server.tag ? server.tag?.split(",") : [];
   // 获取服务器 ID
@@ -144,10 +152,18 @@ export const ServerCard: FC<ServerCardProps> = ({
           </p>
         </div>
 
-        <div className="flex justify-between items-center mt-auto">
-          {/* <div className="text-xs text-gray-500">
-            <span>{formatCount(useCount)} 次使用</span>
-          </div> */}
+        <div className="mt-auto space-y-2">
+          {/* 使用次数显示 */}
+          <div className="flex items-center">
+            <div className="text-xs text-gray-500 flex items-center">
+              <svg className="w-3 h-3 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              <span>{formatCount(useCount || 0)} 次使用</span>
+            </div>
+          </div>
+          
+          {/* 标签显示 */}
           {serverTags.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {serverTags.slice(0, TAG_COUNT).map((tag) => (

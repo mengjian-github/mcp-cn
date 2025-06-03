@@ -1,0 +1,62 @@
+# 依赖包
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# 编译输出
+dist/
+build/
+*.tsbuildinfo
+
+# 日志文件
+logs/
+log/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 运行时数据
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+
+# 缓存
+.npm
+.eslintcache
+.node_repl_history
+
+# IDE 和编辑器
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# 临时文件
+tmp/
+temp/
+.tmp/
+.temp/
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 测试覆盖率报告
+coverage/
+.nyc_output/
+
+# 其他
+.history/ 

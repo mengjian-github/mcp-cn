@@ -1,104 +1,58 @@
-# @mcp-hub/cli
+# @mcp_hub_org/cli
 
-MCP Hub 中国 - 命令行工具
+@mcp_hub_org/cli 是一个用于安装、运行和管理 [MCP Hub](https://www.mcp-cn.com/) 平台 MCP Server 的命令行工具。
+
+## 要求
+
+- NodeJS 18或更高版本
 
 ## 安装
 
 ```bash
-npm install -g @mcp-hub/cli
-# 或者
-pnpm add -g @mcp-hub/cli
+npm install -g @mcp_hub_org/cli
 ```
 
-## 使用
+或者使用npx直接运行：
 
 ```bash
-# 查看帮助
-mcp-hub --help
-
-# 创建新的 MCP 服务器项目
-mcp-hub create my-server
-
-# 列出可用的 MCP 服务器
-mcp-hub list
-
-# 搜索 MCP 服务器
-mcp-hub search weather
-
-# 发布 MCP 服务器到 Hub
-mcp-hub publish
+npx @mcp_hub_org/cli <命令>
 ```
 
-## 命令详情
-
-### create
-
-创建新的 MCP 服务器项目。
+## 使用方法
 
 ```bash
-mcp-hub create [项目名称] [选项]
+npx @mcp_hub_org/cli <命令>
 ```
 
-**选项：**
-- `-t, --template <template>` - 使用指定模板 (默认: basic)
-- `-d, --dir <directory>` - 项目目录
+### 可用命令
 
-### list
+- `install <服务器>` - 安装一个 MCP 服务器
+  - `--client <客户端>` - 指定 AI 客户端
+- `uninstall <服务器>` - 卸载一个 MCP 服务器
+  - `--client <客户端>` - 指定 AI 客户端
+- `run <服务器>` - 运行一个 MCP 服务器
+  - `--env <json>` - 提供JSON格式的配置
+- `list clients` - 列出可用的客户端
+- `--help` - 显示帮助信息
 
-列出所有可用的 MCP 服务器。
+### 示例
 
 ```bash
-mcp-hub list [选项]
+# 安装服务器（需要--client标志）
+npx -y @mcp_hub_org/cli@latest install sequential-thinking --client cursor
+
+# 卸载服务器（需要--client标志）
+npx -y @mcp_hub_org/cli@latest uninstall sequential-thinking --client cursor
+
+# 列出可用的客户端
+npx -y @mcp_hub_org/cli list clients
+
+# 运行服务器
+npx -y @mcp_hub_org/cli run sequential-thinking
+
+# 运行服务器并增加配置
+npx -y @mcp_hub_org/cli@latest run Codebase --client cursor --env '{"API_TOKEN":"<填入你的API_TOKEN>"}'
+
+# 显示帮助菜单
+npx @mcp_hub_org/cli --help
 ```
-
-**选项：**
-- `-c, --category <category>` - 按分类筛选
-- `-l, --limit <number>` - 限制结果数量 (默认: 20)
-
-### search
-
-搜索 MCP 服务器。
-
-```bash
-mcp-hub search [关键词] [选项]
-```
-
-**选项：**
-- `-c, --category <category>` - 按分类筛选
-
-### publish
-
-发布 MCP 服务器到 Hub。
-
-```bash
-mcp-hub publish [选项]
-```
-
-**选项：**
-- `-p, --path <path>` - 项目路径 (默认: .)
-- `--dry-run` - 预览发布内容
-
-## 开发
-
-```bash
-# 克隆项目
-git clone https://github.com/mengjian-github/mcp-cn.git
-cd mcp-cn
-
-# 安装依赖
-pnpm install
-
-# 开发 CLI
-cd packages/cli
-pnpm dev
-
-# 构建
-pnpm build
-
-# 本地链接测试
-npm link
-```
-
-## 许可证
-
-MIT 

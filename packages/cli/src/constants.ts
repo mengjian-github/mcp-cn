@@ -11,9 +11,7 @@ export const VALID_CLIENTS = [
 
 export type ValidClient = (typeof VALID_CLIENTS)[number];
 
-export const API_BASE_URL = process.env.API_BASE_URL
-  ? `${process.env.API_BASE_URL}/mcp_api`
-  : 'https://mcphub.bytedance.net/mcp_api';
+export const API_BASE_URL = 'https://www.mcp-cn.com/api';
 export const CONFIG_FILE_NAME = '.mcprc';
 
 export const REGISTRY_ENDPOINT = process.env.REGISTRY_ENDPOINT;

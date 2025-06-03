@@ -75,12 +75,17 @@ function cleanupTempDir(tempDir) {
 /**
  * 生成连接配置
  */
-function generateConnections(packageName, envConfig = null) {
+function generateConnections(packageName, envConfig = null, args = null) {
+  const baseArgs = ["-y", packageName];
+  if (args && Array.isArray(args)) {
+    baseArgs.push(...args);
+  }
+  
   const baseConfig = {
     type: "stdio",
     config: {
       command: "npx",
-      args: ["-y", packageName]
+      args: baseArgs
     }
   };
   
@@ -347,8 +352,14 @@ async function generateTags(packageInfo, githubInfo, existingTags = null, config
 /**
  * 获取MCP服务器的工具信息
  */
-async function getMcpServerTools(packageName, userEnvConfig = {}) {
+async function getMcpServerTools(packageName, userEnvConfig = {}, args = null) {
   const tempDir = path.join(__dirname, 'temp', packageName.replace(/[@\/]/g, '_'));
+  
+  console.log(`  🔍 开始检测MCP工具: ${packageName}`);
+  console.log(`  📁 临时目录: ${tempDir}`);
+  if (args) {
+    console.log(`  ⚙️ 启动参数: ${args.join(' ')}`);
+  }
   
   try {
     // 创建临时目录
@@ -363,38 +374,62 @@ async function getMcpServerTools(packageName, userEnvConfig = {}) {
     
     return await withTimeout(new Promise((resolve) => {
       // 安装包
+      console.log(`  📦 正在安装包: npm install ${packageName}`);
       const npmInstall = spawn('npm', ['install', packageName], { 
         cwd: tempDir,
         stdio: 'pipe',
         env: processEnv
       });
       
+      let npmOutput = '';
+      let npmError = '';
+      
+      npmInstall.stdout.on('data', (data) => {
+        npmOutput += data.toString();
+      });
+      
+      npmInstall.stderr.on('data', (data) => {
+        npmError += data.toString();
+      });
+      
       npmInstall.on('close', async (code) => {
         if (code !== 0) {
-          console.log(`  📦 包 ${packageName} 安装失败，跳过工具检测`);
+          console.log(`  ❌ 包 ${packageName} 安装失败 (退出码: ${code})`);
+          if (npmError) {
+            console.log(`  📝 npm错误输出: ${npmError.substring(0, 200)}...`);
+          }
           resolve(null);
           return;
         }
         
+        console.log(`  ✅ 包安装成功`);
+        
         try {
           // 启动MCP服务器
-          const mcpClient = spawn('npx', [packageName], {
+          const mcpArgs = args ? [packageName, ...args] : [packageName];
+          console.log(`  🚀 启动MCP服务器: npx ${mcpArgs.join(' ')}`);
+          
+          const mcpClient = spawn('npx', mcpArgs, {
             cwd: tempDir,
             stdio: 'pipe',
             env: processEnv
           });
           
           let output = '';
+          let errorOutput = '';
           let hasResolved = false;
           
           mcpClient.stdout.on('data', (data) => {
-            output += data.toString();
+            const chunk = data.toString();
+            output += chunk;
+            console.log(`  📤 MCP输出: ${chunk.trim()}`);
             
             // 尝试解析输出，如果找到工具就立即返回
             if (!hasResolved) {
               try {
                 const tools = parseMcpOutput(output);
                 if (tools && tools.length > 0) {
+                  console.log(`  🎯 检测到 ${tools.length} 个工具！`);
                   hasResolved = true;
                   clearTimeout(clientTimeout);
                   mcpClient.kill();
@@ -406,36 +441,53 @@ async function getMcpServerTools(packageName, userEnvConfig = {}) {
             }
           });
           
+          mcpClient.stderr.on('data', (data) => {
+            const chunk = data.toString();
+            errorOutput += chunk;
+            console.log(`  ⚠️ MCP错误: ${chunk.trim()}`);
+          });
+          
           // 设置客户端超时
           const clientTimeout = setTimeout(() => {
             if (!hasResolved) {
+              console.log(`  ⏰ MCP客户端超时 (${CONFIG.TIMEOUT_MS / 2}ms)`);
+              console.log(`  📝 完整输出: ${output}`);
+              console.log(`  📝 错误输出: ${errorOutput}`);
               hasResolved = true;
               mcpClient.kill();
               // 最后尝试解析一次
               try {
                 const tools = parseMcpOutput(output);
+                console.log(`  🔄 超时后解析结果: ${tools ? tools.length : 0} 个工具`);
                 resolve(tools);
               } catch (error) {
+                console.log(`  ❌ 超时后解析失败: ${error.message}`);
                 resolve(null);
               }
             }
           }, CONFIG.TIMEOUT_MS / 2); // 使用一半的超时时间
           
-          mcpClient.on('close', () => {
+          mcpClient.on('close', (code) => {
             if (!hasResolved) {
+              console.log(`  🔚 MCP进程关闭 (退出码: ${code})`);
+              console.log(`  📝 完整输出: ${output}`);
+              console.log(`  📝 错误输出: ${errorOutput}`);
               hasResolved = true;
               clearTimeout(clientTimeout);
               try {
                 const tools = parseMcpOutput(output);
+                console.log(`  🔄 关闭后解析结果: ${tools ? tools.length : 0} 个工具`);
                 resolve(tools);
               } catch (error) {
+                console.log(`  ❌ 关闭后解析失败: ${error.message}`);
                 resolve(null);
               }
             }
           });
           
-          mcpClient.on('error', () => {
+          mcpClient.on('error', (error) => {
             if (!hasResolved) {
+              console.log(`  💥 MCP进程错误: ${error.message}`);
               hasResolved = true;
               clearTimeout(clientTimeout);
               resolve(null);
@@ -446,7 +498,7 @@ async function getMcpServerTools(packageName, userEnvConfig = {}) {
           setTimeout(() => {
             try {
               if (!mcpClient.killed) {
-                mcpClient.stdin.write(JSON.stringify({
+                const initMessage = {
                   jsonrpc: "2.0",
                   id: 1,
                   method: "initialize",
@@ -455,29 +507,35 @@ async function getMcpServerTools(packageName, userEnvConfig = {}) {
                     capabilities: {},
                     clientInfo: { name: "mcp-import-script", version: "1.0.0" }
                   }
-                }) + '\n');
+                };
+                console.log(`  📧 发送初始化消息: ${JSON.stringify(initMessage)}`);
+                mcpClient.stdin.write(JSON.stringify(initMessage) + '\n');
                 
                 setTimeout(() => {
                   if (!mcpClient.killed) {
-                    mcpClient.stdin.write(JSON.stringify({
+                    const toolsMessage = {
                       jsonrpc: "2.0",
                       id: 2,
                       method: "tools/list"
-                    }) + '\n');
+                    };
+                    console.log(`  📧 发送工具列表请求: ${JSON.stringify(toolsMessage)}`);
+                    mcpClient.stdin.write(JSON.stringify(toolsMessage) + '\n');
                   }
                 }, 1000);
               }
             } catch (err) {
-              // ignore
+              console.log(`  ❌ 发送消息失败: ${err.message}`);
             }
           }, 500);
           
         } catch (error) {
+          console.log(`  💥 启动MCP服务器失败: ${error.message}`);
           resolve(null);
         }
       });
       
-      npmInstall.on('error', () => {
+      npmInstall.on('error', (error) => {
+        console.log(`  💥 npm安装进程错误: ${error.message}`);
         resolve(null);
       });
       
@@ -495,40 +553,68 @@ async function getMcpServerTools(packageName, userEnvConfig = {}) {
  * 解析MCP输出获取工具信息
  */
 function parseMcpOutput(output) {
+  console.log(`  🔍 解析MCP输出 (长度: ${output.length})`);
+  
   try {
     const lines = output.split('\n').filter(line => line.trim());
+    console.log(`  📝 分割后行数: ${lines.length}`);
+    
     let tools = [];
     
-    for (const line of lines) {
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      console.log(`  📄 处理第${i + 1}行: ${line.substring(0, 100)}${line.length > 100 ? '...' : ''}`);
+      
       try {
         const parsed = JSON.parse(line);
+        console.log(`  ✅ JSON解析成功:`, typeof parsed, Array.isArray(parsed) ? `数组长度${parsed.length}` : '对象');
         
         if (parsed.result && parsed.result.tools) {
+          console.log(`  🎯 找到工具结果: ${parsed.result.tools.length} 个工具`);
           tools = parsed.result.tools;
           break;
         }
         
         if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].name) {
+          console.log(`  🎯 找到工具数组: ${parsed.length} 个工具`);
           tools = parsed;
           break;
         }
+        
+        // 打印其他类型的响应
+        if (parsed.method) {
+          console.log(`  📡 收到方法调用: ${parsed.method}`);
+        }
+        if (parsed.error) {
+          console.log(`  ❌ 收到错误响应: ${JSON.stringify(parsed.error)}`);
+        }
+        
       } catch (parseError) {
+        console.log(`  ⚠️ JSON解析失败: ${parseError.message}`);
         continue;
       }
     }
     
     if (Array.isArray(tools) && tools.length > 0) {
+      console.log(`  🔧 验证工具数组: ${tools.length} 个工具`);
       const validTools = tools.filter(tool => 
         tool && typeof tool === 'object' && tool.name
       );
+      
+      console.log(`  ✅ 有效工具: ${validTools.length} 个`);
+      validTools.forEach((tool, index) => {
+        console.log(`    ${index + 1}. ${tool.name} - ${tool.description || '无描述'}`);
+      });
       
       if (validTools.length > 0) {
         return validTools;
       }
     }
     
+    console.log(`  ❌ 未找到有效工具`);
     return null;
   } catch (error) {
+    console.log(`  💥 解析异常: ${error.message}`);
     return null;
   }
 }
@@ -622,7 +708,10 @@ async function processPackage(packageConfig, existingServer = null) {
   ]);
 
   console.log('  🔍 尝试获取工具信息...');
-  const tools = await getMcpServerTools(packageName, configData.env);
+  if (configData.args) {
+    console.log(`  ⚙️ 使用配置的参数: ${configData.args.join(' ')}`);
+  }
+  const tools = await getMcpServerTools(packageName, configData.env, configData.args);
   
   if (tools && tools.length > 0) {
     console.log(`  🔧 找到 ${tools.length} 个工具:`, tools.map(t => t.name).join(', '));
@@ -666,7 +755,7 @@ async function processPackage(packageConfig, existingServer = null) {
     tag: optimizedTags,
     type: 3,
     use_count: useCount,
-    connections: generateConnections(packageName, configData.env)
+    connections: generateConnections(packageName, configData.env, configData.args)
   };
 
   console.log(`  ✨ 显示名称: ${optimizedDisplayName}`);

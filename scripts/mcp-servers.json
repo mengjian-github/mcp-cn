@@ -70,7 +70,8 @@
     "logo": "https://static.figma.com/app/icon/1/favicon.png",
     "env": {
       "FIGMA_API_KEY": "<YOUR_FIGMA_API_KEY>"
-    }
+    },
+    "args": ["--stdio"]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@wonderwhy-er/desktop-commander",
@@ -86,7 +87,8 @@
     "logo": "https://www.cloudflare.com/img/cf-facebook-card.png",
     "env": {
       "CLOUDFLARE_API_TOKEN": "<YOUR_API_TOKEN>"
-    }
+    },
+    "args": ["run", "placeholder_account_id"]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@21st-dev/magic",
@@ -98,7 +100,8 @@
     "npm_url": "https://www.npmjs.com/package/shippie",
     "display_name": "Shippie",
     "description": "物流和运输管理的MCP工具",
-    "tag": "物流管理,运输跟踪,供应链"
+    "tag": "物流管理,运输跟踪,供应链",
+    "args": ["review"]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@browsermcp/mcp",
@@ -141,7 +144,8 @@
     "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem",
     "display_name": "文件系统",
     "description": "文件系统操作的MCP服务器",
-    "tag": "文件系统,文件管理,文件操作"
+    "tag": "文件系统,文件管理,文件操作",
+    "args": ["/tmp"]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-puppeteer",
@@ -179,7 +183,8 @@
     "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-postgres",
     "display_name": "PostgreSQL",
     "description": "PostgreSQL数据库的MCP服务器，支持数据库操作和管理",
-    "tag": "数据库,PostgreSQL,数据管理,SQL"
+    "tag": "数据库,PostgreSQL,数据管理,SQL",
+    "args": ["postgresql://placeholder:placeholder@localhost:5432/placeholder"]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-brave-search",
@@ -334,7 +339,8 @@
     "npm_url": "https://www.npmjs.com/package/mcp-obsidian",
     "display_name": "Obsidian",
     "description": "Obsidian的MCP服务器，支持Obsidian的读取和写入",
-    "tag": "Obsidian,MCP,Obsidian,笔记"
+    "tag": "Obsidian,MCP,Obsidian,笔记",
+    "args": ["/tmp"]
   },
   {
     "npm_url": "https://www.npmjs.com/package/12306-mcp",
@@ -383,6 +389,7 @@
     "env": {
       "FEISHU_APP_ID": "<YOUR_FEISHU_APP_ID>",
       "FEISHU_APP_SECRET": "<YOUR_FEISHU_APP_SECRET>"
-    }
+    },
+    "args": ["--stdio"]
   }
 ]

@@ -22,13 +22,20 @@ export async function GET(
 
     if (error) {
       if (error.code === 'PGRST116') { // not found
-        return NextResponse.json(
+        const notFoundResponse = NextResponse.json(
           {
             code: 404,
             message: '服务器不存在'
           },
           { status: 404 }
         );
+        
+        // 404响应也不缓存
+        notFoundResponse.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        notFoundResponse.headers.set('Pragma', 'no-cache');
+        notFoundResponse.headers.set('Expires', '0');
+        
+        return notFoundResponse;
       }
       throw error;
     }
@@ -42,15 +49,29 @@ export async function GET(
       }
     };
 
-    return NextResponse.json(response);
+    const nextResponse = NextResponse.json(response);
+    
+    // 设置缓存控制头
+    nextResponse.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    nextResponse.headers.set('Pragma', 'no-cache');
+    nextResponse.headers.set('Expires', '0');
+    
+    return nextResponse;
   } catch (error: any) {
     console.error('getMcpServerDetails error:', error);
-    return NextResponse.json(
+    const errorResponse = NextResponse.json(
       {
         code: 500,
         message: error.message || '服务器内部错误'
       },
       { status: 500 }
     );
+    
+    // 错误响应也不缓存
+    errorResponse.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    errorResponse.headers.set('Pragma', 'no-cache');
+    errorResponse.headers.set('Expires', '0');
+    
+    return errorResponse;
   }
 }

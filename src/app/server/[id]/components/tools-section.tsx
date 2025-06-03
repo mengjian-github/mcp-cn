@@ -16,18 +16,14 @@ export const ToolsSection: FC<ToolsSectionProps> = ({ tools }) => {
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(
     {},
   );
-  const [showOriginal, setShowOriginal] = useState<Record<string, boolean>>({});
 
-  // 初始化默认展开所有项目和语言显示状态
+  // 初始化默认展开所有项目
   useEffect(() => {
     const initialExpandedState: Record<string, boolean> = {};
-    const initialLanguageState: Record<string, boolean> = {};
     tools.forEach((tool) => {
       initialExpandedState[tool.name] = true;
-      initialLanguageState[tool.name] = false; // 默认显示翻译
     });
     setExpandedItems(initialExpandedState);
-    setShowOriginal(initialLanguageState);
   }, [tools]);
 
   const containerVariants: Variants = {
@@ -45,13 +41,6 @@ export const ToolsSection: FC<ToolsSectionProps> = ({ tools }) => {
 
   const toggleExpand = (toolName: string) => {
     setExpandedItems((prev) => ({
-      ...prev,
-      [toolName]: !prev[toolName],
-    }));
-  };
-
-  const toggleLanguage = (toolName: string) => {
-    setShowOriginal((prev) => ({
       ...prev,
       [toolName]: !prev[toolName],
     }));
@@ -144,24 +133,8 @@ export const ToolsSection: FC<ToolsSectionProps> = ({ tools }) => {
                     : "text-gray-600 text-sm line-clamp-2"
                 }
               >
-                <div className="flex flex-col gap-2">
-                  <div>
-                    {showOriginal[tool.name]
-                      ? tool.description
-                      : (tool.translation ?? tool.description)}
-                  </div>
-                  {!!tool.translation && (
-                    <button
-                      className="text-xs text-gray-400 hover:text-blue-500 transition-colors self-start"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleLanguage(tool.name);
-                      }}
-                    >
-                      {showOriginal[tool.name] ? "查看翻译" : "查看原文"}
-                    </button>
-                  )}
-                </div>
+                {/* 优先显示中文翻译，如果没有则显示原文 */}
+                {tool.translation || tool.description}
               </Collapsible.Content>
             </Collapsible.Root>
           </div>

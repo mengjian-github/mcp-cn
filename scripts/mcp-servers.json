@@ -1,0 +1,388 @@
+[
+  {
+    "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-github",
+    "display_name": "GitHub",
+    "description": "连接GitHub的MCP服务器，支持仓库管理、问题跟踪、代码搜索等功能",
+    "tag": "代码管理,版本控制,开发工具,GitHub",
+    "logo": "https://github.com/github.png",
+    "env": {
+      "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-sequential-thinking",
+    "display_name": "顺序思考",
+    "description": "帮助AI进行结构化思考和推理的MCP工具",
+    "tag": "AI辅助,思考工具,推理,逻辑"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@playwright/mcp",
+    "display_name": "Playwright",
+    "description": "基于Playwright的自动化测试和网页操作MCP工具",
+    "tag": "自动化测试,网页操作,浏览器,测试工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@notionhq/notion-mcp-server",
+    "display_name": "Notion",
+    "description": "连接Notion的MCP服务器，支持页面管理和数据操作",
+    "tag": "笔记工具,文档管理,Notion,知识管理",
+    "logo": "https://www.notion.so/images/logo-ios.png",
+    "env": {
+      "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ntn_****\", \"Notion-Version\": \"2022-06-28\" }"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/mcp-server-flomo",
+    "display_name": "Flomo",
+    "description": "连接flomo的MCP服务器，支持卡片式笔记管理",
+    "tag": "笔记工具,卡片笔记,知识管理,Flomo",
+    "env": {
+      "FLOMO_API_URL": "<YOUR_FLOMO_API_URL>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@upstash/context7-mcp",
+    "display_name": "Context7",
+    "description": "基于Upstash的向量搜索和上下文管理MCP服务",
+    "tag": "向量搜索,上下文管理,AI辅助,数据库",
+    "logo": "https://context7.com/_next/static/media/context7vector.39c35f61.svg"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/firecrawl-mcp",
+    "display_name": "网页爬虫",
+    "description": "基于Firecrawl的智能网页爬取和内容提取MCP工具",
+    "tag": "网页爬虫,内容提取,数据采集,网络抓取",
+    "env": {
+      "FIRECRAWL_API_KEY": "<YOUR_FIRECRAWL_API_KEY>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@agentdeskai/browser-tools-mcp",
+    "display_name": "浏览器工具",
+    "description": "提供浏览器自动化操作的MCP工具集",
+    "tag": "浏览器工具,自动化操作,网页交互"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/figma-developer-mcp",
+    "display_name": "Figma",
+    "description": "连接Figma的MCP服务器，支持设计文件管理和操作",
+    "tag": "设计工具,Figma,界面设计,协作工具",
+    "logo": "https://static.figma.com/app/icon/1/favicon.png",
+    "env": {
+      "FIGMA_API_KEY": "<YOUR_FIGMA_API_KEY>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@wonderwhy-er/desktop-commander",
+    "display_name": "命令行助手",
+    "description": "桌面自动化和系统操作的MCP工具",
+    "tag": "桌面自动化,系统管理,操作系统,自动化工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@cloudflare/mcp-server-cloudflare",
+    "display_name": "Cloudflare",
+    "description": "连接Cloudflare服务的MCP服务器，支持DNS和CDN管理",
+    "tag": "云服务,CDN,DNS,网络服务",
+    "logo": "https://www.cloudflare.com/img/cf-facebook-card.png",
+    "env": {
+      "CLOUDFLARE_API_TOKEN": "<YOUR_API_TOKEN>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@21st-dev/magic",
+    "display_name": "Magic UI",
+    "description": "多功能AI辅助工具的MCP服务器",
+    "tag": "AI辅助,多功能工具,开发辅助"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/shippie",
+    "display_name": "Shippie",
+    "description": "物流和运输管理的MCP工具",
+    "tag": "物流管理,运输跟踪,供应链"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@browsermcp/mcp",
+    "display_name": "Browser MCP",
+    "description": "浏览器集成的MCP服务器",
+    "tag": "浏览器集成,网页操作,浏览器工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@dhravya/apple-mcp",
+    "display_name": "Apple MCP",
+    "description": "Apple生态系统集成的MCP工具",
+    "tag": "Apple生态,macOS,iOS,系统集成"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/exa-mcp-server",
+    "display_name": "Exa搜索",
+    "description": "基于Exa的高质量网络搜索MCP服务器",
+    "tag": "搜索引擎,网络搜索,信息检索",
+    "env": {
+      "EXA_API_KEY": "<YOUR_API_KEY>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@supabase/mcp-server-supabase",
+    "display_name": "Supabase",
+    "description": "连接Supabase数据库的MCP服务器，支持数据管理和查询",
+    "tag": "数据库,后端服务,Supabase,云数据库",
+    "logo": "https://supabase.com/brand-assets/supabase-logo-icon.png",
+    "env": {
+      "SUPABASE_ACCESS_TOKEN": "<YOUR_ACCESS_TOKEN>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/xcodebuildmcp",
+    "display_name": "Xcode构建",
+    "description": "Xcode项目构建和管理的MCP工具",
+    "tag": "iOS开发,Xcode,移动开发,构建工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem",
+    "display_name": "文件系统",
+    "description": "文件系统操作的MCP服务器",
+    "tag": "文件系统,文件管理,文件操作"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-puppeteer",
+    "display_name": "Puppeteer",
+    "description": "基于Puppeteer的网页自动化和数据抓取MCP工具",
+    "tag": "网页抓取,自动化,数据采集,浏览器"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/task-master-ai",
+    "display_name": "任务大师",
+    "description": "智能任务管理和自动化的MCP工具",
+    "tag": "任务管理,工作流,自动化,效率工具",
+    "env": {
+      "ANTHROPIC_API_KEY": "<YOUR_ANTHROPIC_API_KEY_HERE>",
+      "PERPLEXITY_API_KEY": "<YOUR_PERPLEXITY_API_KEY_HERE>",
+      "OPENAI_API_KEY": "<YOUR_OPENAI_KEY_HERE>",
+      "GOOGLE_API_KEY": "<YOUR_GOOGLE_KEY_HERE>",
+      "MISTRAL_API_KEY": "<YOUR_MISTRAL_KEY_HERE>",
+      "OPENROUTER_API_KEY": "<YOUR_OPENROUTER_KEY_HERE>",
+      "XAI_API_KEY": "YOUR_XAI_KEY_HERE",
+      "AZURE_OPENAI_API_KEY": "YOUR_AZURE_KEY_HERE",
+      "OLLAMA_API_KEY": "YOUR_OLLAMA_API_KEY_HERE"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@amap/amap-maps-mcp-server",
+    "display_name": "高德地图",
+    "description": "高德地图的MCP服务器",
+    "tag": "地图,导航,位置服务,高德地图",
+    "env": {
+      "AMAP_Maps_API_KEY": "<YOUR_AMAP_API_KEY_HERE>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-postgres",
+    "display_name": "PostgreSQL",
+    "description": "PostgreSQL数据库的MCP服务器，支持数据库操作和管理",
+    "tag": "数据库,PostgreSQL,数据管理,SQL"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-brave-search",
+    "display_name": "Brave搜索",
+    "description": "基于Brave搜索引擎的MCP服务器，提供安全、私密的搜索服务",
+    "tag": "搜索引擎,隐私保护,网络搜索,Brave"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-memory",
+    "display_name": "内存管理",
+    "description": "提供内存管理和数据缓存的MCP服务器",
+    "tag": "内存管理,数据缓存,性能优化,系统工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-slack",
+    "display_name": "Slack",
+    "description": "连接Slack的MCP服务器，支持消息发送、频道管理和工作流自动化",
+    "tag": "团队协作,即时通讯,工作流,Slack",
+    "env": {
+      "SLACK_BOT_TOKEN": "<YOUR_SLACK_BOT_TOKEN>",
+      "SLACK_TEAM_ID": "<YOUR_SLACK_TEAM_ID>",
+      "SLACK_CHANNEL_IDS": "<YOUR_SLACK_CHANNEL_IDS>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/tavily-mcp",
+    "display_name": "Tavily搜索",
+    "description": "基于Tavily的智能搜索MCP服务器，提供高质量的网络搜索结果",
+    "tag": "搜索引擎,网络搜索,AI搜索,Tavily",
+    "env": {
+      "TAVILY_API_KEY": "<YOUR_TAVILY_API_KEY>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@negokaz/excel-mcp-server",
+    "display_name": "Excel MCP",
+    "description": "Excel文件的MCP服务器，支持Excel文件的读取和写入",
+    "tag": "Excel,数据处理,数据分析,MCP"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@mastra/mcp-docs-server",
+    "display_name": "MCP Docs Server",
+    "description": "MCP文档服务器，支持MCP文档的读取和写入",
+    "tag": "MCP文档,文档管理,MCP"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@benborla29/mcp-server-mysql",
+    "display_name": "MySQL",
+    "description": "MySQL数据库的MCP服务器，支持数据库操作和管理",
+    "tag": "数据库,MySQL,数据管理,SQL",
+    "env": {
+      "MYSQL_HOST": "<YOUR_MYSQL_HOST>",
+      "MYSQL_PORT": "3306",
+      "MYSQL_USER": "<YOUR_MYSQL_USER>",
+      "MYSQL_PASS": "<YOUR_MYSQL_PASSWORD>",
+      "MYSQL_DB": "<YOUR_MYSQL_DATABASE>",
+      "ALLOW_INSERT_OPERATION": "false",
+      "ALLOW_UPDATE_OPERATION": "false",
+      "ALLOW_DELETE_OPERATION": "false",
+      "PATH": "<YOUR_PATH>",
+      "NODE_PATH": "<YOUR_NODE_PATH>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@zereight/mcp-gitlab",
+    "display_name": "GitLab",
+    "description": "GitLab的MCP服务器，支持GitLab的读取和写入",
+    "tag": "GitLab,版本控制,代码管理,MCP",
+    "env": {
+      "GITLAB_PERSONAL_ACCESS_TOKEN": "<YOUR_GITLAB_TOKEN>",
+      "GITLAB_API_URL": "<YOUR_GITLAB_API_URL>",
+      "GITLAB_READ_ONLY_MODE": "false",
+      "USE_GITLAB_WIKI": "false",
+      "USE_MILESTONE": "false",
+      "USE_PIPELINE": "false"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@stripe/mcp",
+    "display_name": "Stripe",
+    "description": "Stripe的MCP服务器，支持Stripe的读取和写入",
+    "tag": "Stripe,支付,MCP",
+    "env": {
+      "STRIPE_SECRET_KEY": "<YOUR_STRIPE_SECRET_KEY>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/edgeone-pages-mcp",
+    "display_name": "Tencent EdgeOne Pages",
+    "description": "Tencent EdgeOne Pages的MCP服务器，支持页面管理和部署",
+    "tag": "页面部署,CDN,网站托管,云服务",
+    "env": {
+        "EDGEONE_PAGES_API_TOKEN": "<YOUR_EDGEONE_PAGES_API_TOKEN>",
+        "EDGEONE_PAGES_PROJECT_NAME": "<YOUR_EDGEONE_PAGES_PROJECT_NAME>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@gongrzhe/quickchart-mcp-server",
+    "display_name": "QuickChart",
+    "description": "QuickChart的MCP服务器，支持图表生成和数据可视化",
+    "tag": "图表生成,数据可视化,QuickChart"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/mongodb-mcp-server",
+    "display_name": "MongoDB",
+    "description": "MongoDB的MCP服务器，支持MongoDB的读取和写入",
+    "tag": "数据库,MongoDB,数据管理,MCP",
+    "env": {
+      "MDB_MCP_CONNECTION_STRING": "<YOUR_MONGODB_URI>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-redis",
+    "display_name": "Redis",
+    "description": "Redis的MCP服务器，支持Redis的读取和写入",
+    "tag": "数据库,Redis,缓存,数据存储",
+    "env": {
+      "REDIS_URL": "<YOUR_REDIS_URL>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/mcp-server-kubernetes",
+    "display_name": "Kubernetes",
+    "description": "Kubernetes的MCP服务器，支持Kubernetes的读取和写入",
+    "tag": "容器,Kubernetes,云原生,MCP"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/wuying-agentbay-mcp-server",
+    "display_name": "AgentBay(无影)",
+    "description": "AgentBay的MCP服务器，支持AgentBay的读取和写入",
+    "tag": "AgentBay,MCP,Agent,AgentBay,无影",
+    "env": {
+      "AGENTBAY_API_KEY": "<YOUR_AGENTBAY_API_KEY>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@wopal/mcp-server-hotnews",
+    "display_name": "HotNews",
+    "description": "HotNews的MCP服务器，支持国内热点新闻的读取",
+    "tag": "HotNews,MCP,HotNews,新闻"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/server-perplexity-ask",
+    "display_name": "Perplexity Ask",
+    "description": "Perplexity Ask的MCP服务器，支持Perplexity Ask的读取",
+    "tag": "Perplexity Ask,MCP,Perplexity Ask,问答",
+    "env": {
+      "PERPLEXITY_API_KEY": "<YOUR_PERPLEXITY_API_KEY>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/mcp-obsidian",
+    "display_name": "Obsidian",
+    "description": "Obsidian的MCP服务器，支持Obsidian的读取和写入",
+    "tag": "Obsidian,MCP,Obsidian,笔记"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/12306-mcp",
+    "display_name": "12306",
+    "description": "12306的MCP服务器，支持12306的读取",
+    "tag": "12306,MCP,12306,火车票"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@antv/mcp-server-chart",
+    "display_name": "AntV图表",
+    "description": "基于AntV的图表生成MCP工具，支持多种图表类型的创建和渲染",
+    "tag": "数据可视化,图表工具,AntV,数据分析",
+    "logo": "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/cos-mcp",
+    "display_name": "腾讯云COS",
+    "description": "腾讯云对象存储(COS)的MCP服务器，支持文件上传、下载和管理",
+    "tag": "云存储,文件管理,腾讯云,COS",
+    "logo": "https://cloudcache.tencent-cloud.com/qcloud/portal/oss/img/logo.svg",
+    "env": {
+      "Region": "<YOUR_COS_REGION>",
+      "Bucket": "<YOUR_COS_BUCKET>",
+      "SecretId": "<YOUR_COS_SECRET_ID>",
+      "SecretKey": "<YOUR_COS_SECRET_KEY>",
+      "DatasetName": "<YOUR_COS_DATASET_NAME>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@gitee/mcp-gitee",
+    "display_name": "Gitee",
+    "description": "Gitee的MCP服务器，支持代码仓库管理、问题跟踪等功能",
+    "tag": "代码管理,版本控制,开发工具,Gitee",
+    "logo": "https://gitee.com/assets/favicon.ico",
+    "env": {
+      "GITEE_API_BASE_URL": "https://gitee.com/api/v5",
+      "GITEE_ACCESS_TOKEN": "<YOUR_GITEE_TOKEN>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/feishu-mcp",
+    "display_name": "飞书",
+    "description": "飞书的MCP服务器，支持文档管理、消息发送等功能",
+    "tag": "办公协作,文档管理,飞书,企业工具",
+    "logo": "https://sf1-cdn-tos.huoshanstatic.com/obj/cdn-operation-resource/feishu-static/feishu-logo.svg",
+    "env": {
+      "FEISHU_APP_ID": "<YOUR_FEISHU_APP_ID>",
+      "FEISHU_APP_SECRET": "<YOUR_FEISHU_APP_SECRET>"
+    }
+  }
+]

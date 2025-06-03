@@ -97,13 +97,6 @@
     "tag": "AI辅助,多功能工具,开发辅助"
   },
   {
-    "npm_url": "https://www.npmjs.com/package/shippie",
-    "display_name": "Shippie",
-    "description": "物流和运输管理的MCP工具",
-    "tag": "物流管理,运输跟踪,供应链",
-    "args": ["review"]
-  },
-  {
     "npm_url": "https://www.npmjs.com/package/@browsermcp/mcp",
     "display_name": "Browser MCP",
     "description": "浏览器集成的MCP服务器",
@@ -310,15 +303,6 @@
     "display_name": "Kubernetes",
     "description": "Kubernetes的MCP服务器，支持Kubernetes的读取和写入",
     "tag": "容器,Kubernetes,云原生,MCP"
-  },
-  {
-    "npm_url": "https://www.npmjs.com/package/wuying-agentbay-mcp-server",
-    "display_name": "AgentBay(无影)",
-    "description": "AgentBay的MCP服务器，支持AgentBay的读取和写入",
-    "tag": "AgentBay,MCP,Agent,AgentBay,无影",
-    "env": {
-      "AGENTBAY_API_KEY": "<YOUR_AGENTBAY_API_KEY>"
-    }
   },
   {
     "npm_url": "https://www.npmjs.com/package/@wopal/mcp-server-hotnews",

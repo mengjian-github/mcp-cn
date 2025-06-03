@@ -955,42 +955,10 @@ async function syncDatabase(options = {}) {
   
   console.log(`\n📊 处理完成！成功: ${successCount}，失败: ${failureCount}`);
   
-  // 数据库清理
-  console.log('\n💾 执行数据库清理...\n');
-  
-  try {
-    const urlPackageNames = serverConfigs.map(config => extractPackageNameFromConfig(config)).filter(Boolean);
-    
-    const serversToDelete = existingServers?.filter(server => 
-      !urlPackageNames.includes(server.qualified_name)
-    ) || [];
-    
-    if (serversToDelete.length > 0) {
-      console.log(`🗑️  删除 ${serversToDelete.length} 个不在配置中的服务器...`);
-      
-      const serverIdsToDelete = serversToDelete.map(s => s.server_id);
-      await supabase
-        .from('mcp_server_metainfo')
-        .delete()
-        .in('server_id', serverIdsToDelete);
-      
-      await supabase
-        .from('mcp_servers')
-        .delete()
-        .in('qualified_name', serversToDelete.map(s => s.qualified_name));
-        
-      console.log(`  ✅ 清理完成`);
-    } else {
-      console.log(`✨ 无需清理，所有服务器都在配置文件中`);
-    }
-    
-    console.log('\n🎉 所有操作完成！');
-    console.log(`📊 最终状态: ${successCount} 个MCP服务器已同步到数据库`);
-    
-  } catch (error) {
-    console.error('❌ 数据库同步失败:', error);
-    process.exit(1);
-  }
+  // 跳过数据库清理，只更新不删除
+  console.log('\n✨ 跳过数据库清理，保留所有现有记录');
+  console.log('\n🎉 所有操作完成！');
+  console.log(`📊 最终状态: ${successCount} 个MCP服务器已同步到数据库`);
 }
 
 // 命令行接口

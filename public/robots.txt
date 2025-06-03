@@ -1,0 +1,39 @@
+User-agent: *
+Allow: /
+
+# 主要 Sitemap
+Sitemap: https://mcp-cn.com/sitemap.xml
+
+# 优化爬取频率
+Crawl-delay: 1
+
+# 允许所有主要搜索引擎
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YisouSpider
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+# 屏蔽不必要的路径
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /private/
+
+# 网站主页
+Sitemap: https://mcp-cn.com/sitemap.xml 

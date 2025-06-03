@@ -119,10 +119,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         
         {/* Favicon 和图标 */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
         <link rel="manifest" href="/manifest.json" />
+        
+        {/* 其他尺寸的图标 */}
+        <link rel="icon" type="image/svg+xml" href="/favicon-16x16.png.svg" sizes="16x16" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="32x32" />
         
         {/* 结构化数据 */}
         <script

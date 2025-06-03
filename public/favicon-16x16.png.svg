@@ -1,0 +1,19 @@
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 简化的渐变 -->
+    <linearGradient id="favicon-16-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景圆形 -->
+  <circle cx="8" cy="8" r="7.5" fill="url(#favicon-16-gradient)"/>
+  
+  <!-- 简化的M字母 -->
+  <g transform="translate(8, 8)">
+    <path d="M -2.5 -2 L -2.5 2.5 L -1.5 2.5 L -1.5 0.5 L -0.5 1.5 L 0 0.5 L 0.5 1.5 L 1.5 0.5 L 1.5 2.5 L 2.5 2.5 L 2.5 -2 L 1.5 -2 L 0 1 L -1.5 -2 Z" 
+          fill="white" 
+          opacity="1"/>
+  </g>
+</svg> 

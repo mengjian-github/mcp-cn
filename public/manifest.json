@@ -1,0 +1,82 @@
+{
+  "name": "MCP Hub 中国 - 国内首个 MCP 生态平台",
+  "short_name": "MCP Hub 中国",
+  "description": "连接 AI 与世界的桥梁，打造国内最大的 MCP 生态平台。汇聚全球优质 MCP 服务，让 AI 应用更强大。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "categories": ["productivity", "developer", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "MCP Hub 中国桌面版截图"
+    },
+    {
+      "src": "/images/screenshot-mobile.png", 
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "MCP Hub 中国移动版截图"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "搜索 MCP 服务",
+      "short_name": "搜索",
+      "description": "快速搜索和发现 MCP 服务",
+      "url": "/?search=",
+      "icons": [
+        {
+          "src": "/icon-search.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "最新服务",
+      "short_name": "最新",
+      "description": "查看最新添加的 MCP 服务",
+      "url": "/?sort=latest",
+      "icons": [
+        {
+          "src": "/icon-new.png", 
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+} 

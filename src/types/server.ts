@@ -17,6 +17,7 @@ export interface McpServerModel {
   created_at: string;
   updated_at: string;
   tag: string | null;
+  is_domestic?: boolean; // 是否为国内服务
 }
 
 /**

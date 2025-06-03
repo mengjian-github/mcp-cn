@@ -9,6 +9,8 @@ import { ServerCard } from "./server-card";
 
 interface ContentAreaProps {
   servers: ServerInfo[];
+  domesticServers?: ServerInfo[];
+  internationalServers?: ServerInfo[];
   loading?: boolean;
   error: string | null;
   onClearFilters?: () => void;
@@ -68,6 +70,8 @@ const ServerGrid: FC<ServerGridProps> = ({ servers, title }) => {
 
 export const ContentArea: FC<ContentAreaProps> = ({
   servers,
+  domesticServers = [],
+  internationalServers = [],
   loading = false,
   error,
   onClearFilters,
@@ -141,8 +145,20 @@ export const ContentArea: FC<ContentAreaProps> = ({
 
   return (
     <div className="py-8 w-full bg-transparent flex-1">
-      {/* 精选工具 */}
-      <ServerGrid servers={servers} title="精选工具" />
+      {/* 国内服务 */}
+      {domesticServers.length > 0 && (
+        <ServerGrid servers={domesticServers} title="🇨🇳 国内服务" />
+      )}
+      
+      {/* 国际服务 */}
+      {internationalServers.length > 0 && (
+        <ServerGrid servers={internationalServers} title="🌍 国际服务" />
+      )}
+      
+      {/* 如果没有分组数据，显示所有服务 */}
+      {domesticServers.length === 0 && internationalServers.length === 0 && (
+        <ServerGrid servers={servers} title="精选工具" />
+      )}
     </div>
   );
 };

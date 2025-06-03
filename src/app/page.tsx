@@ -59,36 +59,9 @@ export default function HomePage() {
       server.description.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  // 国内开发者/公司名单（基于创建者信息判断）
-  const chineseCreators = new Set([
-    'xianminx',      // Flomo 作者，看起来是中文名拼音
-    'mengjian-github', // 你自己的GitHub账号
-    'bytedance',      // 字节跳动相关账号
-    'alibaba',        // 阿里巴巴相关账号
-    'tencent',        // 腾讯相关账号
-    'baidu',          // 百度相关账号
-    // 可以根据实际情况添加更多国内开发者
-  ]);
-
-  // 国内服务判断：通过服务名称或包名包含中文相关信息
-  const chineseServices = servers.filter(server => {
-    // 检查创建者是否在国内开发者名单中
-    if (chineseCreators.has(server.creator.toLowerCase())) {
-      return true;
-    }
-    
-    // 检查服务名称或描述是否包含明显的中文服务（如Flomo等）
-    const lowerDisplayName = server.display_name.toLowerCase();
-    const lowerDescription = server.description.toLowerCase();
-    
-    return lowerDisplayName.includes('flomo') || 
-           lowerDescription.includes('flomo') ||
-           lowerDisplayName.includes('钉钉') ||
-           lowerDisplayName.includes('微信') ||
-           lowerDisplayName.includes('支付宝') ||
-           lowerDescription.includes('中国') ||
-           lowerDescription.includes('国内');
-  });
+  // 直接根据数据库标记统计国内服务
+  const domesticServers = servers.filter(server => server.is_domestic === true);
+  const internationalServers = servers.filter(server => server.is_domestic !== true);
 
   const stats = [
     { value: servers.length, label: "精选服务" },
@@ -104,7 +77,7 @@ export default function HomePage() {
       label: "优质开发者",
     },
     {
-      value: chineseServices.length,
+      value: domesticServers.length,
       label: "国内服务",
     },
   ];
@@ -260,6 +233,8 @@ export default function HomePage() {
                 loading={loading}
                 error={error}
                 servers={filteredServers}
+                domesticServers={filteredServers.filter(server => server.is_domestic === true)}
+                internationalServers={filteredServers.filter(server => server.is_domestic !== true)}
                 onClearFilters={handleClearFilters}
               />
             </Flex>

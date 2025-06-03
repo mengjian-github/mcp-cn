@@ -15,6 +15,7 @@ export const serverInfoSchema = z.object({
   tag: z.string().nullable(),
   introduction: z.string().url().nullable().optional(),
   type: z.number().nullable().describe('1: Platform, 2: Internal, Others: Public'),
+  is_domestic: z.boolean().default(false).describe('是否为国内服务'),
 });
 
 export type ServerInfo = z.infer<typeof serverInfoSchema>;

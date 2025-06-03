@@ -78,6 +78,7 @@ export const serverData: McpServerModel[] = [
     repository_id: "",
     package_url: "https://www.npmjs.com/package/mcp-server-flomo",
     creator: "xianminx",
+    is_domestic: true,
   },
   {
     connections:

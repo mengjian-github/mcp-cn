@@ -8,14 +8,14 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const qualifiedName = searchParams.get("qualifiedName") || "";
-    console.info("getMcpServerDetails params:", { qualifiedName });
+    const serverId = searchParams.get("serverId") || "";
+    console.info("getMcpServerDetails params:", { serverId });
 
     // 查询supabase
     const { data, error } = await supabase
       .from('mcp_server_metainfo')
       .select('*')
-      .eq('qualified_name', qualifiedName)
+      .eq('server_id', serverId)
       .single();
 
     console.log('data', JSON.parse(data.tools));

@@ -3,7 +3,7 @@
 import { ServerInfo, ServerTool } from "@/schema";
 import { Text } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { Breadcrumb } from "./components/breadcrumb";
 import { ServerHeader } from "./components/server-header";
@@ -19,7 +19,8 @@ import { TabsSection } from "./components/tabs-section";
 const ServerDetailPage: FC = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const packageName = pathname.split("/").pop() ?? "";
+  const { id } = useParams<{ id: string }>();
+  const serverId = id || "";
 
   const [server, setServer] = useState<ServerInfo | null>(null);
   const [tools, setTools] = useState<ServerTool[]>([]);
@@ -31,7 +32,7 @@ const ServerDetailPage: FC = () => {
    */
   const fetchServerDetail = async (): Promise<ServerInfo> => {
     const response = await fetch(
-      `/api/servers/get_details?qualifiedName=${packageName}`,
+      `/api/servers/get_details?serverId=${serverId}`,
     );
 
     if (!response.ok) {
@@ -51,7 +52,7 @@ const ServerDetailPage: FC = () => {
 
   // 使用 useQuery 请求服务器数据
   const serverQuery = useQuery({
-    queryKey: ["serverDetail", packageName],
+    queryKey: ["serverDetail", serverId],
     queryFn: fetchServerDetail,
     staleTime: 5 * 60 * 1000, // 数据5分钟内不会被标记为过期
     retry: 2, // 失败重试次数
@@ -87,7 +88,7 @@ const ServerDetailPage: FC = () => {
         
         const ogUrl = document.querySelector('meta[property="og:url"]');
         if (ogUrl) {
-          ogUrl.setAttribute('content', `https://mcp-cn.com/server/${packageName}`);
+          ogUrl.setAttribute('content', `https://mcp-cn.com/server/${serverId}`);
         }
       }
     }
@@ -99,7 +100,7 @@ const ServerDetailPage: FC = () => {
     serverQuery.isError,
     serverQuery.data,
     serverQuery.error,
-    packageName
+    serverId
   ]);
 
   /**
@@ -107,7 +108,7 @@ const ServerDetailPage: FC = () => {
    */
   const fetchTools = async (): Promise<ServerTool[]> => {
     const response = await fetch(
-      `/api/meta_info/get_tools?qualifiedName=${packageName}`,
+      `/api/meta_info/get_tools?serverId=${serverId}`,
     );
 
     if (!response.ok) {
@@ -129,7 +130,7 @@ const ServerDetailPage: FC = () => {
 
   // 使用 useQuery 请求工具数据
   const toolsQuery = useQuery({
-    queryKey: ["toolsData", packageName],
+    queryKey: ["toolsData", serverId],
     queryFn: fetchTools,
     staleTime: 5 * 60 * 1000, // 数据5分钟内不会被标记为过期
     retry: 2, // 失败重试次数
@@ -201,7 +202,7 @@ const ServerDetailPage: FC = () => {
             "@type": "SoftwareApplication",
             name: server.display_name,
             description: server.description,
-            url: `https://mcp-cn.com/server/${packageName}`,
+            url: `https://mcp-cn.com/server/${serverId}`,
             applicationCategory: "DeveloperApplication",
             operatingSystem: ["Windows", "macOS", "Linux"],
             softwareVersion: "latest",

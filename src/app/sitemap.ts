@@ -41,10 +41,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 动态生成服务器页面
   const serverPages: MetadataRoute.Sitemap = servers.map((server: any) => {
-    const packageName = server.package_url?.split('/').pop()?.replace('@', '').replace('/', '-') || server.qualified_name;
-    
     return {
-      url: `${baseUrl}/server/${packageName}`,
+      url: `${baseUrl}/server/${server.server_id}`,
       lastModified: new Date(server.updated_at || server.created_at),
       changeFrequency: 'weekly' as const,
       priority: 0.7,

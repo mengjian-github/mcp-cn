@@ -182,16 +182,16 @@ export const HomePageSEO: React.FC<{ stats?: any[] }> = ({ stats = [] }) => {
   );
 };
 
-export const ServerPageSEO: React.FC<{ server: any; packageName: string }> = ({ 
+export const ServerPageSEO: React.FC<{ server: any; serverId: string }> = ({ 
   server, 
-  packageName 
+  serverId 
 }) => {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: server.display_name,
     description: server.description,
-    url: `https://mcp-cn.com/server/${packageName}`,
+    url: `https://mcp-cn.com/server/${serverId}`,
     applicationCategory: "DeveloperApplication",
     operatingSystem: ["Windows", "macOS", "Linux"],
     author: {
@@ -219,7 +219,7 @@ export const ServerPageSEO: React.FC<{ server: any; packageName: string }> = ({
         'Claude',
         'Windsurf'
       ]}
-      canonical={`/server/${packageName}`}
+      canonical={`/server/${serverId}`}
       ogType="product"
       jsonLd={jsonLd}
     />

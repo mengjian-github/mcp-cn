@@ -114,7 +114,7 @@ export const ServerCard: FC<ServerCardProps> = ({
 
   return (
     <Link
-      href={`/server/${server.qualified_name}`}
+      href={`/server/${server.server_id}`}
       className={classNames(
         "w-full h-full rounded-xl shadow-sm border border-gray-200/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-100/50 hover:border-blue-200 hover:-translate-y-1 p-5 bg-white/90 backdrop-blur-sm cursor-pointer flex flex-col group",
         {

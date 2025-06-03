@@ -158,7 +158,7 @@ export default function HomePage() {
                 position: index + 1,
                 name: server.display_name,
                 description: server.description,
-                url: `https://mcp-cn.com/server/${getPackageName(server.package_url) || server.qualified_name}`,
+                url: `https://mcp-cn.com/server/${server.server_id}`,
                 applicationCategory: "DeveloperApplication",
                 author: {
                   "@type": "Person",

@@ -64,7 +64,6 @@
   },
   "dependencies": {
     "@docsearch/react": "^3.9.0",
-    "@lobehub/icons": "^2.0.0",
     "@modelcontextprotocol/sdk": "^1.1.1",
     "@monaco-editor/react": "4.7.0",
     "@next/mdx": "^15.3.1",
@@ -114,6 +113,7 @@
     "@types/react-dom": "^18.3.6",
     "@types/react-syntax-highlighter": "15.5.13",
     "autoprefixer": "^10.4.21",
+    "critters": "^0.0.25",
     "css-loader": "^7.1.2",
     "dotenv": "^16.5.0",
     "eslint-plugin-prettier": "~5.2.6",

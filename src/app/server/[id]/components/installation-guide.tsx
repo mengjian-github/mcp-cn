@@ -2,12 +2,12 @@
 
 import { ClientMonacoEditor } from "@/components/monaco-editor";
 import { ServerInfo } from "@/schema";
-import { Cline } from '@lobehub/icons';
 import * as Avatar from "@radix-ui/react-avatar";
 import * as Form from "@radix-ui/react-form";
 import { AnimatePresence, motion } from "motion/react";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
+import clinesPng from "@/assets/cline.png";
 import cursorPng from "@/assets/cursor.webp";
 import jsonSvg from "@/assets/json.svg";
 import macosPng from "@/assets/macos.png";
@@ -43,7 +43,14 @@ const platformTabs = [
     value: "cline",
     label: "Cline",
     icon: (
-      <Cline.Avatar size={16} />
+      <Avatar.Root className="w-4 h-4 rounded">
+        <Avatar.Image
+          className="h-full w-full object-cover"
+          src={clinesPng.src}
+          alt="Cline"
+        />
+        <Avatar.Fallback>C</Avatar.Fallback>
+      </Avatar.Root>
     ),
   },
   {

@@ -260,9 +260,7 @@
     "display_name": "Stripe",
     "description": "Stripe的MCP服务器，支持Stripe的读取和写入",
     "tag": "Stripe,支付,MCP",
-    "args": [
-      "--tools=all"
-    ],
+    "args": ["--tools=all"],
     "env": {
       "STRIPE_SECRET_KEY": "<YOUR_STRIPE_SECRET_KEY>"
     }
@@ -273,8 +271,8 @@
     "description": "Tencent EdgeOne Pages的MCP服务器，支持页面管理和部署",
     "tag": "页面部署,CDN,网站托管,云服务",
     "env": {
-        "EDGEONE_PAGES_API_TOKEN": "<YOUR_EDGEONE_PAGES_API_TOKEN>",
-        "EDGEONE_PAGES_PROJECT_NAME": "<YOUR_EDGEONE_PAGES_PROJECT_NAME>"
+      "EDGEONE_PAGES_API_TOKEN": "<YOUR_EDGEONE_PAGES_API_TOKEN>",
+      "EDGEONE_PAGES_PROJECT_NAME": "<YOUR_EDGEONE_PAGES_PROJECT_NAME>"
     }
   },
   {
@@ -378,5 +376,52 @@
       "FEISHU_APP_SECRET": "<YOUR_FEISHU_APP_SECRET>"
     },
     "args": ["--stdio"]
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@jinzcdev/leetcode-mcp-server",
+    "display_name": "LeetCode",
+    "description": "LeetCode的MCP服务器，支持LeetCode的读取和写入",
+    "tag": "LeetCode,MCP,LeetCode,编程",
+    "env": {
+      "LEETCODE_SITE": "global",
+      "LEETCODE_SESSION": "<YOUR_LEETCODE_SESSION_COOKIE>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/bilibili-mcp",
+    "display_name": "Bilibili",
+    "description": "Bilibili的MCP服务器，支持Bilibili的内容搜索",
+    "tag": "Bilibili,MCP,Bilibili,视频"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@wangmhaha/apifox-mcp-server",
+    "display_name": "Apifox",
+    "description": "Apifox的MCP服务器，支持Apifox的读取和写入",
+    "tag": "Apifox,MCP,Apifox,API",
+    "args": ["--local"],
+    "env": {
+      "APIFOX_API_KEY": "<your-apifox-api-key>",
+      "PROJECT_ID": "<your-project-id>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/mcp-server-weread",
+    "display_name": "微信读书",
+    "description": "微信读书的MCP服务器，支持微信读书的读取和写入",
+    "tag": "微信读书,MCP,微信读书,阅读",
+    "env": {
+      "CC_URL": "https://cc.chenge.ink",
+      "CC_ID": "<your-id>",
+      "CC_PASSWORD": "<your-password>"
+    }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/jimeng-mcp",
+    "display_name": "即梦AI图像生成服务",
+    "description": "即梦AI图像生成服务的MCP服务器，支持即梦AI图像生成服务",
+    "tag": "即梦AI图像生成服务,MCP,即梦AI图像生成服务,AI",
+    "env": {
+      "JIMENG_API_TOKEN": "<your-api-token>"
+    }
   }
 ]

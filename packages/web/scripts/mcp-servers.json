@@ -423,5 +423,11 @@
     "env": {
       "JIMENG_API_TOKEN": "<your-api-token>"
     }
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/@gongrzhe/server-gmail-autoauth-mcp",
+    "display_name": "Gmail AutoAuth",
+    "description": "Gmail AutoAuth的MCP服务器，支持Gmail AutoAuth的读取和写入",
+    "tag": "Gmail,MCP,Gmail,邮件"
   }
 ]

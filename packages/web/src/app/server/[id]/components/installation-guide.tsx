@@ -235,8 +235,7 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
 
   const isStdio = useMemo(() => {
     try {
-      const connections = JSON.parse(server.connections) as { type: string }[];
-      return connections[0]?.type === "stdio";
+      return server.connections[0]?.type === "stdio";
     } catch (error) {
       console.error("isStdio error", error);
       return false;
@@ -245,11 +244,7 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
 
   const envsKeys = useMemo(() => {
     try {
-      const connections = JSON.parse(server.connections) as {
-        type: string;
-        config: { env?: Record<string, string> };
-      }[];
-      return Object.keys(connections[0]?.config?.env ?? {});
+      return Object.keys(server.connections[0]?.config?.env ?? {});
     } catch (error) {
       console.error("envsKeys error", error);
       return [];

@@ -1,7 +1,14 @@
 import { z } from 'zod';
 
 export const serverInfoSchema = z.object({
-  connections: z.string(),
+  connections: z.array(z.object({
+    type: z.string(),
+    config: z.object({
+      args: z.array(z.string()),
+      command: z.string(),
+      env: z.record(z.string(), z.string()).optional(),
+    }),
+  })),
   created_at: z.string().datetime(),
   creator: z.string(),
   description: z.string(),

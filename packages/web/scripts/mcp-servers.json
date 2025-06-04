@@ -260,6 +260,9 @@
     "display_name": "Stripe",
     "description": "Stripe的MCP服务器，支持Stripe的读取和写入",
     "tag": "Stripe,支付,MCP",
+    "args": [
+      "--tools=all"
+    ],
     "env": {
       "STRIPE_SECRET_KEY": "<YOUR_STRIPE_SECRET_KEY>"
     }

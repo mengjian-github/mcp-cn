@@ -82,6 +82,27 @@ pnpm clean            # 清理构建产物
 4. 推送分支 (`git push origin feature/AmazingFeature`)
 5. 创建 Pull Request
 
+## 👥 贡献者
+
+感谢所有为项目做出贡献的开发者们！
+
+<div align="center">
+
+<a href="https://github.com/mengjian-github">
+  <img src="https://github.com/mengjian-github.png" width="50" height="50" style="border-radius: 50%; margin: 5px;" alt="mengjian-github">
+</a>
+<a href="https://github.com/Zwe1">
+  <img src="https://github.com/Zwe1.png" width="50" height="50" style="border-radius: 50%; margin: 5px;" alt="Zwe1">
+</a>
+<a href="https://github.com/ylx911229">
+  <img src="https://github.com/ylx911229.png" width="50" height="50" style="border-radius: 50%; margin: 5px;" alt="ylx911229">
+</a>
+<a href="https://github.com/reekystive">
+  <img src="https://github.com/reekystive.png" width="50" height="50" style="border-radius: 50%; margin: 5px;" alt="reekystive">
+</a>
+
+</div>
+
 ## 📞 联系我们
 
 <div align="center">

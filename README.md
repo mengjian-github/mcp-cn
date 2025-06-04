@@ -84,22 +84,50 @@ pnpm clean            # 清理构建产物
 
 ## 👥 贡献者
 
-感谢所有为项目做出贡献的开发者们！
-
 <div align="center">
 
+### 🌟 感谢所有为 MCP Hub 中国做出贡献的优秀开发者们！
+
+<br>
+
+<table align="center">
+<tr>
+<td align="center" width="120">
 <a href="https://github.com/mengjian-github">
-  <img src="https://github.com/mengjian-github.png" width="50" height="50" style="border-radius: 50%; margin: 5px;" alt="mengjian-github">
+<img src="https://github.com/mengjian-github.png" width="80" height="80" style="border-radius: 50%;" alt="mengjian-github"><br>
+<sub><b>孟健</b></sub><br>
+<sub>项目发起人</sub>
 </a>
+</td>
+<td align="center" width="120">
 <a href="https://github.com/Zwe1">
-  <img src="https://github.com/Zwe1.png" width="50" height="50" style="border-radius: 50%; margin: 5px;" alt="Zwe1">
+<img src="https://github.com/Zwe1.png" width="80" height="80" style="border-radius: 50%;" alt="Zwe1"><br>
+<sub><b>Zwe1</b></sub><br>
+<sub>核心贡献者</sub>
 </a>
+</td>
+<td align="center" width="120">
 <a href="https://github.com/ylx911229">
-  <img src="https://github.com/ylx911229.png" width="50" height="50" style="border-radius: 50%; margin: 5px;" alt="ylx911229">
+<img src="https://github.com/ylx911229.png" width="80" height="80" style="border-radius: 50%;" alt="ylx911229"><br>
+<sub><b>ylx911229</b></sub><br>
+<sub>核心贡献者</sub>
 </a>
+</td>
+<td align="center" width="120">
 <a href="https://github.com/reekystive">
-  <img src="https://github.com/reekystive.png" width="50" height="50" style="border-radius: 50%; margin: 5px;" alt="reekystive">
+<img src="https://github.com/reekystive.png" width="80" height="80" style="border-radius: 50%;" alt="reekystive"><br>
+<sub><b>reekystive</b></sub><br>
+<sub>核心贡献者</sub>
 </a>
+</td>
+</tr>
+</table>
+
+<br>
+
+**💖 每一份贡献都让这个项目变得更好！**
+
+想加入我们吗？[查看贡献指南](./CONTRIBUTING.md) 开始你的开源之旅！
 
 </div>
 

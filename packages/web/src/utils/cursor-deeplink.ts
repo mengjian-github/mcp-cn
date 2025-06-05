@@ -116,9 +116,9 @@ export function formatServerNameForDeeplink(qualifiedName: string, displayName?:
     return 'Unknown Server';
   }
 
-  // 如果有displayName，优先使用它（移除特殊字符但保留空格）
+  // 如果有displayName，优先使用它（移除特殊字符但保留空格和中文）
   if (displayName && displayName.trim()) {
-    const formatted = displayName.trim().replace(/[^\w\s\-]/g, '').substring(0, 50);
+    const formatted = displayName.trim().replace(/[^\w\s\-\u4e00-\u9fa5]/g, '').substring(0, 50);
     return formatted || 'Unknown Server';
   }
   
@@ -130,7 +130,7 @@ export function formatServerNameForDeeplink(qualifiedName: string, displayName?:
   const formatted = simpleName
     .replace(/[-_]/g, ' ')
     .replace(/\b\w/g, l => l.toUpperCase())
-    .replace(/[^\w\s]/g, '')
+    .replace(/[^\w\s\u4e00-\u9fa5]/g, '')
     .substring(0, 50)
     .trim();
     

@@ -241,6 +241,7 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
 
   // 处理一键安装到Cursor
   const handleOneClickInstall = async () => {
+    debugger;
     try {
       // 验证必要参数
       if (!server?.qualified_name) {

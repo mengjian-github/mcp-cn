@@ -27,6 +27,20 @@ interface InstallationGuideProps {
 
 const platformTabs = [
   {
+    value: "cursor",
+    label: "Cursor",
+    icon: (
+      <Avatar.Root className="w-4 h-4 rounded">
+        <Avatar.Image
+          className="h-full w-full object-cover"
+          src={cursorPng.src}
+          alt="Avatar"
+        />
+        <Avatar.Fallback>C</Avatar.Fallback>
+      </Avatar.Root>
+    ),
+  },
+  {
     value: "trae",
     label: "Trae CN",
     icon: (
@@ -48,20 +62,6 @@ const platformTabs = [
           className="h-full w-full object-cover"
           src={clinesPng.src}
           alt="Cline"
-        />
-        <Avatar.Fallback>C</Avatar.Fallback>
-      </Avatar.Root>
-    ),
-  },
-  {
-    value: "cursor",
-    label: "Cursor",
-    icon: (
-      <Avatar.Root className="w-4 h-4 rounded">
-        <Avatar.Image
-          className="h-full w-full object-cover"
-          src={cursorPng.src}
-          alt="Avatar"
         />
         <Avatar.Fallback>C</Avatar.Fallback>
       </Avatar.Root>

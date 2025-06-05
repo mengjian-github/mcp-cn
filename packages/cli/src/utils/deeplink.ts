@@ -59,9 +59,23 @@ export function generateMCPConfig(
 
 /**
  * 格式化服务器名称用于深链接
- * 移除特殊字符，确保兼容性
+ * 优先使用display_name，如果不可用则使用qualified_name的简化版本
  */
-export function formatServerNameForDeeplink(qualifiedName: string): string {
-  // 移除特殊字符，保留字母、数字、连字符和下划线
-  return qualifiedName.replace(/[^a-zA-Z0-9\-_]/g, '-');
+export function formatServerNameForDeeplink(qualifiedName: string, displayName?: string): string {
+  // 如果有displayName，优先使用它（移除特殊字符但保留空格）
+  if (displayName && displayName.trim()) {
+    return displayName.trim().replace(/[^\w\s\-]/g, '').substring(0, 50);
+  }
+  
+  // 否则使用qualified_name的简化版本
+  // 移除包前缀，只保留最后的名称部分
+  const simpleName = qualifiedName.split('/').pop() || qualifiedName;
+  
+  // 转换为友好格式：将连字符和下划线转换为空格，并进行首字母大写
+  return simpleName
+    .replace(/[-_]/g, ' ')
+    .replace(/\b\w/g, l => l.toUpperCase())
+    .replace(/[^\w\s]/g, '')
+    .substring(0, 50)
+    .trim();
 } 

@@ -26,7 +26,7 @@ export async function generateDeeplink(
     verbose(`MCP config generated: ${JSON.stringify(mcpConfig, null, 2)}`);
 
     // 格式化服务器名称
-    const serverName = formatServerNameForDeeplink(qualifiedName);
+    const serverName = formatServerNameForDeeplink(qualifiedName, server.data.displayName);
     verbose(`Server name formatted: ${serverName}`);
 
     // 生成深链接

@@ -258,7 +258,7 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
       const mcpConfig = generateMCPConfig(server.qualified_name, envConfig, activeOS);
       
       // 格式化服务器名称
-      const serverName = formatServerNameForDeeplink(server.qualified_name);
+      const serverName = formatServerNameForDeeplink(server.qualified_name, server.display_name);
       
       // 生成深链接
       const deeplink = generateCursorDeeplink(serverName, mcpConfig);

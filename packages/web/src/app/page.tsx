@@ -6,6 +6,7 @@ import { Flex } from "@radix-ui/themes";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { ContentArea } from "./components/content-area";
 import { HeroSection } from "./components/hero-section";
+import { OneClickInstallBanner } from "./components/one-click-install-banner";
 
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -218,6 +219,7 @@ export default function HomePage() {
       />
 
       <div className="relative min-h-screen">
+        <OneClickInstallBanner />
         <HeroSection
           title="MCP Hub 中国"
           description="不追求大而全，只推荐最优质的 MCP 服务。每一个工具都经过精心筛选，让 AI 应用真正强大。"

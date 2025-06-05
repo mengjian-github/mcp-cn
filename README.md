@@ -23,11 +23,29 @@ MCP Hub 中国是一个专注于精选优质 MCP 服务的 Monorepo 项目，包
 
 ## 🚀 快速开始
 
-### 环境要求
-- Node.js 18+ 
-- pnpm 8+
+### 🎯 Cursor 一键安装（推荐）
 
-### 安装使用
+如果你使用 Cursor IDE，可以享受最便捷的安装体验：
+
+1. 访问 [MCP Hub 中国](https://mcp-cn.com)
+2. 找到你需要的 MCP 服务
+3. 点击 ⚡ 一键安装按钮
+4. Cursor 会自动打开并配置服务
+
+### 🛠️ CLI 工具安装
+
+```bash
+# 全局安装 CLI 工具
+npm install -g @mcp_hub_org/cli
+
+# 安装 MCP 服务到 Cursor
+mcp install sequential-thinking --client cursor
+
+# 生成 Cursor 深链接
+mcp deeplink sequential-thinking --platform mac
+```
+
+### 💻 本地开发
 
 ```bash
 # 克隆项目

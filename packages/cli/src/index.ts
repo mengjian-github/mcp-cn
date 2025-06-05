@@ -8,6 +8,7 @@ import { setVerbose, verbose } from './logger';
 import { run } from './commands/run/index';
 import { uninstallServer } from './commands/uninstall';
 import { showHelp } from './commands/help';
+import { generateDeeplink, showDeeplinkHelp } from './commands/deeplink';
 import { incrementUseCount } from './api';
 
 const command = process.argv[2];
@@ -15,6 +16,7 @@ const argument = process.argv[3];
 const clientFlag = process.argv.indexOf('--client');
 const configFlag = process.argv.indexOf('--env');
 const keyFlag = process.argv.indexOf('--key');
+const platformFlag = process.argv.indexOf('--platform');
 const verboseFlag = process.argv.includes('--verbose');
 const helpFlag = process.argv.includes('--help');
 
@@ -28,8 +30,8 @@ if (helpFlag || !command) {
 }
 
 const validateClient = (command: string, clientFlag: number): ValidClient | undefined => {
-  /* Run, inspect, and list commands don't need client validation */
-  if (['run', 'list', 'help'].includes(command)) {
+  /* Run, inspect, list, deeplink and help commands don't need client validation */
+  if (['run', 'list', 'help', 'deeplink'].includes(command)) {
     return undefined;
   }
 
@@ -72,6 +74,12 @@ const config: Record<string, string> =
 /* sets to undefined if no key given */
 const apiKey: string | undefined = keyFlag !== -1 ? process.argv[keyFlag + 1] : undefined;
 
+/* sets platform, defaults to mac */
+const platform: 'mac' | 'windows' | 'linux' = 
+  platformFlag !== -1 ? 
+    (process.argv[platformFlag + 1] as 'mac' | 'windows' | 'linux') || 'mac' : 
+    'mac';
+
 async function main() {
   switch (command) {
     case 'help':
@@ -103,6 +111,14 @@ async function main() {
       break;
     case 'list':
       await list(argument);
+      break;
+    case 'deeplink':
+      if (!argument) {
+        showDeeplinkHelp();
+        process.exit(0);
+      }
+      incrementUseCount(argument);
+      await generateDeeplink(argument, config, platform);
       break;
     default:
       showHelp();

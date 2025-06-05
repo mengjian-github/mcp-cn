@@ -52,6 +52,7 @@ const createCommandTable = () => {
     [chalk.cyan('install <MCP Server ID>'), '安装 MCP Server 到指定客户端'],
     [chalk.cyan('uninstall <MCP Server ID>'), '从指定客户端卸载 MCP Server'],
     [chalk.cyan('run <MCP Server ID>'), '直接运行指定 MCP Server'],
+    [chalk.cyan('deeplink <MCP Server ID>'), '生成 Cursor 一键安装深链接'],
     [chalk.cyan('list'), '列出所有可用的客户端'],
     [chalk.cyan('help'), '显示帮助信息'],
   );
@@ -89,6 +90,7 @@ const createOptionsTable = () => {
     [{ colSpan: 2, content: chalk.magenta.bold('选项') }],
     [chalk.cyan('--client, -c <客户端>'), '指定目标 MCP 客户端'],
     [chalk.cyan('--env <JSON>'), '提供 JSON 格式的环境变量'],
+    [chalk.cyan('--platform <平台>'), '指定操作系统平台 (mac|windows|linux)'],
     // [chalk.cyan('--key <密钥>'), '提供 API 密钥'],
     [chalk.cyan('--help, -h'), '显示帮助信息'],
   );
@@ -127,6 +129,7 @@ const createExamplesTable = () => {
     [chalk.dim('$ ') + chalk.cyan('mcp install sequential-thinking --client cursor')],
     [chalk.dim('$ ') + chalk.cyan('mcp uninstall sequential-thinking --client cursor')],
     [chalk.dim('$ ') + chalk.cyan('mcp run sequential-thinking')],
+    [chalk.dim('$ ') + chalk.cyan('mcp deeplink sequential-thinking --platform mac')],
     [chalk.dim('$ ') + chalk.cyan('mcp list')],
   );
 

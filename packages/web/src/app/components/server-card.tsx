@@ -2,11 +2,13 @@
 
 import { ServerInfo } from "@/schema";
 import { trackPageClick } from "@/tracks";
-import { getPackageName } from "@/utils";
+import { getPackageName, generateCursorDeeplink, generateMCPConfig, formatServerNameForDeeplink, openCursorDeeplink, isCursorDeeplinkSupported } from "@/utils";
 import * as Avatar from "@radix-ui/react-avatar";
 import classNames from "classnames";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
+import { motion } from "motion/react";
+import toast from "react-hot-toast";
 // 获取标签数量
 const TAG_COUNT = 2;
 
@@ -87,6 +89,13 @@ export const ServerCard: FC<ServerCardProps> = ({
   server,
   highlight = false,
 }) => {
+  const [isDeeplinkSupported, setIsDeeplinkSupported] = useState(false);
+
+  // 检查是否支持深链接
+  useEffect(() => {
+    setIsDeeplinkSupported(isCursorDeeplinkSupported());
+  }, []);
+
   /**
    * 处理卡片点击事件
    */
@@ -96,6 +105,41 @@ export const ServerCard: FC<ServerCardProps> = ({
       server_id: server.server_id,
       server_name: server.display_name,
     });
+  };
+
+  /**
+   * 处理一键安装到Cursor
+   */
+  const handleQuickInstall = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    try {
+      // 生成MCP配置（不包含环境变量，因为卡片上无法配置）
+      const mcpConfig = generateMCPConfig(server.qualified_name, {}, 'mac');
+      
+      // 格式化服务器名称
+      const serverName = formatServerNameForDeeplink(server.qualified_name);
+      
+      // 生成深链接
+      const deeplink = generateCursorDeeplink(serverName, mcpConfig);
+      
+      // 打开深链接
+      const success = await openCursorDeeplink(deeplink);
+      
+      if (success) {
+        toast.success(`正在在Cursor中安装 ${server.display_name}...`);
+        trackPageClick("server_card_quick_install", {
+          server_id: server.server_id,
+          server_name: server.display_name,
+        });
+      } else {
+        toast.error("无法打开Cursor，请检查是否已安装Cursor");
+      }
+    } catch (error) {
+      console.error("Quick install failed:", error);
+      toast.error("一键安装失败，请进入详情页手动安装");
+    }
   };
 
   /**
@@ -123,24 +167,41 @@ export const ServerCard: FC<ServerCardProps> = ({
       )}
       onClick={handleCardClick}
     >
-      <div className="flex items-center mb-4">
-        <Avatar.Root className="mr-3 flex-shrink-0 inline-flex h-[50px] w-[50px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
-          {server.logo ? (
-            <Avatar.Image
-              className="h-[85%] w-[85%] object-contain bg-gray-50 border border-gray-200 rounded-full m-auto"
-              src={server.logo}
-              alt={serverName}
-            />
-          ) : (
-            <Avatar.Fallback
-              className="flex h-full w-full items-center justify-center text-white text-2xl font-bold"
-              style={{ backgroundColor: avatarColor }}
-            >
-              {avatarText}
-            </Avatar.Fallback>
-          )}
-        </Avatar.Root>
-        <span className="text-lg font-semibold truncate text-gray-800 group-hover:text-blue-600 transition-colors duration-200">{serverName}</span>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center flex-1 min-w-0">
+          <Avatar.Root className="mr-3 flex-shrink-0 inline-flex h-[50px] w-[50px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+            {server.logo ? (
+              <Avatar.Image
+                className="h-[85%] w-[85%] object-contain bg-gray-50 border border-gray-200 rounded-full m-auto"
+                src={server.logo}
+                alt={serverName}
+              />
+            ) : (
+              <Avatar.Fallback
+                className="flex h-full w-full items-center justify-center text-white text-2xl font-bold"
+                style={{ backgroundColor: avatarColor }}
+              >
+                {avatarText}
+              </Avatar.Fallback>
+            )}
+          </Avatar.Root>
+          <span className="text-lg font-semibold truncate text-gray-800 group-hover:text-blue-600 transition-colors duration-200">{serverName}</span>
+        </div>
+        
+        {/* Cursor一键安装按钮 */}
+        {isDeeplinkSupported && (
+          <motion.button
+            className="ml-2 p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+            onClick={handleQuickInstall}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            title="在Cursor中一键安装"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </motion.button>
+        )}
       </div>
       <div className="flex flex-col flex-grow">
         <span className="text-sm text-gray-500 truncate mb-2 font-[12px]">

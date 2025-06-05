@@ -14,7 +14,7 @@ import macosPng from "@/assets/macos.png";
 import npmPng from "@/assets/npm.png";
 import windsurfSvg from "@/assets/windsurf.svg";
 import { Tabs } from "@/components/tabs";
-import { getPackageName } from "@/utils";
+import { getPackageName, generateCursorDeeplink, generateMCPConfig, formatServerNameForDeeplink, openCursorDeeplink, isCursorDeeplinkSupported } from "@/utils";
 import toast from "react-hot-toast";
 import { ClientType, PlatformType } from "../interfaces";
 import { trackInstallation } from "../tracks";
@@ -135,6 +135,7 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
   const [envArgsStr, setEnvArgsStr] = useState<string>("");
   const [hasClickConnect, setHasClickConnect] = useState(false);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
+  const [isDeeplinkSupported, setIsDeeplinkSupported] = useState(false);
 
   // 本地环境变量缓存数据
   const cacheServerEnv = useMemo<
@@ -150,6 +151,11 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
   }, []);
 
   const packageName = getPackageName(server.package_url);
+
+  // 检查是否支持深链接
+  useEffect(() => {
+    setIsDeeplinkSupported(isCursorDeeplinkSupported());
+  }, []);
 
   useEffect(() => {
     // 直接获取对应服务的环境变量并设置表单
@@ -231,6 +237,48 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
   const copyToClipboard = (text: string, successMessage: string) => {
     void navigator.clipboard.writeText(text);
     toast.success(successMessage);
+  };
+
+  // 处理一键安装到Cursor
+  const handleOneClickInstall = async () => {
+    try {
+      // 解析环境变量配置
+      let envConfig: Record<string, string> = {};
+      if (envArgsStr) {
+        try {
+          envConfig = JSON.parse(envArgsStr) as Record<string, string>;
+        } catch (error) {
+          console.error("Invalid env config JSON:", error);
+          toast.error("环境变量配置格式错误");
+          return;
+        }
+      }
+
+      // 生成MCP配置
+      const mcpConfig = generateMCPConfig(server.qualified_name, envConfig, activeOS);
+      
+      // 格式化服务器名称
+      const serverName = formatServerNameForDeeplink(server.qualified_name);
+      
+      // 生成深链接
+      const deeplink = generateCursorDeeplink(serverName, mcpConfig);
+      
+      // 打开深链接
+      const success = await openCursorDeeplink(deeplink);
+      
+      if (success) {
+        toast.success("正在打开Cursor进行安装...");
+        trackInstallation({
+          client: "cursor",
+          click_name: "one_click_install",
+        });
+      } else {
+        toast.error("无法打开Cursor，请检查是否已安装Cursor");
+      }
+    } catch (error) {
+      console.error("One-click install failed:", error);
+      toast.error("一键安装失败，请使用手动安装方式");
+    }
   };
 
   const isStdio = useMemo(() => {
@@ -317,6 +365,31 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
           {packageName}
         </a>
       </p>
+
+      {/* Cursor一键安装提示 */}
+      {activePlatform === 'cursor' && isDeeplinkSupported && (
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <svg className="w-5 h-5 mr-2 text-blue-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <div>
+                <p className="text-sm font-medium text-blue-800">支持Cursor一键安装</p>
+                <p className="text-xs text-blue-600">直接在Cursor中配置MCP服务，无需手动编辑配置文件</p>
+              </div>
+            </div>
+            <motion.button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-sm font-medium transition-colors"
+              onClick={handleOneClickInstall}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              一键安装
+            </motion.button>
+          </div>
+        </div>
+      )}
 
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
         {/* 客户端选择器 */}

@@ -21,8 +21,41 @@ export function generateCursorDeeplink(
   serverName: string,
   config: Record<string, any>
 ): string {
+  // 验证参数
+  if (!serverName || serverName.trim() === '') {
+    throw new Error('Server name is required for deeplink generation');
+  }
+  
+  if (!config || typeof config !== 'object') {
+    throw new Error('Config object is required for deeplink generation');
+  }
+
+  // 确保 serverName 不为空
+  const cleanServerName = serverName.trim();
+  if (cleanServerName === '') {
+    throw new Error('Server name cannot be empty');
+  }
+
   const encodedConfig = encodeConfigToBase64(config);
-  return `cursor://anysphere.cursor-deeplink/mcp/install?name=${encodeURIComponent(serverName)}&config=${encodedConfig}`;
+  
+  // 验证编码后的配置不为空
+  if (!encodedConfig) {
+    throw new Error('Failed to encode config');
+  }
+
+  const deeplink = `cursor://anysphere.cursor-deeplink/mcp/install?name=${encodeURIComponent(cleanServerName)}&config=${encodedConfig}`;
+  
+  // 调试输出（仅在开发环境）
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Generated deeplink:', {
+      serverName: cleanServerName,
+      config,
+      encodedConfig: encodedConfig.substring(0, 100) + '...',
+      deeplink: deeplink.substring(0, 200) + '...'
+    });
+  }
+  
+  return deeplink;
 }
 
 /**
@@ -98,15 +131,20 @@ export async function openCursorDeeplink(deeplink: string): Promise<boolean> {
 
 /**
  * 格式化服务器名称用于深链接
- * 确保生成的名称只包含英文字符，不包含中文
+ * 优先使用display_name，如果不可用则使用qualified_name的简化版本
  */
 export function formatServerNameForDeeplink(qualifiedName: string, displayName?: string): string {
-  // 检查displayName是否只包含英文字符（字母、数字、空格、连字符）
-  const isEnglishOnly = (str: string) => /^[a-zA-Z0-9\s\-_.]+$/.test(str);
-  
-  // 如果有displayName且为纯英文，优先使用它
-  if (displayName && displayName.trim() && isEnglishOnly(displayName)) {
-    return displayName.trim().replace(/[^\w\s\-]/g, '').substring(0, 50);
+  // 验证输入参数
+  if (!qualifiedName || qualifiedName.trim() === '') {
+    throw new Error('Qualified name is required');
+  }
+
+  // 如果有displayName，优先使用它（移除特殊字符但保留空格）
+  if (displayName && displayName.trim()) {
+    const formattedDisplayName = displayName.trim().replace(/[^\w\s\-]/g, '').substring(0, 50).trim();
+    if (formattedDisplayName) {
+      return formattedDisplayName;
+    }
   }
   
   // 否则使用qualified_name的简化版本
@@ -114,10 +152,18 @@ export function formatServerNameForDeeplink(qualifiedName: string, displayName?:
   const simpleName = qualifiedName.split('/').pop() || qualifiedName;
   
   // 转换为友好格式：将连字符和下划线转换为空格，并进行首字母大写
-  return simpleName
+  const formattedName = simpleName
     .replace(/[-_]/g, ' ')
     .replace(/\b\w/g, l => l.toUpperCase())
     .replace(/[^\w\s]/g, '')
     .substring(0, 50)
     .trim();
+
+  // 确保不返回空字符串
+  if (!formattedName) {
+    // 如果格式化后为空，使用原始的qualified_name作为后备
+    return qualifiedName.replace(/[^\w\-]/g, '-').substring(0, 50);
+  }
+
+  return formattedName;
 } 

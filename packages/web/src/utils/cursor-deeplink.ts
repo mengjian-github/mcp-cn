@@ -98,11 +98,14 @@ export async function openCursorDeeplink(deeplink: string): Promise<boolean> {
 
 /**
  * 格式化服务器名称用于深链接
- * 优先使用display_name，如果不可用则使用qualified_name的简化版本
+ * 确保生成的名称只包含英文字符，不包含中文
  */
 export function formatServerNameForDeeplink(qualifiedName: string, displayName?: string): string {
-  // 如果有displayName，优先使用它（移除特殊字符但保留空格）
-  if (displayName && displayName.trim()) {
+  // 检查displayName是否只包含英文字符（字母、数字、空格、连字符）
+  const isEnglishOnly = (str: string) => /^[a-zA-Z0-9\s\-_.]+$/.test(str);
+  
+  // 如果有displayName且为纯英文，优先使用它
+  if (displayName && displayName.trim() && isEnglishOnly(displayName)) {
     return displayName.trim().replace(/[^\w\s\-]/g, '').substring(0, 50);
   }
   

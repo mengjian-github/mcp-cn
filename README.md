@@ -120,6 +120,20 @@ pnpm clean            # 清理构建产物
 <sub>核心贡献者</sub>
 </a>
 </td>
+<td align="center" width="120">
+<a href="https://github.com/XiaogeAIBreaker">
+<img src="https://github.com/XiaogeAIBreaker.png" width="80" height="80" style="border-radius: 50%;" alt="XiaogeAIBreaker"><br>
+<sub><b>XiaogeAIBreaker</b></sub><br>
+<sub>贡献者</sub>
+</a>
+</td>
+<td align="center" width="120">
+<a href="https://github.com/MycodeHero">
+<img src="https://github.com/MycodeHero.png" width="80" height="80" style="border-radius: 50%;" alt="MycodeHero"><br>
+<sub><b>MycodeHero</b></sub><br>
+<sub>贡献者</sub>
+</a>
+</td>
 </tr>
 </table>
 

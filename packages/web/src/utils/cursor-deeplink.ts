@@ -22,40 +22,16 @@ export function generateCursorDeeplink(
   config: Record<string, any>
 ): string {
   // 验证参数
-  if (!serverName || serverName.trim() === '') {
-    throw new Error('Server name is required for deeplink generation');
+  if (!serverName || typeof serverName !== 'string' || !serverName.trim()) {
+    throw new Error('Missing "name" parameter in deep link: serverName is required and must be a non-empty string');
   }
   
-  if (!config || typeof config !== 'object') {
-    throw new Error('Config object is required for deeplink generation');
-  }
-
-  // 确保 serverName 不为空
-  const cleanServerName = serverName.trim();
-  if (cleanServerName === '') {
-    throw new Error('Server name cannot be empty');
+  if (!config || typeof config !== 'object' || Object.keys(config).length === 0) {
+    throw new Error('Missing "config" parameter in deep link: config is required and must be a non-empty object');
   }
 
   const encodedConfig = encodeConfigToBase64(config);
-  
-  // 验证编码后的配置不为空
-  if (!encodedConfig) {
-    throw new Error('Failed to encode config');
-  }
-
-  const deeplink = `cursor://anysphere.cursor-deeplink/mcp/install?name=${encodeURIComponent(cleanServerName)}&config=${encodedConfig}`;
-  
-  // 调试输出（仅在开发环境）
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Generated deeplink:', {
-      serverName: cleanServerName,
-      config,
-      encodedConfig: encodedConfig.substring(0, 100) + '...',
-      deeplink: deeplink.substring(0, 200) + '...'
-    });
-  }
-  
-  return deeplink;
+  return `cursor://anysphere.cursor-deeplink/mcp/install?name=${encodeURIComponent(serverName.trim())}&config=${encodedConfig}`;
 }
 
 /**
@@ -135,16 +111,15 @@ export async function openCursorDeeplink(deeplink: string): Promise<boolean> {
  */
 export function formatServerNameForDeeplink(qualifiedName: string, displayName?: string): string {
   // 验证输入参数
-  if (!qualifiedName || qualifiedName.trim() === '') {
-    throw new Error('Qualified name is required');
+  if (!qualifiedName || typeof qualifiedName !== 'string') {
+    console.error('formatServerNameForDeeplink: qualifiedName is required and must be a string');
+    return 'Unknown Server';
   }
 
   // 如果有displayName，优先使用它（移除特殊字符但保留空格）
   if (displayName && displayName.trim()) {
-    const formattedDisplayName = displayName.trim().replace(/[^\w\s\-]/g, '').substring(0, 50).trim();
-    if (formattedDisplayName) {
-      return formattedDisplayName;
-    }
+    const formatted = displayName.trim().replace(/[^\w\s\-]/g, '').substring(0, 50);
+    return formatted || 'Unknown Server';
   }
   
   // 否则使用qualified_name的简化版本
@@ -152,18 +127,12 @@ export function formatServerNameForDeeplink(qualifiedName: string, displayName?:
   const simpleName = qualifiedName.split('/').pop() || qualifiedName;
   
   // 转换为友好格式：将连字符和下划线转换为空格，并进行首字母大写
-  const formattedName = simpleName
+  const formatted = simpleName
     .replace(/[-_]/g, ' ')
     .replace(/\b\w/g, l => l.toUpperCase())
     .replace(/[^\w\s]/g, '')
     .substring(0, 50)
     .trim();
-
-  // 确保不返回空字符串
-  if (!formattedName) {
-    // 如果格式化后为空，使用原始的qualified_name作为后备
-    return qualifiedName.replace(/[^\w\-]/g, '-').substring(0, 50);
-  }
-
-  return formattedName;
+    
+  return formatted || simpleName || 'Unknown Server';
 } 

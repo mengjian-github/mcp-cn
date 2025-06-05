@@ -242,9 +242,16 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
   // 处理一键安装到Cursor
   const handleOneClickInstall = async () => {
     try {
+      // 验证必要参数
+      if (!server?.qualified_name) {
+        console.error("Server qualified_name is missing:", server);
+        toast.error("服务器信息未完全加载，请稍后再试");
+        return;
+      }
+
       // 解析环境变量配置
       let envConfig: Record<string, string> = {};
-      if (envArgsStr) {
+      if (envArgsStr && envArgsStr.trim()) {
         try {
           envConfig = JSON.parse(envArgsStr) as Record<string, string>;
         } catch (error) {
@@ -256,12 +263,28 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
 
       // 生成MCP配置
       const mcpConfig = generateMCPConfig(server.qualified_name, envConfig, activeOS);
+      console.log("Generated MCP config:", mcpConfig);
       
       // 格式化服务器名称
       const serverName = formatServerNameForDeeplink(server.qualified_name, server.display_name);
+      console.log("Formatted server name:", serverName);
+      
+      // 验证生成的参数
+      if (!serverName || !serverName.trim()) {
+        console.error("Server name is empty after formatting");
+        toast.error("服务器名称格式化失败，请稍后再试");
+        return;
+      }
+
+      if (!mcpConfig || Object.keys(mcpConfig).length === 0) {
+        console.error("MCP config is empty");
+        toast.error("MCP配置生成失败，请稍后再试");
+        return;
+      }
       
       // 生成深链接
       const deeplink = generateCursorDeeplink(serverName, mcpConfig);
+      console.log("Generated deeplink:", deeplink);
       
       // 打开深链接
       const success = await openCursorDeeplink(deeplink);
@@ -367,7 +390,7 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
       </p>
 
       {/* Cursor一键安装提示 */}
-      {activePlatform === 'cursor' && isDeeplinkSupported && (
+      {activePlatform === 'cursor' && isDeeplinkSupported && server?.qualified_name && (
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center">

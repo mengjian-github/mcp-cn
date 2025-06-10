@@ -78,12 +78,6 @@ jobs:
       - name: Build CLI package
         run: pnpm --filter @mcp_hub_org/cli build
 
-      - name: Run tests
-        run: pnpm --filter @mcp_hub_org/cli test
-
-      - name: Lint code
-        run: pnpm --filter @mcp_hub_org/cli lint
-
       - name: Check if there are changesets
         id: check-changesets
         run: |

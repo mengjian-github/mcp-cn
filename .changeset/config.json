@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
-  "changelog": "@changesets/changelog-github",
+  "changelog": ["@changesets/changelog-github", { "repo": "mengjian-github/mcp-cn" }],
   "commit": false,
   "fixed": [],
   "linked": [],
@@ -8,4 +8,4 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": ["@mcp-hub/web"]
-} 
+}

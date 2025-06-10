@@ -75,8 +75,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build packages
-        run: pnpm run build:packages
+      - name: Build CLI package
+        run: pnpm --filter @mcp_hub_org/cli build
 
       - name: Run tests
         run: pnpm --filter @mcp_hub_org/cli test
@@ -144,9 +144,6 @@ jobs:
           git add packages/cli/package.json
           git commit -m "chore(cli): bump version to ${{ env.NEW_VERSION }}"
           git push
-
-      - name: Build CLI package
-        run: pnpm --filter @mcp_hub_org/cli build
 
       - name: Publish to NPM (manual release)
         if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'

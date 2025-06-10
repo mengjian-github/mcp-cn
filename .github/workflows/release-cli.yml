@@ -88,14 +88,27 @@ jobs:
       - name: Release with Changesets
         if: steps.check-changesets.outputs.has-changesets == 'true'
         id: changesets
-        uses: changesets/action@v1
-        with:
-          title: "Release: CLI Package Update"
-          commit: "Release CLI package"
-          version: pnpm run version
-          publish: pnpm run release:cli
+        run: |
+          # Apply changesets to update versions
+          pnpm run version
+
+          # Get the new version
+          NEW_VERSION=$(node -p "require('./packages/cli/package.json').version")
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "New version: $NEW_VERSION"
+
+          # Commit the version changes
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "chore: release CLI v$NEW_VERSION"
+          git push
+
+          # Build and publish
+          pnpm --filter @mcp_hub_org/cli build
+          cd packages/cli
+          pnpm publish --access public --no-git-checks
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Manual version bump
@@ -151,8 +164,8 @@ jobs:
       - name: Get published version
         id: get-version
         run: |
-          if [ "${{ steps.changesets.outputs.published }}" == "true" ]; then
-            VERSION=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[0].version')
+          if [ "${{ steps.check-changesets.outputs.has-changesets }}" == "true" ]; then
+            VERSION="${{ steps.changesets.outputs.NEW_VERSION }}"
           else
             VERSION="${{ steps.manual-version.outputs.NEW_VERSION }}"
           fi
@@ -160,7 +173,7 @@ jobs:
           echo "Released version: $VERSION"
 
       - name: Create GitHub Release
-        if: steps.changesets.outputs.published == 'true' || (github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false')
+        if: steps.check-changesets.outputs.has-changesets == 'true' || (github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false')
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -200,9 +213,9 @@ jobs:
           echo "## 🎯 Release Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          if [ "${{ steps.changesets.outputs.published }}" == "true" ]; then
+          if [ "${{ steps.check-changesets.outputs.has-changesets }}" == "true" ]; then
             echo "✅ **Changeset Release**: Published via changesets" >> $GITHUB_STEP_SUMMARY
-            echo "📦 **Published Packages**: ${{ steps.changesets.outputs.publishedPackages }}" >> $GITHUB_STEP_SUMMARY
+            echo "📦 **Version**: ${{ steps.changesets.outputs.NEW_VERSION }}" >> $GITHUB_STEP_SUMMARY
           elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "✅ **Manual Release**: Published via workflow dispatch" >> $GITHUB_STEP_SUMMARY
             echo "📦 **Version**: ${{ steps.manual-version.outputs.NEW_VERSION }}" >> $GITHUB_STEP_SUMMARY

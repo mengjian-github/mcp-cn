@@ -1,4 +1,4 @@
-name: Release CLI Package
+name: CLI Release
 
 on:
   push:
@@ -9,15 +9,8 @@ on:
       - ".changeset/**"
   workflow_dispatch:
     inputs:
-      package:
-        description: "Which package to release"
-        required: true
-        default: "@mcp_hub_org/cli"
-        type: choice
-        options:
-          - "@mcp_hub_org/cli"
       release_type:
-        description: "Type of release"
+        description: "Release type"
         required: true
         default: "patch"
         type: choice
@@ -37,11 +30,10 @@ permissions:
 
 env:
   CI: true
-  PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
   release:
-    name: Release CLI Package
+    name: Release CLI
     runs-on: ubuntu-latest
     if: github.repository == 'mengjian-github/mcp-cn'
 
@@ -82,30 +74,33 @@ jobs:
       - name: Build CLI package
         run: pnpm --filter @mcp_hub_org/cli build
 
-      - name: Check if there are changesets
+      - name: Check for changesets
         id: check-changesets
         run: |
           if [ -n "$(find .changeset -name '*.md' -not -name 'README.md' | head -1)" ]; then
             echo "has-changesets=true" >> $GITHUB_OUTPUT
+            echo "Found changeset files, will use changeset for version management"
           else
             echo "has-changesets=false" >> $GITHUB_OUTPUT
+            echo "No changeset files found"
           fi
 
-      - name: Create Release Pull Request or Publish
+      - name: Release with Changesets
         if: steps.check-changesets.outputs.has-changesets == 'true'
         id: changesets
         uses: changesets/action@v1
         with:
-          title: "Release: CLI Package Updates"
-          commit: "ci: release cli package"
+          title: "Release: CLI Package Update"
+          commit: "Release CLI package"
           version: pnpm run version
-          publish: pnpm run release
+          publish: pnpm run release:cli
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Manual version bump (if triggered manually)
+      - name: Manual version bump
         if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'
+        id: manual-version
         run: |
           cd packages/cli
 
@@ -132,24 +127,37 @@ jobs:
           # Get new version
           NEW_VERSION=$(node -p "require('./package.json').version")
           echo "New version: $NEW_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
-      - name: Commit version bump
+      - name: Commit manual version bump
         if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add packages/cli/package.json
-          git commit -m "chore(cli): bump version to ${{ env.NEW_VERSION }}"
+          git commit -m "chore(cli): release version ${{ steps.manual-version.outputs.NEW_VERSION }}"
           git push
 
       - name: Publish to NPM (manual release)
         if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'
         run: |
           cd packages/cli
+          pnpm build
           pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Get published version
+        id: get-version
+        run: |
+          if [ "${{ steps.changesets.outputs.published }}" == "true" ]; then
+            VERSION=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[0].version')
+          else
+            VERSION="${{ steps.manual-version.outputs.NEW_VERSION }}"
+          fi
+          echo "RELEASED_VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Released version: $VERSION"
 
       - name: Create GitHub Release
         if: steps.changesets.outputs.published == 'true' || (github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false')
@@ -157,33 +165,51 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: cli-v${{ env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
-          release_name: CLI v${{ env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
+          tag_name: cli-v${{ steps.get-version.outputs.RELEASED_VERSION }}
+          release_name: CLI v${{ steps.get-version.outputs.RELEASED_VERSION }}
           body: |
-            ## CLI Package Release
+            ## 🎉 CLI Package Release
 
-            ### Changes
-            - Updated CLI package to version ${{ env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
+            ### 📦 Version: ${{ steps.get-version.outputs.RELEASED_VERSION }}
 
-            ### Installation
+            ### 💿 Installation
             ```bash
-            npm install -g @mcp_hub_org/cli@${{ env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
+            npm install -g @mcp_hub_org/cli@${{ steps.get-version.outputs.RELEASED_VERSION }}
             # or
             npx @mcp_hub_org/cli
             ```
 
-            ### Usage
+            ### 🚀 Usage
             ```bash
-            mcp list
-            mcp install <server-name>
-            mcp installed
-            mcp uninstall <server-name>
+            mcp list          # 列出所有可用的 MCP 服务器
+            mcp install <server-name>  # 安装 MCP 服务器
+            mcp installed     # 查看已安装的服务器
+            mcp uninstall <server-name>  # 卸载服务器
             ```
-          draft: false
-          prerelease: ${{ contains(env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version, 'beta') }}
 
-      - name: Post-release cleanup
+            ### 🔗 Links
+            - [NPM Package](https://www.npmjs.com/package/@mcp_hub_org/cli)
+            - [GitHub Repository](https://github.com/mengjian-github/mcp-cn)
+            - [Documentation](https://mcp-cn.com)
+          draft: false
+          prerelease: ${{ contains(steps.get-version.outputs.RELEASED_VERSION, 'beta') }}
+
+      - name: Summary
         if: always()
         run: |
-          echo "Release workflow completed"
-          echo "Published packages: ${{ steps.changesets.outputs.publishedPackages }}"
+          echo "## 🎯 Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.changesets.outputs.published }}" == "true" ]; then
+            echo "✅ **Changeset Release**: Published via changesets" >> $GITHUB_STEP_SUMMARY
+            echo "📦 **Published Packages**: ${{ steps.changesets.outputs.publishedPackages }}" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "✅ **Manual Release**: Published via workflow dispatch" >> $GITHUB_STEP_SUMMARY
+            echo "📦 **Version**: ${{ steps.manual-version.outputs.NEW_VERSION }}" >> $GITHUB_STEP_SUMMARY
+            echo "🔄 **Release Type**: ${{ github.event.inputs.release_type }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ **Build Only**: No release performed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **NPM Package**: https://www.npmjs.com/package/@mcp_hub_org/cli" >> $GITHUB_STEP_SUMMARY

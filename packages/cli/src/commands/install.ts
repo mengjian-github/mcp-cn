@@ -48,6 +48,7 @@ export async function installServer(
   client?: ValidClient,
   configValues: Record<string, string> = {},
   apiKey?: string,
+  customPath?: string,
 ): Promise<void> {
   if (!client) {
     throw new Error('Client is required');
@@ -143,7 +144,7 @@ export async function installServer(
 
     /* read config from client */
     verbose(`Reading configuration for client: ${client}`);
-    const config = readConfig(client);
+    const config = readConfig(client, customPath);
     verbose('Normalizing server ID...');
     const serverName = getServerName(qualifiedName);
     verbose(`Normalized server ID: ${serverName}`);
@@ -151,7 +152,7 @@ export async function installServer(
     verbose('Updating client configuration...');
     config.mcpServers[serverName] = serverConfig;
     verbose('Writing updated configuration...');
-    writeConfig(config, client);
+    writeConfig(config, client, customPath);
     verbose('Configuration successfully written');
     console.log(chalk.green(`${qualifiedName} successfully installed for ${client}`));
     verbose('Prompting for client restart...');

@@ -15,7 +15,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 
 /* uninstalls server for given client */
-export async function uninstallServer(qualifiedName: string, client?: ValidClient): Promise<void> {
+export async function uninstallServer(qualifiedName: string, client?: ValidClient, customPath?: string): Promise<void> {
   if (!client) {
     throw new Error('Client is required');
   }
@@ -24,7 +24,7 @@ export async function uninstallServer(qualifiedName: string, client?: ValidClien
 
   try {
     /* read config from client */
-    const config = readConfig(client);
+    const config = readConfig(client, customPath);
     const normalizedName = normalizeServerId(qualifiedName);
 
     /* check if server exists in config */
@@ -35,7 +35,7 @@ export async function uninstallServer(qualifiedName: string, client?: ValidClien
 
     /* remove server from config */
     delete config.mcpServers[normalizedName];
-    writeConfig(config, client);
+    writeConfig(config, client, customPath);
 
     spinner.succeed(`Successfully uninstalled ${qualifiedName}`);
     console.log(chalk.green(`${qualifiedName} successfully uninstalled from ${client}`));

@@ -1,6 +1,7 @@
 export const VALID_CLIENTS = [
   'cursor',
   'trae',
+  'trae-global',
   'cline',
   // 'claude',
   'windsurf',

@@ -69,8 +69,10 @@
     "clean": "pnpm --filter \"./packages/*\" clean && pnpm --filter \"./packages/servers/*\" clean",
     "format": "prettier --write \"packages/**/*.{ts,tsx,js,jsx,json,md}\"",
     "changeset": "changeset",
+    "changeset:create": "node scripts/create-changeset.js",
     "version": "changeset version",
     "release": "pnpm build && changeset publish",
+    "release:cli": "pnpm --filter @mcp_hub_org/cli build && pnpm --filter @mcp_hub_org/cli publish --access public",
     "dev:web": "pnpm --filter @mcp-hub/web dev",
     "dev:cli": "pnpm --filter @mcp-hub/cli dev",
     "setup": "pnpm install && pnpm build:packages"

@@ -54,6 +54,19 @@ const platformTabs = [
     ),
   },
   {
+    value: "trae-global",
+    label: "Trae Global",
+    icon: (
+      <img
+        src={
+          "https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/bee984f94c914243ac6f996a5559e65d~tplv-em5hxbkur4-noop.image"
+        }
+        alt="trae-global"
+        className="w-4 h-4"
+      />
+    ),
+  },
+  {
     value: "cline",
     label: "Cline",
     icon: (
@@ -136,6 +149,8 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
   const [hasClickConnect, setHasClickConnect] = useState(false);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [isDeeplinkSupported, setIsDeeplinkSupported] = useState(false);
+  const [customPath, setCustomPath] = useState<string>("");
+  const [showCustomPath, setShowCustomPath] = useState(false);
 
   // 本地环境变量缓存数据
   const cacheServerEnv = useMemo<
@@ -173,7 +188,12 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
 
   // 获取安装命令
   const getInstallCommand = useCallback(() => {
-    const commonCommand = `npx -y ${CLI_PACKAGE_NAME} install ${server.qualified_name} --client ${activePlatform}`;
+    let command = `npx -y ${CLI_PACKAGE_NAME} install ${server.qualified_name} --client ${activePlatform}`;
+
+    // 添加自定义路径参数
+    if (customPath && customPath.trim()) {
+      command += ` --path "${customPath.trim()}"`;
+    }
 
     if (envArgsStr) {
       try {
@@ -185,14 +205,13 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
           .replace(/'/g, "'\\''"); // 转义单引号，使用 '\\'' 的方式
 
         // 使用单引号包裹转义后的 JSON 字符串
-        return `${commonCommand} --env '${escapedEnvArgs}'`;
+        command += ` --env '${escapedEnvArgs}'`;
       } catch (error) {
         console.error("Invalid JSON format for env args:", error);
-        return commonCommand;
       }
     }
-    return commonCommand;
-  }, [activePlatform, envArgsStr, server.qualified_name]);
+    return command;
+  }, [activePlatform, envArgsStr, server.qualified_name, customPath]);
 
   // 获取JSON配置
   const getJsonConfig = useCallback(() => {
@@ -265,11 +284,11 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
       // 生成MCP配置
       const mcpConfig = generateMCPConfig(server.qualified_name, envConfig, activeOS);
       console.log("Generated MCP config:", mcpConfig);
-      
+
       // 格式化服务器名称
       const serverName = formatServerNameForDeeplink(server.qualified_name, server.display_name);
       console.log("Formatted server name:", serverName);
-      
+
       // 验证生成的参数
       if (!serverName || !serverName.trim()) {
         console.error("Server name is empty after formatting");
@@ -282,14 +301,14 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
         toast.error("MCP配置生成失败，请稍后再试");
         return;
       }
-      
+
       // 生成深链接
       const deeplink = generateCursorDeeplink(serverName, mcpConfig);
       console.log("Generated deeplink:", deeplink);
-      
+
       // 打开深链接
       const success = await openCursorDeeplink(deeplink);
-      
+
       if (success) {
         toast.success("正在打开Cursor进行安装...");
         trackInstallation({
@@ -422,12 +441,17 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
           value={activePlatform}
           onChange={(value) => {
             setActivePlatform(value as ClientType);
+            // 切换客户端时清空自定义路径
+            setCustomPath("");
+            setShowCustomPath(false);
             trackInstallation({
               client: value as ClientType,
               click_name: "switch_client",
             });
           }}
         />
+
+
 
         {/* 内容区域 */}
         <div className="p-4">
@@ -491,6 +515,54 @@ export const InstallationGuide: FC<InstallationGuideProps> = ({ server }) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
+                {/* 自定义路径设置 */}
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      自定义配置路径 (可选)
+                    </label>
+                    <motion.button
+                      className="text-xs text-blue-500 hover:text-blue-600 flex items-center"
+                      onClick={() => setShowCustomPath(!showCustomPath)}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {showCustomPath ? "隐藏" : "显示"}
+                      <svg className="w-3 h-3 ml-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </motion.button>
+                  </div>
+
+                  <AnimatePresence>
+                    {showCustomPath && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg mb-4">
+                          <p className="text-xs text-blue-600 mb-2">
+                            适用于非标准安装路径、便携式应用或多用户环境。留空使用默认路径。
+                          </p>
+                          <input
+                            type="text"
+                            placeholder={`例: /custom/path/${activePlatform === 'cursor' ? 'mcp.json' : 'config.json'}`}
+                            value={customPath}
+                            onChange={(e) => setCustomPath(e.target.value)}
+                            className="w-full px-3 py-2 text-sm border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          />
+                          {(activePlatform === 'trae' || activePlatform === 'trae-global') && (
+                            <p className="text-xs text-orange-600 mt-1">
+                              💡 提示: {activePlatform === 'trae' ? 'Trae CN' : 'Trae Global'} 的默认路径不同，请根据实际安装版本选择
+                            </p>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 {/* 重新设计的格式选择器 */}
                 <div className="flex bg-gray-50 rounded-md p-1 mb-4 relative">
                   {/* 单一的背景滑块 */}

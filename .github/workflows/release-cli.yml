@@ -1,0 +1,194 @@
+name: Release CLI Package
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/cli/**"
+      - ".changeset/**"
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Which package to release"
+        required: true
+        default: "@mcp_hub_org/cli"
+        type: choice
+        options:
+          - "@mcp_hub_org/cli"
+      release_type:
+        description: "Type of release"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - "patch"
+          - "minor"
+          - "major"
+          - "prerelease"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+jobs:
+  release:
+    name: Release CLI Package
+    runs-on: ubuntu-latest
+    if: github.repository == 'mengjian-github/mcp-cn'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8.15.0
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm run build:packages
+
+      - name: Run tests
+        run: pnpm --filter @mcp_hub_org/cli test
+
+      - name: Lint code
+        run: pnpm --filter @mcp_hub_org/cli lint
+
+      - name: Check if there are changesets
+        id: check-changesets
+        run: |
+          if [ -n "$(find .changeset -name '*.md' -not -name 'README.md' | head -1)" ]; then
+            echo "has-changesets=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-changesets=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release Pull Request or Publish
+        if: steps.check-changesets.outputs.has-changesets == 'true'
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          title: "Release: CLI Package Updates"
+          commit: "ci: release cli package"
+          version: pnpm run version
+          publish: pnpm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Manual version bump (if triggered manually)
+        if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'
+        run: |
+          cd packages/cli
+
+          # Get current version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+
+          # Bump version based on release type
+          case "${{ github.event.inputs.release_type }}" in
+            "patch")
+              pnpm version patch --no-git-tag-version
+              ;;
+            "minor")
+              pnpm version minor --no-git-tag-version
+              ;;
+            "major")
+              pnpm version major --no-git-tag-version
+              ;;
+            "prerelease")
+              pnpm version prerelease --no-git-tag-version --preid=beta
+              ;;
+          esac
+
+          # Get new version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "New version: $NEW_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Commit version bump
+        if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add packages/cli/package.json
+          git commit -m "chore(cli): bump version to ${{ env.NEW_VERSION }}"
+          git push
+
+      - name: Build CLI package
+        run: pnpm --filter @mcp_hub_org/cli build
+
+      - name: Publish to NPM (manual release)
+        if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'
+        run: |
+          cd packages/cli
+          pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        if: steps.changesets.outputs.published == 'true' || (github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: cli-v${{ env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
+          release_name: CLI v${{ env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
+          body: |
+            ## CLI Package Release
+
+            ### Changes
+            - Updated CLI package to version ${{ env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
+
+            ### Installation
+            ```bash
+            npm install -g @mcp_hub_org/cli@${{ env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
+            # or
+            npx @mcp_hub_org/cli
+            ```
+
+            ### Usage
+            ```bash
+            mcp list
+            mcp install <server-name>
+            mcp installed
+            mcp uninstall <server-name>
+            ```
+          draft: false
+          prerelease: ${{ contains(env.NEW_VERSION || fromJson(steps.changesets.outputs.publishedPackages)[0].version, 'beta') }}
+
+      - name: Post-release cleanup
+        if: always()
+        run: |
+          echo "Release workflow completed"
+          echo "Published packages: ${{ steps.changesets.outputs.publishedPackages }}"

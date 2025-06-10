@@ -32,6 +32,7 @@ const { baseDir, vscodePath } = platformPaths[platform];
 // Define client paths using the platform-specific base directories
 const clientPaths: Record<string, string> = {
   trae: path.join(baseDir, 'Trae CN', 'User', 'mcp.json'),
+  'trae-global': path.join(baseDir, 'Trae', 'User', 'mcp.json'),
   claude: path.join(baseDir, 'Claude', 'claude_desktop_config.json'),
   cline: path.join(baseDir, vscodePath, 'saoudrizwan.claude-dev', 'settings', 'cline_mcp_settings.json'),
   'roo-cline': path.join(baseDir, vscodePath, 'rooveterinaryinc.roo-cline', 'settings', 'cline_mcp_settings.json'),
@@ -41,9 +42,29 @@ const clientPaths: Record<string, string> = {
   cursor: path.join(homeDir, '.cursor', 'mcp.json'),
 };
 
-export function getConfigPath(client?: string): string {
+// Custom path storage for user-defined installation paths
+let customPaths: Record<string, string> = {};
+
+export function setCustomPath(client: string, customPath: string): void {
+  verbose(`Setting custom path for ${client}: ${customPath}`);
+  customPaths[client] = customPath;
+}
+
+export function getConfigPath(client?: string, customPath?: string): string {
   const normalizedClient = client?.toLowerCase() || 'claude';
   verbose(`Getting config path for client: ${normalizedClient}`);
+
+  // Use custom path if provided for this call
+  if (customPath) {
+    verbose(`Using provided custom path: ${customPath}`);
+    return customPath;
+  }
+
+  // Use stored custom path if available
+  if (customPaths[normalizedClient]) {
+    verbose(`Using stored custom path: ${customPaths[normalizedClient]}`);
+    return customPaths[normalizedClient];
+  }
 
   const configPath =
     clientPaths[normalizedClient] ||
@@ -53,10 +74,10 @@ export function getConfigPath(client?: string): string {
   return configPath;
 }
 
-export function readConfig(client: string): ClientConfig {
+export function readConfig(client: string, customPath?: string): ClientConfig {
   verbose(`Reading config for client: ${client}`);
   try {
-    const configPath = getConfigPath(client);
+    const configPath = getConfigPath(client, customPath);
     verbose(`Checking if config file exists at: ${configPath}`);
 
     if (!fs.existsSync(configPath)) {
@@ -78,11 +99,11 @@ export function readConfig(client: string): ClientConfig {
   }
 }
 
-export function writeConfig(config: ClientConfig, client?: string): void {
+export function writeConfig(config: ClientConfig, client?: string, customPath?: string): void {
   verbose(`Writing config for client: ${client || 'default'}`);
   verbose(`Config data: ${JSON.stringify(config, null, 2)}`);
 
-  const configPath = getConfigPath(client);
+  const configPath = getConfigPath(client, customPath);
   const configDir = path.dirname(configPath);
 
   verbose(`Ensuring config directory exists: ${configDir}`);

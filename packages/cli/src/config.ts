@@ -6,6 +6,7 @@ import logger from './logger';
 
 const CONFIG_PATHS: Record<ValidClient, string> = {
   trae: join(homedir(), '.trae'),
+  'trae-global': join(homedir(), '.trae-global'),
   cline: join(homedir(), '.cline'),
   cursor: join(homedir(), '.cursor'),
   // claude: join(homedir(), '.claude'),

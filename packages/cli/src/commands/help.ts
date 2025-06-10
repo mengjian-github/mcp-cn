@@ -4,7 +4,7 @@ import Table from 'cli-table3';
 import { VALID_CLIENTS } from '../constants';
 
 const logo = `
-              ███╗   ███╗ ██████╗██████╗    ██╗  ██╗██╗   ██╗██████╗ 
+              ███╗   ███╗ ██████╗██████╗    ██╗  ██╗██╗   ██╗██████╗
               ████╗ ████║██╔════╝██╔══██╗   ██║  ██║██║   ██║██╔══██╗
               ██╔████╔██║██║     ██████╔╝   ███████║██║   ██║██████╔╝
               ██║╚██╔╝██║██║     ██╔═══╝    ██╔══██║██║   ██║██╔══██╗
@@ -91,6 +91,7 @@ const createOptionsTable = () => {
     [chalk.cyan('--client, -c <客户端>'), '指定目标 MCP 客户端'],
     [chalk.cyan('--env <JSON>'), '提供 JSON 格式的环境变量'],
     [chalk.cyan('--platform <平台>'), '指定操作系统平台 (mac|windows|linux)'],
+    [chalk.cyan('--path <路径>'), '指定自定义配置文件路径'],
     // [chalk.cyan('--key <密钥>'), '提供 API 密钥'],
     [chalk.cyan('--help, -h'), '显示帮助信息'],
   );
@@ -127,6 +128,8 @@ const createExamplesTable = () => {
   table.push(
     [chalk.magenta.bold('示例')],
     [chalk.dim('$ ') + chalk.cyan('mcp install sequential-thinking --client cursor')],
+    [chalk.dim('$ ') + chalk.cyan('mcp install sequential-thinking --client trae-global')],
+    [chalk.dim('$ ') + chalk.cyan('mcp install sequential-thinking --client cursor --path /custom/path/mcp.json')],
     [chalk.dim('$ ') + chalk.cyan('mcp uninstall sequential-thinking --client cursor')],
     [chalk.dim('$ ') + chalk.cyan('mcp run sequential-thinking')],
     [chalk.dim('$ ') + chalk.cyan('mcp deeplink sequential-thinking --platform mac')],
@@ -160,6 +163,8 @@ export function showHelp() {
 
   // 显示支持的客户端
   console.log(chalk.magenta.bold('MCP 客户端') + '  ' + VALID_CLIENTS.join('  '));
+  console.log('');
+  console.log(chalk.dim('注意: trae 为国内版本，trae-global 为国际版本'));
   console.log('');
 
   // 显示示例表格

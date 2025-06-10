@@ -17,6 +17,7 @@ const clientFlag = process.argv.indexOf('--client');
 const configFlag = process.argv.indexOf('--env');
 const keyFlag = process.argv.indexOf('--key');
 const platformFlag = process.argv.indexOf('--platform');
+const pathFlag = process.argv.indexOf('--path');
 const verboseFlag = process.argv.includes('--verbose');
 const helpFlag = process.argv.includes('--help');
 
@@ -75,10 +76,13 @@ const config: Record<string, string> =
 const apiKey: string | undefined = keyFlag !== -1 ? process.argv[keyFlag + 1] : undefined;
 
 /* sets platform, defaults to mac */
-const platform: 'mac' | 'windows' | 'linux' = 
-  platformFlag !== -1 ? 
-    (process.argv[platformFlag + 1] as 'mac' | 'windows' | 'linux') || 'mac' : 
+const platform: 'mac' | 'windows' | 'linux' =
+  platformFlag !== -1 ?
+    (process.argv[platformFlag + 1] as 'mac' | 'windows' | 'linux') || 'mac' :
     'mac';
+
+/* custom installation path */
+const customPath: string | undefined = pathFlag !== -1 ? process.argv[pathFlag + 1] : undefined;
 
 async function main() {
   switch (command) {
@@ -91,7 +95,7 @@ async function main() {
         process.exit(1);
       }
       incrementUseCount(argument);
-      await installServer(argument, client, configFlag !== -1 ? config : undefined, apiKey);
+      await installServer(argument, client, configFlag !== -1 ? config : undefined, apiKey, customPath);
       break;
     case 'uninstall':
       if (!argument) {
@@ -99,7 +103,7 @@ async function main() {
         process.exit(1);
       }
       incrementUseCount(argument);
-      await uninstallServer(argument, client);
+      await uninstallServer(argument, client, customPath);
       break;
     case 'run':
       if (!argument) {

@@ -7,14 +7,14 @@
   },
   "headers": [
     {
-      "source": "/api/(.*)",
+      "source": "/api/servers/(get_details|increment-use-count)",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "no-cache, no-store, must-revalidate"
         },
         {
-          "key": "Pragma", 
+          "key": "Pragma",
           "value": "no-cache"
         },
         {
@@ -24,11 +24,29 @@
       ]
     },
     {
+      "source": "/api/servers",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=300, stale-while-revalidate=3600"
+        }
+      ]
+    },
+    {
+      "source": "/api/meta_info/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=1800, stale-while-revalidate=7200"
+        }
+      ]
+    },
+    {
       "source": "/",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "s-maxage=1, stale-while-revalidate=59"
+          "value": "public, s-maxage=300, stale-while-revalidate=3600"
         }
       ]
     },
@@ -36,8 +54,8 @@
       "source": "/server/(.*)",
       "headers": [
         {
-          "key": "Cache-Control", 
-          "value": "s-maxage=60, stale-while-revalidate=300"
+          "key": "Cache-Control",
+          "value": "public, s-maxage=600, stale-while-revalidate=1800"
         }
       ]
     }
@@ -48,4 +66,4 @@
       "destination": "/api/sitemap"
     }
   ]
-} 
+}

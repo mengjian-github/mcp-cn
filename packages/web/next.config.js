@@ -13,13 +13,16 @@ const withMDX = createMDX({
 const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ["tsx", "ts", "jsx", "js", "md", "mdx"],
-  
+
   // 性能优化
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
   },
-  
+
+  // 服务器外部包配置
+  serverExternalPackages: ['@supabase/supabase-js'],
+
   // 图片优化
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -27,10 +30,10 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  
+
   // 压缩
   compress: true,
-  
+
   // 安全头
   async headers() {
     return [
@@ -86,14 +89,14 @@ const nextConfig = {
         source: '/_next/static/(.*)',
         headers: [
           {
-            key: 'Cache-Control', 
+            key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
         ],
       },
     ];
   },
-  
+
   // 重定向
   async redirects() {
     return [
@@ -109,7 +112,7 @@ const nextConfig = {
       },
     ];
   },
-  
+
   turbopack: {
     rules: {
       '**/*.svg': {
@@ -118,12 +121,12 @@ const nextConfig = {
       },
     },
   },
-  
+
   // 环境变量
   env: {
     SITE_URL: process.env.SITE_URL || 'https://mcp-cn.com',
   },
-  
+
   // async rewrites() {
   //   return [
   //     {

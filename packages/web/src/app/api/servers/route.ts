@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     query = query.range(from, to);
 
     const { data, error, count } = await query;
-    
+
     if (error) throw error;
 
     const response: ListMcpServersResponse = {
@@ -47,12 +47,11 @@ export async function GET(request: NextRequest) {
     };
 
     const nextResponse = NextResponse.json(response);
-    
-    // 设置缓存控制头
-    nextResponse.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    nextResponse.headers.set('Pragma', 'no-cache');
-    nextResponse.headers.set('Expires', '0');
-    
+
+    // 设置缓存控制头 - 允许缓存5分钟
+    nextResponse.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=3600');
+    nextResponse.headers.set('CDN-Cache-Control', 'public, s-maxage=300');
+
     return nextResponse;
   } catch (error: any) {
     console.error('listMcpServers error:', error);
@@ -63,12 +62,12 @@ export async function GET(request: NextRequest) {
       },
       { status: 500 }
     );
-    
+
     // 错误响应也不缓存
     errorResponse.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     errorResponse.headers.set('Pragma', 'no-cache');
     errorResponse.headers.set('Expires', '0');
-    
+
     return errorResponse;
   }
 }
@@ -84,12 +83,12 @@ export async function POST(request: Request) {
       message: 'success',
       data: `服务器注册成功: ${JSON.stringify(body)}`
     });
-    
+
     // POST请求也不缓存
     response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     response.headers.set('Pragma', 'no-cache');
     response.headers.set('Expires', '0');
-    
+
     return response;
   } catch (error: any) {
     const errorResponse = NextResponse.json(
@@ -99,11 +98,11 @@ export async function POST(request: Request) {
       },
       { status: 500 }
     );
-    
+
     errorResponse.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     errorResponse.headers.set('Pragma', 'no-cache');
     errorResponse.headers.set('Expires', '0');
-    
+
     return errorResponse;
   }
 }

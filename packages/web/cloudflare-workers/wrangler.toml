@@ -1,0 +1,23 @@
+name = "mcp-cn-api-cache"
+main = "api-cache.js"
+compatibility_date = "2024-03-01"
+
+# 路由配置 - 替换你的域名
+routes = [
+  { pattern = "mcp-cn.com/api/*", custom_domain = true }
+]
+
+# 环境变量
+[vars]
+VERCEL_DOMAIN = "mcp-cn.vercel.app"
+CACHE_VERSION = "v1"
+
+# 生产环境配置
+[env.production]
+name = "mcp-cn-api-cache-prod"
+vars = { ENVIRONMENT = "production" }
+
+# 开发环境配置
+[env.development]
+name = "mcp-cn-api-cache-dev"
+vars = { ENVIRONMENT = "development" }

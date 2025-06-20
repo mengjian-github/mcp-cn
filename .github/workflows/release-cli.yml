@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "packages/cli/**"
+      - ".github/workflows/release-cli.yml"
   workflow_dispatch:
     inputs:
       release_type:

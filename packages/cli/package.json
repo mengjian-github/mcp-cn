@@ -1,6 +1,6 @@
 {
   "name": "@mcp_hub_org/cli",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "type": "module",
   "private": false,
   "description": "A NPX command to install and list Model Context Protocols - now with auto versioning",

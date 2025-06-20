@@ -92,8 +92,8 @@ jobs:
 
           echo "Release type: $RELEASE_TYPE"
 
-          # Create version update script
-          cat > update_version.js << 'EOF'
+                    # Create version update script as CommonJS
+          cat > update_version.cjs << 'EOF'
           const fs = require('fs');
           const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
           const [major, minor, patch] = pkg.version.split('.').map(Number);
@@ -119,8 +119,8 @@ jobs:
           EOF
 
           # Run version update
-          NEW_VERSION=$(node update_version.js $RELEASE_TYPE)
-          rm update_version.js
+          NEW_VERSION=$(node update_version.cjs $RELEASE_TYPE)
+          rm update_version.cjs
 
           echo "New version: $NEW_VERSION"
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT

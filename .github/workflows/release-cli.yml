@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "packages/cli/**"
-      - ".changeset/**"
   workflow_dispatch:
     inputs:
       release_type:
@@ -18,7 +17,6 @@ on:
           - "patch"
           - "minor"
           - "major"
-          - "prerelease"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -74,46 +72,8 @@ jobs:
       - name: Build CLI package
         run: pnpm --filter @mcp_hub_org/cli build
 
-      - name: Check for changesets
-        id: check-changesets
-        run: |
-          if [ -n "$(find .changeset -name '*.md' -not -name 'README.md' | head -1)" ]; then
-            echo "has-changesets=true" >> $GITHUB_OUTPUT
-            echo "Found changeset files, will use changeset for version management"
-          else
-            echo "has-changesets=false" >> $GITHUB_OUTPUT
-            echo "No changeset files found"
-          fi
-
-      - name: Release with Changesets
-        if: steps.check-changesets.outputs.has-changesets == 'true'
-        id: changesets
-        run: |
-          # Apply changesets to update versions
-          pnpm run version
-
-          # Get the new version
-          NEW_VERSION=$(node -p "require('./packages/cli/package.json').version")
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "New version: $NEW_VERSION"
-
-          # Commit the version changes
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "chore: release CLI v$NEW_VERSION"
-          git push
-
-          # Build and publish
-          pnpm --filter @mcp_hub_org/cli build
-          cd packages/cli
-          pnpm publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Manual version bump
-        if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'
-        id: manual-version
+      - name: Get current version and bump
+        id: version
         run: |
           cd packages/cli
 
@@ -121,8 +81,18 @@ jobs:
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current version: $CURRENT_VERSION"
 
+          # Determine release type
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          else
+            # Auto patch for push events
+            RELEASE_TYPE="patch"
+          fi
+
+          echo "Release type: $RELEASE_TYPE"
+
           # Bump version based on release type
-          case "${{ github.event.inputs.release_type }}" in
+          case "$RELEASE_TYPE" in
             "patch")
               pnpm version patch --no-git-tag-version
               ;;
@@ -132,28 +102,22 @@ jobs:
             "major")
               pnpm version major --no-git-tag-version
               ;;
-            "prerelease")
-              pnpm version prerelease --no-git-tag-version --preid=beta
-              ;;
           esac
 
           # Get new version
           NEW_VERSION=$(node -p "require('./package.json').version")
           echo "New version: $NEW_VERSION"
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
-      - name: Commit manual version bump
-        if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'
+      - name: Commit version changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add packages/cli/package.json
-          git commit -m "chore(cli): release version ${{ steps.manual-version.outputs.NEW_VERSION }}"
+          git commit -m "chore(cli): bump version to ${{ steps.version.outputs.NEW_VERSION }}"
           git push
 
-      - name: Publish to NPM (manual release)
-        if: github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false'
+      - name: Build and Publish to NPM
         run: |
           cd packages/cli
           pnpm build
@@ -161,33 +125,21 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Get published version
-        id: get-version
-        run: |
-          if [ "${{ steps.check-changesets.outputs.has-changesets }}" == "true" ]; then
-            VERSION="${{ steps.changesets.outputs.NEW_VERSION }}"
-          else
-            VERSION="${{ steps.manual-version.outputs.NEW_VERSION }}"
-          fi
-          echo "RELEASED_VERSION=$VERSION" >> $GITHUB_OUTPUT
-          echo "Released version: $VERSION"
-
       - name: Create GitHub Release
-        if: steps.check-changesets.outputs.has-changesets == 'true' || (github.event_name == 'workflow_dispatch' && steps.check-changesets.outputs.has-changesets == 'false')
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: cli-v${{ steps.get-version.outputs.RELEASED_VERSION }}
-          release_name: CLI v${{ steps.get-version.outputs.RELEASED_VERSION }}
+          tag_name: cli-v${{ steps.version.outputs.NEW_VERSION }}
+          release_name: CLI v${{ steps.version.outputs.NEW_VERSION }}
           body: |
             ## 🎉 CLI Package Release
 
-            ### 📦 Version: ${{ steps.get-version.outputs.RELEASED_VERSION }}
+            ### 📦 Version: ${{ steps.version.outputs.NEW_VERSION }}
 
             ### 💿 Installation
             ```bash
-            npm install -g @mcp_hub_org/cli@${{ steps.get-version.outputs.RELEASED_VERSION }}
+            npm install -g @mcp_hub_org/cli@${{ steps.version.outputs.NEW_VERSION }}
             # or
             npx @mcp_hub_org/cli
             ```
@@ -204,24 +156,24 @@ jobs:
             - [NPM Package](https://www.npmjs.com/package/@mcp_hub_org/cli)
             - [GitHub Repository](https://github.com/mengjian-github/mcp-cn)
             - [Documentation](https://mcp-cn.com)
+
+            ### 📋 Changes
+            This release includes the latest changes from the main branch.
           draft: false
-          prerelease: ${{ contains(steps.get-version.outputs.RELEASED_VERSION, 'beta') }}
+          prerelease: false
 
       - name: Summary
         if: always()
         run: |
           echo "## 🎯 Release Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Auto Release**: Published CLI package automatically" >> $GITHUB_STEP_SUMMARY
+          echo "📦 **Version**: ${{ steps.version.outputs.NEW_VERSION }}" >> $GITHUB_STEP_SUMMARY
 
-          if [ "${{ steps.check-changesets.outputs.has-changesets }}" == "true" ]; then
-            echo "✅ **Changeset Release**: Published via changesets" >> $GITHUB_STEP_SUMMARY
-            echo "📦 **Version**: ${{ steps.changesets.outputs.NEW_VERSION }}" >> $GITHUB_STEP_SUMMARY
-          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "✅ **Manual Release**: Published via workflow dispatch" >> $GITHUB_STEP_SUMMARY
-            echo "📦 **Version**: ${{ steps.manual-version.outputs.NEW_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "🔄 **Release Type**: ${{ github.event.inputs.release_type }}" >> $GITHUB_STEP_SUMMARY
           else
-            echo "ℹ️ **Build Only**: No release performed" >> $GITHUB_STEP_SUMMARY
+            echo "🔄 **Release Type**: patch (auto)" >> $GITHUB_STEP_SUMMARY
           fi
 
           echo "" >> $GITHUB_STEP_SUMMARY

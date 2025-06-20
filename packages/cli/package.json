@@ -3,7 +3,7 @@
   "version": "0.1.9",
   "type": "module",
   "private": false,
-  "description": "A NPX command to install and list Model Context Protocols",
+  "description": "A NPX command to install and list Model Context Protocols - now with auto versioning",
   "main": "dist/index.js",
   "publishConfig": {
     "access": "public"

@@ -91,21 +91,36 @@ jobs:
 
           echo "Release type: $RELEASE_TYPE"
 
-          # Bump version based on release type
-          case "$RELEASE_TYPE" in
-            "patch")
-              pnpm version patch --no-git-tag-version
-              ;;
-            "minor")
-              pnpm version minor --no-git-tag-version
-              ;;
-            "major")
-              pnpm version major --no-git-tag-version
-              ;;
-          esac
+          # Create version update script
+          cat > update_version.js << 'EOF'
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const [major, minor, patch] = pkg.version.split('.').map(Number);
+          const releaseType = process.argv[2];
 
-          # Get new version
-          NEW_VERSION=$(node -p "require('./package.json').version")
+          let newVersion;
+          switch(releaseType) {
+            case 'major':
+              newVersion = `${major + 1}.0.0`;
+              break;
+            case 'minor':
+              newVersion = `${major}.${minor + 1}.0`;
+              break;
+            case 'patch':
+            default:
+              newVersion = `${major}.${minor}.${patch + 1}`;
+              break;
+          }
+
+          pkg.version = newVersion;
+          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          console.log(newVersion);
+          EOF
+
+          # Run version update
+          NEW_VERSION=$(node update_version.js $RELEASE_TYPE)
+          rm update_version.js
+
           echo "New version: $NEW_VERSION"
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
 

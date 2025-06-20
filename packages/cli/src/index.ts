@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+// MCP CLI - Auto versioning enabled
 import chalk from 'chalk';
 import { type ValidClient, VALID_CLIENTS } from './constants';
 import { installServer } from './commands/install';

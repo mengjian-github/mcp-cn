@@ -126,8 +126,8 @@ export const createStdioRunner = async (
     verbose(`[Runner] Using environment: ${JSON.stringify(runtimeEnv, null, 2)}`);
 
     let finalCommand: string = command;
-    // 默认从 bnpm 拉取包
-    let finalArgs: string[] = ['--registry', 'http://bnpm.byted.org/', ...args];
+    // 默认从 npm 拉取包
+    let finalArgs: string[] = ['--registry', 'https://registry.npmjs.org/', ...args];
     // let finalArgs: string[] = [...args];
 
     // Resolve npx path upfront if needed

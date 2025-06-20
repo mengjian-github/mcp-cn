@@ -13,16 +13,16 @@ import { Toaster } from "./toaster";
 
 // 常量定义
 const MCP_SERVER_NAME = "<mcp-server-name>";
-const BNP_PACKAGE_NAME = "<bnpm-package-name>";
+const NPM_PACKAGE_NAME = "<npm-package-name>";
 const DEFAULT_CONFIG = {
   [MCP_SERVER_NAME]: {
     command: "npx",
-    args: ["-y", BNP_PACKAGE_NAME],
+    args: ["-y", NPM_PACKAGE_NAME],
     env: {},
   },
 };
 const PACKAGE_NAME_INDEX =
-  DEFAULT_CONFIG[MCP_SERVER_NAME].args.indexOf(BNP_PACKAGE_NAME);
+  DEFAULT_CONFIG[MCP_SERVER_NAME].args.indexOf(NPM_PACKAGE_NAME);
 
 // 类型定义
 interface FormData {
@@ -75,10 +75,10 @@ const FORM_FIELDS: FormField[] = [
   },
   {
     id: "packageName",
-    label: "BNPM 包名",
-    placeholder: "请输入 BNPM 包名",
+    label: "NPM 包名",
+    placeholder: "请输入 NPM 包名",
     required: true,
-    help: "需要发布到 BNPM 后，填入 BNPM 包名",
+    help: "需要发布到 NPM 后，填入 NPM 包名",
   },
   {
     id: "logo",
@@ -195,7 +195,7 @@ const CreateServerModal: FC<CreateServerModalProps> = ({
       const serverConfig = currentConfig[oldServerName];
 
       // 使用包名或默认占位符
-      const newPackageName = value || BNP_PACKAGE_NAME;
+      const newPackageName = value || NPM_PACKAGE_NAME;
 
       // 创建新的配置对象
       const newConfig = {
@@ -258,7 +258,7 @@ const CreateServerModal: FC<CreateServerModalProps> = ({
     }
 
     if (!formData.packageName) {
-      newErrors.packageName = "请输入BNPM包名";
+      newErrors.packageName = "请输入NPM包名";
     }
 
     setErrors(newErrors);

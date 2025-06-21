@@ -11,6 +11,7 @@ import { Header } from "@/components/header";
 import { Toaster } from "@/components/toaster";
 import { Theme } from "@radix-ui/themes";
 import { Providers } from "../components/providers";
+import VersionChecker from "@/components/VersionChecker";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   description: "MCP Hub 中国专注于精选优质 MCP 服务，不追求大而全，只推荐经过严格筛选的高质量工具。每个服务都经过人工测试验证，为开发者提供最佳的 AI 工具集成体验。",
   keywords: [
     "MCP",
-    "Model Context Protocol", 
+    "Model Context Protocol",
     "AI工具",
     "人工智能",
     "Cursor",
@@ -117,17 +118,17 @@ export default function RootLayout({
         {/* 预连接到重要的第三方域名 */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        
+
         {/* Favicon 和图标 */}
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
         <link rel="manifest" href="/manifest.json" />
-        
+
         {/* 其他尺寸的图标 */}
         <link rel="icon" type="image/svg+xml" href="/favicon-16x16.png.svg" sizes="16x16" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="32x32" />
-        
+
         {/* 结构化数据 */}
         <script
           type="application/ld+json"
@@ -158,6 +159,69 @@ export default function RootLayout({
             })
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // 注册 Service Worker
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                      console.log('SW: 注册成功', registration.scope);
+                    })
+                    .catch(function(error) {
+                      console.log('SW: 注册失败', error);
+                    });
+                });
+              }
+
+              // 处理 chunk 加载失败的情况
+              window.addEventListener('error', function(e) {
+                const isChunkLoadError = e.message.includes('Loading chunk') ||
+                                       e.message.includes('ChunkLoadError') ||
+                                       (e.filename && e.filename.includes('/_next/static/chunks/'));
+
+                if (isChunkLoadError && !window.chunkErrorHandled) {
+                  window.chunkErrorHandled = true;
+                  console.warn('检测到资源加载失败，正在刷新页面...');
+
+                  // 清除可能的缓存
+                  if ('caches' in window) {
+                    caches.keys().then(function(names) {
+                      names.forEach(function(name) {
+                        caches.delete(name);
+                      });
+                    });
+                  }
+
+                  // 延迟刷新，避免无限循环
+                  setTimeout(function() {
+                    window.location.reload();
+                  }, 1000);
+                }
+              });
+
+              // 处理 webpack chunk 加载错误
+              if (typeof window !== 'undefined' && window.__webpack_require__) {
+                const originalRequire = window.__webpack_require__;
+                window.__webpack_require__ = function(moduleId) {
+                  try {
+                    return originalRequire(moduleId);
+                  } catch (error) {
+                    if (error.name === 'ChunkLoadError' && !window.chunkErrorHandled) {
+                      window.chunkErrorHandled = true;
+                      console.warn('检测到 Chunk 加载失败，正在刷新页面...');
+                      setTimeout(function() {
+                        window.location.reload();
+                      }, 1000);
+                    }
+                    throw error;
+                  }
+                };
+              }
+            `,
+          }}
+        />
       </head>
       <body className={inter.className}>
         <Providers>
@@ -171,6 +235,7 @@ export default function RootLayout({
             </div>
           </Theme>
           <Toaster />
+          <VersionChecker />
         </Providers>
       </body>
     </html>

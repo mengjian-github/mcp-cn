@@ -34,9 +34,28 @@ const nextConfig = {
   // 压缩
   compress: true,
 
-  // 安全头
+  // 安全头和缓存策略
   async headers() {
     return [
+      // HTML 文件短缓存策略 - 防止缓存旧版本的资源引用
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
+          },
+        ],
+      },
+      {
+        source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
+          },
+        ],
+      },
       {
         source: '/(.*)',
         headers: [

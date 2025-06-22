@@ -65,7 +65,7 @@ export async function searchServers(query: string): Promise<ServerInfo[]> {
  */
 export function incrementUseCount(qualifiedName: string): void {
   logger.verbose(`增加服务器使用次数: ${qualifiedName}`);
-  fetch(`${API_BASE_URL}/servers/increment_use_count`, {
+  fetch(`${API_BASE_URL}/servers/increment-use-count`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

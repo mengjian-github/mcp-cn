@@ -8,12 +8,13 @@ import { trackPageClick } from "@/tracks";
 import { cn } from "@/utils/cn";
 import * as Avatar from "@radix-ui/react-avatar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { User, LogOut, Code, FileText, Github, ExternalLink, Plus } from "lucide-react";
+import { User, LogOut, Code, FileText, Github, ExternalLink, Plus, Users } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { forwardRef, useEffect, useRef, useState } from "react";
+import { WechatGroupModal } from "./wechat-group-modal";
 
 // LocalStorage keys
 const LS_KEYS = {
@@ -142,6 +143,7 @@ export const Header = () => {
   const createServerButtonRef = useRef<HTMLButtonElement>(null);
   const positionState = useState({ x: 0, y: 0 });
   const setButtonPosition = positionState[1];
+  const [isWechatModalOpen, setIsWechatModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -225,23 +227,32 @@ export const Header = () => {
         </Link>
 
         <div className="flex flex-1 items-center justify-end gap-2 md:gap-3 overflow-x-auto">
-          <NavLink 
-            icon={<FileText />} 
-            label="官方文档" 
-            path="https://wvehg9sdj2q.feishu.cn/wiki/Hx7Ow0tF8iJEW4kS3LmcdkXCn3i?fromScene=spaceOverview&open_tab_from=wiki_home" 
+          <NavLink
+            icon={<FileText />}
+            label="官方文档"
+            path="https://wvehg9sdj2q.feishu.cn/wiki/Hx7Ow0tF8iJEW4kS3LmcdkXCn3i?fromScene=spaceOverview&open_tab_from=wiki_home"
             external={true}
           />
           <NavLink icon={<Code />} label="在线体验" path="/playground" />
-          <NavLink 
-            icon={<Github />} 
-            label="GitHub" 
-            path="https://github.com/mengjian-github/mcp-cn" 
+          <NavButton
+            icon={<Users />}
+            label="交流群"
+            onClick={() => {
+              trackPageClick("wechat_group");
+              setIsWechatModalOpen(true);
+            }}
+            variant="tinted"
+          />
+          <NavLink
+            icon={<Github />}
+            label="GitHub"
+            path="https://github.com/mengjian-github/mcp-cn"
             external={true}
           />
-          <NavLink 
-            icon={<Plus />} 
-            label="推荐服务" 
-            path="https://github.com/mengjian-github/mcp-cn/issues/new?assignees=&labels=service-recommendation&projects=&template=service-recommendation.md&title=%5B推荐服务%5D+服务名称" 
+          <NavLink
+            icon={<Plus />}
+            label="推荐服务"
+            path="https://github.com/mengjian-github/mcp-cn/issues/new?assignees=&labels=service-recommendation&projects=&template=service-recommendation.md&title=%5B推荐服务%5D+服务名称"
             external={true}
           />
           {/* <NavButton
@@ -252,6 +263,11 @@ export const Header = () => {
           /> */}
         </div>
       </div>
+
+      <WechatGroupModal
+        visible={isWechatModalOpen}
+        onClose={() => setIsWechatModalOpen(false)}
+      />
 
       {/* <CreateServerModal
         visible={isCreateServerModalOpen}

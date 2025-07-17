@@ -9,6 +9,7 @@ const CONFIG_PATHS: Record<ValidClient, string> = {
   'trae-global': join(homedir(), '.trae-global'),
   cline: join(homedir(), '.cline'),
   cursor: join(homedir(), '.cursor'),
+  'claude-code': join(homedir(), '.claude-code'),
   // claude: join(homedir(), '.claude'),
   windsurf: join(homedir(), '.windsurf'),
   // 'roo-cline': join(homedir(), '.roo-cline'),

@@ -150,10 +150,60 @@ export async function installServer(
     verbose(`Normalized server ID: ${serverName}`);
 
     verbose('Updating client configuration...');
-    config.mcpServers[serverName] = serverConfig;
-    verbose('Writing updated configuration...');
-    writeConfig(config, client, customPath);
-    verbose('Configuration successfully written');
+    // Handle Claude Code using its native CLI commands
+    if (client === 'claude-code') {
+      verbose('Using Claude Code CLI to add MCP server...');
+      const { spawn } = await import('child_process');
+      
+      // Type guard to ensure we have a stdio connection
+      if (!('command' in serverConfig) || !('args' in serverConfig)) {
+        throw new Error('Invalid server configuration for Claude Code');
+      }
+      
+      // Create JSON configuration for Claude Code
+      const jsonConfig = {
+        type: 'stdio',
+        command: serverConfig.command,
+        args: serverConfig.args || [],
+        env: serverConfig.env || {}
+      };
+      
+      const claudeArgs = [
+        'mcp',
+        'add-json',
+        '--scope',
+        'project',
+        serverName,
+        JSON.stringify(jsonConfig)
+      ];
+      
+      verbose(`Claude Code command: claude ${claudeArgs.join(' ')}`);
+      
+      const claudeProcess = spawn('claude', claudeArgs, {
+        stdio: 'inherit',
+        shell: false,
+      });
+      
+      await new Promise<void>((resolve, reject) => {
+        claudeProcess.on('close', (code) => {
+          if (code === 0) {
+            verbose('Claude Code MCP server added successfully');
+            resolve();
+          } else {
+            reject(new Error(`Claude Code process exited with code ${code}`));
+          }
+        });
+        
+        claudeProcess.on('error', (error) => {
+          reject(new Error(`Failed to spawn claude process: ${error.message}`));
+        });
+      });
+    } else {
+      config.mcpServers[serverName] = serverConfig;
+      verbose('Writing updated configuration...');
+      writeConfig(config, client, customPath);
+      verbose('Configuration successfully written');
+    }
     console.log(chalk.green(`${qualifiedName} successfully installed for ${client}`));
     verbose('Prompting for client restart...');
     await promptForRestart(client);

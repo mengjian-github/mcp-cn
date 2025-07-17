@@ -34,6 +34,7 @@ const clientPaths: Record<string, string> = {
   trae: path.join(baseDir, 'Trae CN', 'User', 'mcp.json'),
   'trae-global': path.join(baseDir, 'Trae', 'User', 'mcp.json'),
   claude: path.join(baseDir, 'Claude', 'claude_desktop_config.json'),
+  // claude-code: managed by claude mcp add-json command, no config file needed
   cline: path.join(baseDir, vscodePath, 'saoudrizwan.claude-dev', 'settings', 'cline_mcp_settings.json'),
   'roo-cline': path.join(baseDir, vscodePath, 'rooveterinaryinc.roo-cline', 'settings', 'cline_mcp_settings.json'),
   windsurf: path.join(homeDir, '.codeium', 'windsurf', 'mcp_config.json'),
@@ -53,6 +54,12 @@ export function setCustomPath(client: string, customPath: string): void {
 export function getConfigPath(client?: string, customPath?: string): string {
   const normalizedClient = client?.toLowerCase() || 'claude';
   verbose(`Getting config path for client: ${normalizedClient}`);
+
+  // Claude Code doesn't use traditional config files
+  if (normalizedClient === 'claude-code') {
+    verbose('Claude Code uses claude mcp add-json command, no config file needed');
+    return ''; // Return empty string to indicate no config file needed
+  }
 
   // Use custom path if provided for this call
   if (customPath) {
@@ -76,6 +83,13 @@ export function getConfigPath(client?: string, customPath?: string): string {
 
 export function readConfig(client: string, customPath?: string): ClientConfig {
   verbose(`Reading config for client: ${client}`);
+  
+  // Claude Code doesn't use traditional config files
+  if (client === 'claude-code') {
+    verbose('Claude Code uses native CLI commands, returning empty config');
+    return { mcpServers: {} };
+  }
+  
   try {
     const configPath = getConfigPath(client, customPath);
     verbose(`Checking if config file exists at: ${configPath}`);
@@ -101,6 +115,13 @@ export function readConfig(client: string, customPath?: string): ClientConfig {
 
 export function writeConfig(config: ClientConfig, client?: string, customPath?: string): void {
   verbose(`Writing config for client: ${client || 'default'}`);
+  
+  // Claude Code doesn't use traditional config files
+  if (client === 'claude-code') {
+    verbose('Claude Code uses native CLI commands, skipping config file write');
+    return;
+  }
+  
   verbose(`Config data: ${JSON.stringify(config, null, 2)}`);
 
   const configPath = getConfigPath(client, customPath);

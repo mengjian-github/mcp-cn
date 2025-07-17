@@ -4,6 +4,7 @@ export const VALID_CLIENTS = [
   'trae-global',
   'cline',
   // 'claude',
+  'claude-code',
   'windsurf',
   // 'roo-cline',
   // 'witsy',

@@ -154,36 +154,42 @@ export async function installServer(
     if (client === 'claude-code') {
       verbose('Using Claude Code CLI to add MCP server...');
       const { spawn } = await import('child_process');
-      
+
       // Type guard to ensure we have a stdio connection
       if (!('command' in serverConfig) || !('args' in serverConfig)) {
         throw new Error('Invalid server configuration for Claude Code');
       }
-      
-      // Create JSON configuration for Claude Code
-      const jsonConfig = {
-        type: 'stdio',
-        command: serverConfig.command,
-        args: serverConfig.args || [],
-        env: serverConfig.env || {}
-      };
-      
+
+      // Build the claude mcp add command
       const claudeArgs = [
         'mcp',
-        'add-json',
-        '--scope',
-        'project',
-        serverName,
-        JSON.stringify(jsonConfig)
+        'add',
+        serverName
       ];
-      
+
+      // Add environment variables if present
+      if (serverConfig.env && typeof serverConfig.env === 'object') {
+        for (const [key, value] of Object.entries(serverConfig.env)) {
+          if (typeof value === 'string') {
+            claudeArgs.push('-e', `${key}=${value}`);
+          }
+        }
+      }
+
+      // Add the separator and command
+      claudeArgs.push('--');
+      claudeArgs.push(serverConfig.command);
+      if (serverConfig.args && Array.isArray(serverConfig.args)) {
+        claudeArgs.push(...serverConfig.args);
+      }
+
       verbose(`Claude Code command: claude ${claudeArgs.join(' ')}`);
-      
+
       const claudeProcess = spawn('claude', claudeArgs, {
         stdio: 'inherit',
         shell: false,
       });
-      
+
       await new Promise<void>((resolve, reject) => {
         claudeProcess.on('close', (code) => {
           if (code === 0) {
@@ -193,7 +199,7 @@ export async function installServer(
             reject(new Error(`Claude Code process exited with code ${code}`));
           }
         });
-        
+
         claudeProcess.on('error', (error) => {
           reject(new Error(`Failed to spawn claude process: ${error.message}`));
         });

@@ -272,8 +272,8 @@ export function denormalizeServerId(normalizedId: string): string {
  */
 export function getServerName(serverId: string): string {
   if (serverId.startsWith('@') && serverId.includes('/')) {
-    const slashIndex = serverId.indexOf('/');
-    return serverId.substring(slashIndex + 1);
+    // For scoped packages like @playwright/mcp, use the full name without @
+    return serverId.substring(1).replace('/', '-');
   }
   return serverId;
 }

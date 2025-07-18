@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mcp_hub_org/cli@latest",
+        "run",
+        "@playwright/mcp"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -429,5 +429,47 @@
     "display_name": "Gmail AutoAuth",
     "description": "Gmail AutoAuth的MCP服务器，支持Gmail AutoAuth的读取和写入",
     "tag": "Gmail,MCP,Gmail,邮件"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/webcheck-mcp",
+    "display_name": "网站健康检查",
+    "description": "全面的网站健康分析工具，支持SEO审计、无障碍检测、安全头检查、性能分析和死链检测",
+    "tag": "SEO,网站分析,无障碍,安全检测,开发工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/git-summary-mcp",
+    "display_name": "Git智能摘要",
+    "description": "Git仓库智能分析工具，生成提交摘要、贡献者统计、变更日志和代码审查报告",
+    "tag": "Git,代码管理,版本控制,开发工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/mcp-checkup",
+    "display_name": "MCP健康检查",
+    "description": "分析MCP服务器设置的token成本，找出重复工具，生成效率评分报告(A-F)，帮助优化上下文窗口",
+    "tag": "MCP,性能优化,Token分析,开发工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/dev-utils-mcp",
+    "display_name": "开发者工具集",
+    "description": "UUID生成、Base64/URL/Hex编解码、哈希计算、JWT解码、JSON格式化与diff、正则测试，6个常用工具",
+    "tag": "编码工具,哈希,JWT,JSON,开发工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/codescan-mcp",
+    "display_name": "代码健康扫描",
+    "description": "扫描代码库中的TODO/FIXME、代码复杂度、文件统计、依赖分析，生成带字母评级的健康报告",
+    "tag": "代码质量,静态分析,TODO扫描,开发工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/deadlink-checker-mcp",
+    "display_name": "死链检测器",
+    "description": "检测网站和文档中的失效链接，支持HTML页面、Markdown文件和Sitemap扫描",
+    "tag": "链接检测,网站维护,SEO,开发工具"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/mcp-quick",
+    "display_name": "MCP脚手架",
+    "description": "秒级创建MCP服务器项目，提供3个实战模板(基础/API/爬虫)，一键生成完整项目结构",
+    "tag": "脚手架,项目模板,MCP开发,开发工具"
   }
 ]

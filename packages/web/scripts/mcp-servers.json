@@ -71,7 +71,9 @@
     "env": {
       "FIGMA_API_KEY": "<YOUR_FIGMA_API_KEY>"
     },
-    "args": ["--stdio"]
+    "args": [
+      "--stdio"
+    ]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@wonderwhy-er/desktop-commander",
@@ -88,7 +90,10 @@
     "env": {
       "CLOUDFLARE_API_TOKEN": "<YOUR_API_TOKEN>"
     },
-    "args": ["run", "placeholder_account_id"]
+    "args": [
+      "run",
+      "placeholder_account_id"
+    ]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@21st-dev/magic",
@@ -138,7 +143,9 @@
     "display_name": "文件系统",
     "description": "文件系统操作的MCP服务器",
     "tag": "文件系统,文件管理,文件操作",
-    "args": ["/tmp"]
+    "args": [
+      "/tmp"
+    ]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-puppeteer",
@@ -177,7 +184,9 @@
     "display_name": "PostgreSQL",
     "description": "PostgreSQL数据库的MCP服务器，支持数据库操作和管理",
     "tag": "数据库,PostgreSQL,数据管理,SQL",
-    "args": ["postgresql://placeholder:placeholder@localhost:5432/placeholder"]
+    "args": [
+      "postgresql://placeholder:placeholder@localhost:5432/placeholder"
+    ]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@modelcontextprotocol/server-brave-search",
@@ -260,7 +269,9 @@
     "display_name": "Stripe",
     "description": "Stripe的MCP服务器，支持Stripe的读取和写入",
     "tag": "Stripe,支付,MCP",
-    "args": ["--tools=all"],
+    "args": [
+      "--tools=all"
+    ],
     "env": {
       "STRIPE_SECRET_KEY": "<YOUR_STRIPE_SECRET_KEY>"
     }
@@ -325,7 +336,9 @@
     "display_name": "Obsidian",
     "description": "Obsidian的MCP服务器，支持Obsidian的读取和写入",
     "tag": "Obsidian,MCP,Obsidian,笔记",
-    "args": ["/tmp"]
+    "args": [
+      "/tmp"
+    ]
   },
   {
     "npm_url": "https://www.npmjs.com/package/12306-mcp",
@@ -375,7 +388,9 @@
       "FEISHU_APP_ID": "<YOUR_FEISHU_APP_ID>",
       "FEISHU_APP_SECRET": "<YOUR_FEISHU_APP_SECRET>"
     },
-    "args": ["--stdio"]
+    "args": [
+      "--stdio"
+    ]
   },
   {
     "npm_url": "https://www.npmjs.com/package/@jinzcdev/leetcode-mcp-server",
@@ -398,7 +413,9 @@
     "display_name": "Apifox",
     "description": "Apifox的MCP服务器，支持Apifox的读取和写入",
     "tag": "Apifox,MCP,Apifox,API",
-    "args": ["--local"],
+    "args": [
+      "--local"
+    ],
     "env": {
       "APIFOX_API_KEY": "<your-apifox-api-key>",
       "PROJECT_ID": "<your-project-id>"
@@ -429,5 +446,12 @@
     "display_name": "Gmail AutoAuth",
     "description": "Gmail AutoAuth的MCP服务器，支持Gmail AutoAuth的读取和写入",
     "tag": "Gmail,MCP,Gmail,邮件"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/xiangguangyu-mcp-skills",
+    "display_name": "CHROMATIC-MCP 252个AI技能",
+    "description": "提供252个AI技能的MCP服务器，涵盖MBTI人格分析、周易占卜、星座运势、心理测试、图片生成指南、代码审查、翻译工具等，支持支付宝按调用付费，每日每技能10次免费额度",
+    "tag": "AI技能,MBTI,周易,星座,心理测试,支付宝,MCP,多功能工具",
+    "logo": "https://avatars.githubusercontent.com/u/182288589?s=200&v=4"
   }
 ]

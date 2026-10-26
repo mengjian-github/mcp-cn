@@ -429,5 +429,14 @@
     "display_name": "Gmail AutoAuth",
     "description": "Gmail AutoAuth的MCP服务器，支持Gmail AutoAuth的读取和写入",
     "tag": "Gmail,MCP,Gmail,邮件"
+  },
+  {
+    "npm_url": "https://www.npmjs.com/package/agent-qa",
+    "display_name": "agent-qa",
+    "description": "用自然语言测试 Web、Android 和 iOS 应用，通过 MCP 为智能体提供持久化记忆与经过验证的自我改进能力。需要 Node.js 24+，模型提供方的使用费用另计。",
+    "tag": "自动化测试,应用测试,持久化记忆,自我改进,MCP",
+    "logo": "https://www.vostride.com/icon.png?icon.1muy1ymeud8i8.png",
+    "github_url": "https://github.com/vostride/agent-qa",
+    "args": ["mcp"]
   }
 ]
